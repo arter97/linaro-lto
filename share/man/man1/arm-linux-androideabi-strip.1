@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "STRIP 1"
-.TH STRIP 1 "2015-02-22" "binutils-2.24.51.0.3" "GNU Development Tools"
+.TH STRIP 1 "2015-03-15" "binutils-2.25.51.0.1" "GNU Development Tools"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -206,7 +206,8 @@ Replace \fIobjfile\fR with a file in the output format \fIbfdname\fR.
 .IP "\fB\-\-remove\-section=\fR\fIsectionname\fR" 4
 .IX Item "--remove-section=sectionname"
 .PD
-Remove any section named \fIsectionname\fR from the output file.  This
+Remove any section named \fIsectionname\fR from the output file, in
+addition to whatever sections would otherwise be removed.  This
 option may be given more than once.  Note that using this option
 inappropriately may make the output file unusable.  The wildcard
 character \fB*\fR may be given at the end of \fIsectionname\fR.  If
@@ -426,7 +427,7 @@ with a backslash.  The \fIfile\fR may itself contain additional
 the Info entries for \fIbinutils\fR.
 .SH "COPYRIGHT"
 .IX Header "COPYRIGHT"
-Copyright (c) 1991\-2013 Free Software Foundation, Inc.
+Copyright (c) 1991\-2014 Free Software Foundation, Inc.
 .PP
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the \s-1GNU\s0 Free Documentation License, Version 1.3
