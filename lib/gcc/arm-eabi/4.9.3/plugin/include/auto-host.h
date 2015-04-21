@@ -212,6 +212,12 @@
 #endif
 
 
+/* Define if your assembler supports -mrmw option. */
+#ifndef USED_FOR_TARGET
+/* #undef HAVE_AS_AVR_MRMW_OPTION */
+#endif
+
+
 /* Define if your assembler supports cmpb. */
 #ifndef USED_FOR_TARGET
 /* #undef HAVE_AS_CMPB */
@@ -233,6 +239,12 @@
 /* Define if your assembler supports DFP instructions. */
 #ifndef USED_FOR_TARGET
 /* #undef HAVE_AS_DFP */
+#endif
+
+
+/* Define if your assembler supports .module. */
+#ifndef USED_FOR_TARGET
+/* #undef HAVE_AS_DOT_MODULE */
 #endif
 
 
@@ -445,12 +457,6 @@
 /* Define if the assembler understands -mnan=. */
 #ifndef USED_FOR_TARGET
 /* #undef HAVE_AS_NAN */
-#endif
-
-
-/* Define if the assembler understands .module. */
-#ifndef USED_FOR_TARGET
-/* #undef HAVE_AS_DOT_MODULE */
 #endif
 
 

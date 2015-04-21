@@ -4,8 +4,8 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "4.9.3 20150311 (prerelease)")
-(!srcdir  "/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc")
+(!version  "4.9.3 20150413 (prerelease)")
+(!srcdir  "/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc")
 (!languages 9 ada c cp fortran go java lto objc objcp)
 (!fileslist 190
  (!srcfile 511  "../libcpp/include/line-map.h")
@@ -310,11 +310,11 @@
               (!srcfileloc  "tree-core.h" 729)
               nil )
              (!pair  "u"
-              (!type union 12 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/tree-core.h:731"
+              (!type union 12 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/tree-core.h:731"
                (!srcfileloc  "tree-core.h" 765)
                (!fields 3 
                 (!pair  "bits"
-                 (!type struct 13 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/tree-core.h:734"
+                 (!type struct 13 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/tree-core.h:734"
                   (!srcfileloc  "tree-core.h" 757)
                   (!fields 16 
                    (!pair  "lang_flag_0"
@@ -2414,39 +2414,39 @@
                   nil )
                  
                  (!type struct 131 nil  gc_pointed_to "lang_decl"
-                  (!srcfileloc  "fortran/trans.h" 834)
+                  (!srcfileloc  "fortran/trans.h" 835)
                   (!fields 8 
                    (!pair  "saved_descriptor"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 822)
+                    (!srcfileloc  "fortran/trans.h" 823)
                     nil )
                    (!pair  "stringlen"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 827)
+                    (!srcfileloc  "fortran/trans.h" 828)
                     nil )
                    (!pair  "addr"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 828)
+                    (!srcfileloc  "fortran/trans.h" 829)
                     nil )
                    (!pair  "span"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 829)
+                    (!srcfileloc  "fortran/trans.h" 830)
                     nil )
                    (!pair  "token"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 831)
+                    (!srcfileloc  "fortran/trans.h" 832)
                     nil )
                    (!pair  "caf_offset"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 831)
+                    (!srcfileloc  "fortran/trans.h" 832)
                     nil )
                    (!pair  "scalar_allocatable"
                     (!type already_seen 9)
-                    (!srcfileloc  "fortran/trans.h" 832)
+                    (!srcfileloc  "fortran/trans.h" 833)
                     nil )
                    (!pair  "scalar_pointer"
                     (!type already_seen 9)
-                    (!srcfileloc  "fortran/trans.h" 833)
+                    (!srcfileloc  "fortran/trans.h" 834)
                     nil )
                   )
                   (!options 
@@ -6616,7 +6616,7 @@
                                )
                               )
                               (!pair  "x"
-                               (!type struct 321 nil  gc_used "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/basic-block.h:187"
+                               (!type struct 321 nil  gc_used "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/basic-block.h:187"
                                 (!srcfileloc  "basic-block.h" 190)
                                 (!fields 2 
                                  (!pair  "head_"
@@ -8591,7 +8591,7 @@
                               (!srcfileloc  "dwarf2out.h" 55)
                               nil )
                              (!pair  "dw_cfi_oprnd1"
-                              (!type union 413 nil  gc_used "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/dwarf2out.h:47"
+                              (!type union 413 nil  gc_used "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/dwarf2out.h:47"
                                (!srcfileloc  "dwarf2out.h" 52)
                                (!fields 4 
                                 (!pair  "dw_cfi_reg_num"
@@ -10086,75 +10086,75 @@
                   nil )
                  
                  (!type struct 473 nil  gc_pointed_to "lang_type"
-                  (!srcfileloc  "fortran/trans.h" 818)
+                  (!srcfileloc  "fortran/trans.h" 819)
                   (!fields 15 
                    (!pair  "rank"
                     (!type already_seen 9)
-                    (!srcfileloc  "fortran/trans.h" 804)
+                    (!srcfileloc  "fortran/trans.h" 805)
                     nil )
                    (!pair  "corank"
                     (!type already_seen 9)
-                    (!srcfileloc  "fortran/trans.h" 804)
+                    (!srcfileloc  "fortran/trans.h" 805)
                     nil )
                    (!pair  "akind"
                     (!type already_seen 9)
-                    (!srcfileloc  "fortran/trans.h" 805)
+                    (!srcfileloc  "fortran/trans.h" 806)
                     nil )
                    (!pair  "lbound"
                     (!type array 474 nil  gc_used "GFC_MAX_DIMENSIONS" 
                      (!type already_seen 5)
                     )
-                    (!srcfileloc  "fortran/trans.h" 806)
+                    (!srcfileloc  "fortran/trans.h" 807)
                     nil )
                    (!pair  "ubound"
                     (!type array 475 nil  gc_used "GFC_MAX_DIMENSIONS" 
                      (!type already_seen 5)
                     )
-                    (!srcfileloc  "fortran/trans.h" 807)
+                    (!srcfileloc  "fortran/trans.h" 808)
                     nil )
                    (!pair  "stride"
                     (!type array 476 nil  gc_used "GFC_MAX_DIMENSIONS" 
                      (!type already_seen 5)
                     )
-                    (!srcfileloc  "fortran/trans.h" 808)
+                    (!srcfileloc  "fortran/trans.h" 809)
                     nil )
                    (!pair  "size"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 809)
+                    (!srcfileloc  "fortran/trans.h" 810)
                     nil )
                    (!pair  "offset"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 810)
+                    (!srcfileloc  "fortran/trans.h" 811)
                     nil )
                    (!pair  "dtype"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 811)
+                    (!srcfileloc  "fortran/trans.h" 812)
                     nil )
                    (!pair  "dataptr_type"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 812)
+                    (!srcfileloc  "fortran/trans.h" 813)
                     nil )
                    (!pair  "span"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 813)
+                    (!srcfileloc  "fortran/trans.h" 814)
                     nil )
                    (!pair  "base_decl"
                     (!type array 477 nil  gc_used "2" 
                      (!type already_seen 5)
                     )
-                    (!srcfileloc  "fortran/trans.h" 814)
+                    (!srcfileloc  "fortran/trans.h" 815)
                     nil )
                    (!pair  "nonrestricted_type"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 815)
+                    (!srcfileloc  "fortran/trans.h" 816)
                     nil )
                    (!pair  "caf_token"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 816)
+                    (!srcfileloc  "fortran/trans.h" 817)
                     nil )
                    (!pair  "caf_offset"
                     (!type already_seen 5)
-                    (!srcfileloc  "fortran/trans.h" 817)
+                    (!srcfileloc  "fortran/trans.h" 818)
                     nil )
                   )
                   (!options 
@@ -10903,7 +10903,7 @@
                  )
                 )
                 (!pair  "loc"
-                 (!type union 512 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/tree-core.h:1167"
+                 (!type union 512 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/tree-core.h:1167"
                   (!srcfileloc  "tree-core.h" 1167)
                   (!fields 2 
                    (!pair  "stmt"
@@ -12723,7 +12723,7 @@
                        (!srcfileloc  "c/c-decl.c" 212)
                        (!fields 11 
                         (!pair  "u"
-                         (!type union 585 nil  gc_used "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/c/c-decl.c:198"
+                         (!type union 585 nil  gc_used "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/c/c-decl.c:198"
                           (!srcfileloc  "c/c-decl.c" 201)
                           (!fields 2 
                            (!pair  "type"
@@ -13742,7 +13742,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 644 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/java/expr.c:2060"nil 
+ (!type struct 644 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/java/expr.c:2060"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -13848,19 +13848,19 @@
   nil 0 nil nil )
  
  (!type struct 653 nil  gc_used "gfc_powdecl_list"
-  (!srcfileloc  "fortran/trans.h" 728)
+  (!srcfileloc  "fortran/trans.h" 729)
   (!fields 3 
    (!pair  "integer"
     (!type already_seen 5)
-    (!srcfileloc  "fortran/trans.h" 725)
+    (!srcfileloc  "fortran/trans.h" 726)
     nil )
    (!pair  "real"
     (!type already_seen 5)
-    (!srcfileloc  "fortran/trans.h" 726)
+    (!srcfileloc  "fortran/trans.h" 727)
     nil )
    (!pair  "cmplx"
     (!type already_seen 5)
-    (!srcfileloc  "fortran/trans.h" 727)
+    (!srcfileloc  "fortran/trans.h" 728)
     nil )
   )
   nil 8 nil nil )
@@ -13869,11 +13869,11 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 655 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/fortran/trans.h:340"nil 
+ (!type struct 655 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/fortran/trans.h:340"nil 
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 656 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/fortran/trans.h:328"nil 
+ (!type struct 656 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/fortran/trans.h:328"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -13897,7 +13897,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 662 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/fortran/trans.h:33"nil 
+ (!type struct 662 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/fortran/trans.h:33"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -14040,19 +14040,19 @@
    (!type already_seen 668)
   )
   gc_pointed_to "module_htab_entry"
-  (!srcfileloc  "fortran/trans.h" 574)
+  (!srcfileloc  "fortran/trans.h" 575)
   (!fields 3 
    (!pair  "name"
     (!type already_seen 36)
-    (!srcfileloc  "fortran/trans.h" 571)
+    (!srcfileloc  "fortran/trans.h" 572)
     nil )
    (!pair  "namespace_decl"
     (!type already_seen 5)
-    (!srcfileloc  "fortran/trans.h" 572)
+    (!srcfileloc  "fortran/trans.h" 573)
     nil )
    (!pair  "decls"
     (!type already_seen 53)
-    (!srcfileloc  "fortran/trans.h" 573)
+    (!srcfileloc  "fortran/trans.h" 574)
     (!options 
      (!option param_is type 
       (!type already_seen 7)
@@ -15148,7 +15148,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 759 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/c/c-parser.c:6071"nil 
+ (!type struct 759 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/c/c-parser.c:6071"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -15275,7 +15275,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 768 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/c-family/c-pragma.c:1169"nil 
+ (!type struct 768 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/c-family/c-pragma.c:1169"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -15807,7 +15807,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 828 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/ada/gcc-interface/decl.c:178"nil 
+ (!type struct 828 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/ada/gcc-interface/decl.c:178"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -17724,7 +17724,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1013 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/config/arm/arm.c:29921"nil 
+ (!type struct 1013 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/config/arm/arm.c:30039"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -17732,30 +17732,30 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1015 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/config/arm/arm.c:23344"nil 
+ (!type struct 1015 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/config/arm/arm.c:23441"nil 
   (!fields 0 )
   nil 0 nil nil )
  
  (!type user_struct 1016 nil  gc_unused "hash_table<libcall_hasher>"
-  (!srcfileloc  "config/arm/arm.c" 4812)
+  (!srcfileloc  "config/arm/arm.c" 4908)
   (!fields 1 
    (!pair  "libcall_hasher"
     (!type struct 1017 nil  gc_unused "libcall_hasher"
-     (!srcfileloc  "config/arm/arm.c" 4812)
+     (!srcfileloc  "config/arm/arm.c" 4908)
      (!fields 0 )
      nil 511 nil nil )
-    (!srcfileloc  "config/arm/arm.c" 4812)
+    (!srcfileloc  "config/arm/arm.c" 4908)
     nil )
   )
  )
  
  (!type already_seen 1017)
  
- (!type struct 1018 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/config/arm/arm.c:3142"nil 
+ (!type struct 1018 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/config/arm/arm.c:3238"nil 
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1019 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/config/arm/arm.c:2147"nil 
+ (!type struct 1019 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/config/arm/arm.c:2227"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -18089,7 +18089,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type union 1085 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/tree-eh.c:59"nil 
+ (!type union 1085 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/tree-eh.c:59"nil 
   (!fields 0 )
   nil 0 nil )
  
@@ -18719,7 +18719,7 @@
     (!srcfileloc  "gimple.h" 278)
     nil )
    (!pair  "u"
-    (!type union 1126 nil  gc_used "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/gimple.h:281"
+    (!type union 1126 nil  gc_used "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/gimple.h:281"
      (!srcfileloc  "gimple.h" 284)
      (!fields 2 
       (!pair  "fntype"
@@ -18824,11 +18824,11 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1134 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/varasm.c:4817"nil 
+ (!type struct 1134 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/varasm.c:4817"nil 
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1135 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/varasm.c:4573"nil 
+ (!type struct 1135 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/varasm.c:4573"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -18934,7 +18934,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type union 1154 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/mcf.c:344"nil 
+ (!type union 1154 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/mcf.c:344"nil 
   (!fields 0 )
   nil 0 nil )
  
@@ -19850,7 +19850,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1274 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/dwarf2cfi.c:218"nil 
+ (!type struct 1274 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/dwarf2cfi.c:218"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -19862,7 +19862,7 @@
   (!type pointer 1277 nil  gc_unused
    (!type already_seen 1276)
   )
-  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/dwarf2cfi.c:101"nil 
+  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/dwarf2cfi.c:101"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -20538,15 +20538,15 @@
    (!type already_seen 1361)
   )
   gc_pointed_to "types_used_by_vars_entry"
-  (!srcfileloc  "function.h" 708)
+  (!srcfileloc  "function.h" 704)
   (!fields 2 
    (!pair  "type"
     (!type already_seen 5)
-    (!srcfileloc  "function.h" 706)
+    (!srcfileloc  "function.h" 702)
     nil )
    (!pair  "var_decl"
     (!type already_seen 5)
-    (!srcfileloc  "function.h" 707)
+    (!srcfileloc  "function.h" 703)
     nil )
   )
   nil 511 nil nil )
@@ -21915,7 +21915,7 @@
  
  (!type already_seen 1324)
  
- (!type struct 1432 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/config/arm/arm.h:1585"nil 
+ (!type struct 1432 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/config/arm/arm.h:1585"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -22003,11 +22003,11 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1448 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/../libcpp/include/cpplib.h:999"nil 
+ (!type struct 1448 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/../libcpp/include/cpplib.h:999"nil 
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1449 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/../libcpp/include/cpplib.h:988"nil 
+ (!type struct 1449 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/../libcpp/include/cpplib.h:988"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -22061,7 +22061,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1458 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.03/build/objdir/../build/../gcc/gcc-linaro-4.9-2015.03/gcc/../libcpp/include/line-map.h:627"nil 
+ (!type struct 1458 nil  gc_unused "anonymous:/mnt/jenkins/workspace/linaro-android_toolchain-4.9-2015.04/build/objdir/../build/../gcc/gcc-linaro-snapshot-4.9-2015.04/gcc/../libcpp/include/line-map.h:627"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -22423,15 +22423,15 @@
   nil )
  (!pair  "gfc_interface_mapping"
   (!type already_seen 651)
-  (!srcfileloc  "fortran/trans.h" 963)
+  (!srcfileloc  "fortran/trans.h" 964)
   nil )
  (!pair  "gfc_interface_sym_mapping"
   (!type already_seen 652)
-  (!srcfileloc  "fortran/trans.h" 948)
+  (!srcfileloc  "fortran/trans.h" 949)
   nil )
  (!pair  "gfc_powdecl_list"
   (!type already_seen 653)
-  (!srcfileloc  "fortran/trans.h" 729)
+  (!srcfileloc  "fortran/trans.h" 730)
   nil )
  (!pair  "gfc_wrapped_block"
   (!type already_seen 655)
@@ -23337,55 +23337,55 @@
   nil )
  (!pair  "arm_mangle_map_entry"
   (!type already_seen 1013)
-  (!srcfileloc  "config/arm/arm.c" 29925)
+  (!srcfileloc  "config/arm/arm.c" 30043)
   nil )
  (!pair  "builtin_arg"
   (!type already_seen 9)
-  (!srcfileloc  "config/arm/arm.c" 25256)
+  (!srcfileloc  "config/arm/arm.c" 25353)
   nil )
  (!pair  "neon_builtin_datum"
   (!type already_seen 1015)
-  (!srcfileloc  "config/arm/arm.c" 23350)
+  (!srcfileloc  "config/arm/arm.c" 23447)
   nil )
  (!pair  "neon_itype"
   (!type already_seen 9)
-  (!srcfileloc  "config/arm/arm.c" 23342)
+  (!srcfileloc  "config/arm/arm.c" 23439)
   nil )
  (!pair  "neon_builtin_type_mode"
   (!type already_seen 9)
-  (!srcfileloc  "config/arm/arm.c" 23272)
+  (!srcfileloc  "config/arm/arm.c" 23369)
   nil )
  (!pair  "arm_pragma_enum"
   (!type already_seen 9)
-  (!srcfileloc  "config/arm/arm.c" 6088)
+  (!srcfileloc  "config/arm/arm.c" 6184)
   nil )
  (!pair  "libcall_table_type"
   (!type already_seen 1016)
-  (!srcfileloc  "config/arm/arm.c" 4812)
+  (!srcfileloc  "config/arm/arm.c" 4908)
   nil )
  (!pair  "libcall_hasher"
   (!type already_seen 1017)
-  (!srcfileloc  "config/arm/arm.c" 4812)
+  (!srcfileloc  "config/arm/arm.c" 4908)
   nil )
  (!pair  "hash_table<libcall_hasher>"
   (!type already_seen 1016)
-  (!srcfileloc  "config/arm/arm.c" 4812)
+  (!srcfileloc  "config/arm/arm.c" 4908)
   nil )
  (!pair  "isr_attribute_arg"
   (!type already_seen 1018)
-  (!srcfileloc  "config/arm/arm.c" 3146)
+  (!srcfileloc  "config/arm/arm.c" 3242)
   nil )
  (!pair  "arm_fixed_mode_set"
   (!type already_seen 1019)
-  (!srcfileloc  "config/arm/arm.c" 2150)
+  (!srcfileloc  "config/arm/arm.c" 2230)
   nil )
  (!pair  "Mfix"
   (!type already_seen 1023)
-  (!srcfileloc  "config/arm/arm.c" 67)
+  (!srcfileloc  "config/arm/arm.c" 68)
   nil )
  (!pair  "Mnode"
   (!type already_seen 1024)
-  (!srcfileloc  "config/arm/arm.c" 66)
+  (!srcfileloc  "config/arm/arm.c" 67)
   nil )
  (!pair  "omp_context"
   (!type already_seen 1035)
@@ -25346,151 +25346,151 @@
   nil )
  (!pair  "gfor_fndecl_sr_kind"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 778)
+  (!srcfileloc  "fortran/trans.h" 779)
   nil )
  (!pair  "gfor_fndecl_si_kind"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 777)
+  (!srcfileloc  "fortran/trans.h" 778)
   nil )
  (!pair  "gfor_fndecl_sc_kind"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 776)
+  (!srcfileloc  "fortran/trans.h" 777)
   nil )
  (!pair  "gfor_fndecl_iargc"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 773)
+  (!srcfileloc  "fortran/trans.h" 774)
   nil )
  (!pair  "gfor_fndecl_size1"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 772)
+  (!srcfileloc  "fortran/trans.h" 773)
   nil )
  (!pair  "gfor_fndecl_size0"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 771)
+  (!srcfileloc  "fortran/trans.h" 772)
   nil )
  (!pair  "gfor_fndecl_convert_char4_to_char1"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 768)
+  (!srcfileloc  "fortran/trans.h" 769)
   nil )
  (!pair  "gfor_fndecl_convert_char1_to_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 767)
+  (!srcfileloc  "fortran/trans.h" 768)
   nil )
  (!pair  "gfor_fndecl_select_string_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 764)
+  (!srcfileloc  "fortran/trans.h" 765)
   nil )
  (!pair  "gfor_fndecl_adjustr_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 763)
+  (!srcfileloc  "fortran/trans.h" 764)
   nil )
  (!pair  "gfor_fndecl_adjustl_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 762)
+  (!srcfileloc  "fortran/trans.h" 763)
   nil )
  (!pair  "gfor_fndecl_string_minmax_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 761)
+  (!srcfileloc  "fortran/trans.h" 762)
   nil )
  (!pair  "gfor_fndecl_string_trim_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 760)
+  (!srcfileloc  "fortran/trans.h" 761)
   nil )
  (!pair  "gfor_fndecl_string_verify_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 759)
+  (!srcfileloc  "fortran/trans.h" 760)
   nil )
  (!pair  "gfor_fndecl_string_scan_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 758)
+  (!srcfileloc  "fortran/trans.h" 759)
   nil )
  (!pair  "gfor_fndecl_string_index_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 757)
+  (!srcfileloc  "fortran/trans.h" 758)
   nil )
  (!pair  "gfor_fndecl_string_len_trim_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 756)
+  (!srcfileloc  "fortran/trans.h" 757)
   nil )
  (!pair  "gfor_fndecl_concat_string_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 755)
+  (!srcfileloc  "fortran/trans.h" 756)
   nil )
  (!pair  "gfor_fndecl_compare_string_char4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 754)
+  (!srcfileloc  "fortran/trans.h" 755)
   nil )
  (!pair  "gfor_fndecl_select_string"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 753)
+  (!srcfileloc  "fortran/trans.h" 754)
   nil )
  (!pair  "gfor_fndecl_adjustr"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 752)
+  (!srcfileloc  "fortran/trans.h" 753)
   nil )
  (!pair  "gfor_fndecl_adjustl"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 751)
+  (!srcfileloc  "fortran/trans.h" 752)
   nil )
  (!pair  "gfor_fndecl_string_minmax"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 750)
+  (!srcfileloc  "fortran/trans.h" 751)
   nil )
  (!pair  "gfor_fndecl_string_trim"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 749)
+  (!srcfileloc  "fortran/trans.h" 750)
   nil )
  (!pair  "gfor_fndecl_string_verify"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 748)
+  (!srcfileloc  "fortran/trans.h" 749)
   nil )
  (!pair  "gfor_fndecl_string_scan"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 747)
+  (!srcfileloc  "fortran/trans.h" 748)
   nil )
  (!pair  "gfor_fndecl_string_index"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 746)
+  (!srcfileloc  "fortran/trans.h" 747)
   nil )
  (!pair  "gfor_fndecl_string_len_trim"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 745)
+  (!srcfileloc  "fortran/trans.h" 746)
   nil )
  (!pair  "gfor_fndecl_concat_string"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 744)
+  (!srcfileloc  "fortran/trans.h" 745)
   nil )
  (!pair  "gfor_fndecl_compare_string"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 743)
+  (!srcfileloc  "fortran/trans.h" 744)
   nil )
  (!pair  "gfor_fndecl_zgemm"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 740)
+  (!srcfileloc  "fortran/trans.h" 741)
   nil )
  (!pair  "gfor_fndecl_cgemm"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 739)
+  (!srcfileloc  "fortran/trans.h" 740)
   nil )
  (!pair  "gfor_fndecl_dgemm"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 738)
+  (!srcfileloc  "fortran/trans.h" 739)
   nil )
  (!pair  "gfor_fndecl_sgemm"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 737)
+  (!srcfileloc  "fortran/trans.h" 738)
   nil )
  (!pair  "gfor_fndecl_math_ishftc16"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 734)
+  (!srcfileloc  "fortran/trans.h" 735)
   nil )
  (!pair  "gfor_fndecl_math_ishftc8"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 733)
+  (!srcfileloc  "fortran/trans.h" 734)
   nil )
  (!pair  "gfor_fndecl_math_ishftc4"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 732)
+  (!srcfileloc  "fortran/trans.h" 733)
   nil )
  (!pair  "gfor_fndecl_math_powi"
   (!type array 1553 nil  gc_used "4" 
@@ -25498,139 +25498,139 @@
     (!type already_seen 653)
    )
   )
-  (!srcfileloc  "fortran/trans.h" 731)
+  (!srcfileloc  "fortran/trans.h" 732)
   nil )
  (!pair  "gfort_gvar_caf_this_image"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 718)
+  (!srcfileloc  "fortran/trans.h" 719)
   nil )
  (!pair  "gfort_gvar_caf_num_images"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 717)
+  (!srcfileloc  "fortran/trans.h" 718)
   nil )
  (!pair  "gfor_fndecl_caf_error_stop_str"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 714)
+  (!srcfileloc  "fortran/trans.h" 715)
   nil )
  (!pair  "gfor_fndecl_caf_error_stop"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 713)
+  (!srcfileloc  "fortran/trans.h" 714)
   nil )
  (!pair  "gfor_fndecl_caf_sync_images"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 712)
+  (!srcfileloc  "fortran/trans.h" 713)
   nil )
  (!pair  "gfor_fndecl_caf_sync_all"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 711)
+  (!srcfileloc  "fortran/trans.h" 712)
   nil )
  (!pair  "gfor_fndecl_caf_end_critical"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 710)
+  (!srcfileloc  "fortran/trans.h" 711)
   nil )
  (!pair  "gfor_fndecl_caf_critical"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 709)
+  (!srcfileloc  "fortran/trans.h" 710)
   nil )
  (!pair  "gfor_fndecl_caf_deregister"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 708)
+  (!srcfileloc  "fortran/trans.h" 709)
   nil )
  (!pair  "gfor_fndecl_caf_register"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 707)
+  (!srcfileloc  "fortran/trans.h" 708)
   nil )
  (!pair  "gfor_fndecl_caf_finalize"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 706)
+  (!srcfileloc  "fortran/trans.h" 707)
   nil )
  (!pair  "gfor_fndecl_caf_init"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 705)
+  (!srcfileloc  "fortran/trans.h" 706)
   nil )
  (!pair  "gfor_fndecl_associated"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 701)
+  (!srcfileloc  "fortran/trans.h" 702)
   nil )
  (!pair  "gfor_fndecl_in_unpack"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 700)
+  (!srcfileloc  "fortran/trans.h" 701)
   nil )
  (!pair  "gfor_fndecl_in_pack"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 699)
+  (!srcfileloc  "fortran/trans.h" 700)
   nil )
  (!pair  "gfor_fndecl_fdate"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 698)
+  (!srcfileloc  "fortran/trans.h" 699)
   nil )
  (!pair  "gfor_fndecl_ctime"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 697)
+  (!srcfileloc  "fortran/trans.h" 698)
   nil )
  (!pair  "gfor_fndecl_ttynam"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 696)
+  (!srcfileloc  "fortran/trans.h" 697)
   nil )
  (!pair  "gfor_fndecl_set_options"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 695)
+  (!srcfileloc  "fortran/trans.h" 696)
   nil )
  (!pair  "gfor_fndecl_set_fpe"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 694)
+  (!srcfileloc  "fortran/trans.h" 695)
   nil )
  (!pair  "gfor_fndecl_generate_error"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 693)
+  (!srcfileloc  "fortran/trans.h" 694)
   nil )
  (!pair  "gfor_fndecl_os_error"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 692)
+  (!srcfileloc  "fortran/trans.h" 693)
   nil )
  (!pair  "gfor_fndecl_runtime_warning_at"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 691)
+  (!srcfileloc  "fortran/trans.h" 692)
   nil )
  (!pair  "gfor_fndecl_runtime_error_at"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 690)
+  (!srcfileloc  "fortran/trans.h" 691)
   nil )
  (!pair  "gfor_fndecl_runtime_error"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 689)
+  (!srcfileloc  "fortran/trans.h" 690)
   nil )
  (!pair  "gfor_fndecl_error_stop_string"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 688)
+  (!srcfileloc  "fortran/trans.h" 689)
   nil )
  (!pair  "gfor_fndecl_error_stop_numeric"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 687)
+  (!srcfileloc  "fortran/trans.h" 688)
   nil )
  (!pair  "gfor_fndecl_stop_string"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 686)
+  (!srcfileloc  "fortran/trans.h" 687)
   nil )
  (!pair  "gfor_fndecl_stop_numeric_f08"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 685)
+  (!srcfileloc  "fortran/trans.h" 686)
   nil )
  (!pair  "gfor_fndecl_stop_numeric"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 684)
+  (!srcfileloc  "fortran/trans.h" 685)
   nil )
  (!pair  "gfor_fndecl_pause_string"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 683)
+  (!srcfileloc  "fortran/trans.h" 684)
   nil )
  (!pair  "gfor_fndecl_pause_numeric"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 682)
+  (!srcfileloc  "fortran/trans.h" 683)
   nil )
  (!pair  "gfc_static_ctors"
   (!type already_seen 5)
-  (!srcfileloc  "fortran/trans.h" 585)
+  (!srcfileloc  "fortran/trans.h" 586)
   nil )
  (!pair  "gfc_charlen_type_node"
   (!type already_seen 5)
@@ -25732,7 +25732,7 @@
   (!type array 1563 nil  gc_used "2" 
    (!type already_seen 5)
   )
-  (!srcfileloc  "fortran/trans-stmt.c" 2130)
+  (!srcfileloc  "fortran/trans-stmt.c" 2197)
   nil )
  (!pair  "dt_parm"
   (!type already_seen 5)
@@ -26576,19 +26576,19 @@
   (!type array 1586 nil  gc_used "ARM_BUILTIN_MAX" 
    (!type already_seen 5)
   )
-  (!srcfileloc  "config/arm/arm.c" 23734)
+  (!srcfileloc  "config/arm/arm.c" 23831)
   nil )
  (!pair  "tls_get_addr_libfunc"
   (!type already_seen 136)
-  (!srcfileloc  "config/arm/arm.c" 7425)
+  (!srcfileloc  "config/arm/arm.c" 7521)
   nil )
  (!pair  "pic_labelno"
   (!type already_seen 9)
-  (!srcfileloc  "config/arm/arm.c" 6684)
+  (!srcfileloc  "config/arm/arm.c" 6780)
   nil )
  (!pair  "va_list_type"
   (!type already_seen 5)
-  (!srcfileloc  "config/arm/arm.c" 2474)
+  (!srcfileloc  "config/arm/arm.c" 2554)
   nil )
  (!pair  "stack_chk_fail_decl"
   (!type already_seen 5)
@@ -27693,11 +27693,11 @@
   nil )
  (!pair  "types_used_by_cur_var_decl"
   (!type already_seen 45)
-  (!srcfileloc  "function.h" 724)
+  (!srcfileloc  "function.h" 720)
   nil )
  (!pair  "types_used_by_vars_hash"
   (!type already_seen 1538)
-  (!srcfileloc  "function.h" 716)
+  (!srcfileloc  "function.h" 712)
   (!options 
    (!option param_is type 
     (!type already_seen 1361)
@@ -27706,7 +27706,7 @@
  )
  (!pair  "cfun"
   (!type already_seen 349)
-  (!srcfileloc  "function.h" 692)
+  (!srcfileloc  "function.h" 688)
   nil )
  (!pair  "x_rtl"
   (!type already_seen 1363)
