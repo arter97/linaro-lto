@@ -1,7 +1,7 @@
 This is libgomp.info, produced by makeinfo version 5.2 from
 libgomp.texi.
 
-Copyright (C) 2006-2014 Free Software Foundation, Inc.
+Copyright (C) 2006-2015 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -22,16 +22,18 @@ software.  Copies published by the Free Software Foundation raise funds
 for GNU development.
 INFO-DIR-SECTION GNU Libraries
 START-INFO-DIR-ENTRY
-* libgomp: (libgomp).                    GNU OpenMP runtime library
+* libgomp: (libgomp).          GNU Offloading and Multi Processing Runtime Library.
 END-INFO-DIR-ENTRY
 
-   This manual documents the GNU implementation of the OpenMP API for
-multi-platform shared-memory parallel programming in C/C++ and Fortran.
+   This manual documents libgomp, the GNU Offloading and Multi
+Processing Runtime library.  This is the GNU implementation of the
+OpenMP and OpenACC APIs for parallel and accelerator programming in
+C/C++ and Fortran.
 
    Published by the Free Software Foundation 51 Franklin Street, Fifth
 Floor Boston, MA 02110-1301 USA
 
-   Copyright (C) 2006-2014 Free Software Foundation, Inc.
+   Copyright (C) 2006-2015 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -57,10 +59,18 @@ File: libgomp.info,  Node: Top,  Next: Enabling OpenMP,  Up: (dir)
 Introduction
 ************
 
-This manual documents the usage of libgomp, the GNU implementation of
-the OpenMP (http://www.openmp.org) Application Programming Interface
-(API) for multi-platform shared-memory parallel programming in C/C++ and
-Fortran.
+This manual documents the usage of libgomp, the GNU Offloading and Multi
+Processing Runtime Library.  This includes the GNU implementation of the
+OpenMP (http://www.openmp.org) Application Programming Interface (API)
+for multi-platform shared-memory parallel programming in C/C++ and
+Fortran, and the GNU implementation of the OpenACC
+(http://www.openacc.org/) Application Programming Interface (API) for
+offloading of code to accelerator devices in C/C++ and Fortran.
+
+   Originally, libgomp implemented the GNU OpenMP Runtime Library.
+Based on this, support for OpenACC and offloading (both OpenACC and
+OpenMP 4's target construct) has been added later on, and the library's
+name changed to GNU Offloading and Multi Processing Runtime Library.
 
 * Menu:
 
@@ -70,7 +80,8 @@ Fortran.
 * Environment Variables::      Influencing runtime behavior with environment
                                variables.
 * The libgomp ABI::            Notes on the external ABI presented by libgomp.
-* Reporting Bugs::             How to report bugs in GNU OpenMP.
+* Reporting Bugs::             How to report bugs in the GNU Offloading and
+                               Multi Processing Runtime Library.
 * Copying::                    GNU general public license says
                                how you can copy and share libgomp.
 * GNU Free Documentation License::
@@ -1137,6 +1148,7 @@ beginning with 'GOMP_' are GNU extensions.
 * OMP_THREAD_LIMIT::      Set the maximum number of threads
 * OMP_WAIT_POLICY::       How waiting threads are handled
 * GOMP_CPU_AFFINITY::     Bind threads to specific CPUs
+* GOMP_DEBUG::            Enable debugging output
 * GOMP_STACKSIZE::        Set default thread stack size
 * GOMP_SPINCOUNT::        Set the busy-wait spin count
 
@@ -1409,7 +1421,7 @@ _Reference_:
      OpenMP specification v4.0 (http://www.openmp.org/), Section 4.8
 
 
-File: libgomp.info,  Node: GOMP_CPU_AFFINITY,  Next: GOMP_STACKSIZE,  Prev: OMP_WAIT_POLICY,  Up: Environment Variables
+File: libgomp.info,  Node: GOMP_CPU_AFFINITY,  Next: GOMP_DEBUG,  Prev: OMP_WAIT_POLICY,  Up: Environment Variables
 
 3.14 'GOMP_CPU_AFFINITY' - Bind threads to specific CPUs
 ========================================================
@@ -1427,7 +1439,7 @@ _Description_:
      beginning of the list.  'GOMP_CPU_AFFINITY=0' binds all threads to
      CPU 0.
 
-     There is no GNU OpenMP library routine to determine whether a CPU
+     There is no libgomp library routine to determine whether a CPU
      affinity specification is in effect.  As a workaround,
      language-specific library functions, e.g., 'getenv' in C or
      'GET_ENVIRONMENT_VARIABLE' in Fortran, may be used to query the
@@ -1445,9 +1457,23 @@ _See also_:
      *note OMP_PLACES::, *note OMP_PROC_BIND::
 
 
-File: libgomp.info,  Node: GOMP_STACKSIZE,  Next: GOMP_SPINCOUNT,  Prev: GOMP_CPU_AFFINITY,  Up: Environment Variables
+File: libgomp.info,  Node: GOMP_DEBUG,  Next: GOMP_STACKSIZE,  Prev: GOMP_CPU_AFFINITY,  Up: Environment Variables
 
-3.15 'GOMP_STACKSIZE' - Set default thread stack size
+3.15 'GOMP_DEBUG' - Enable debugging output
+===========================================
+
+_Description_:
+     Enable debugging output.  The variable should be set to '0'
+     (disabled, also the default if not set), or '1' (enabled).
+
+     If enabled, some debugging output will be printed during execution.
+     This is currently not specified in more detail, and subject to
+     change.
+
+
+File: libgomp.info,  Node: GOMP_STACKSIZE,  Next: GOMP_SPINCOUNT,  Prev: GOMP_DEBUG,  Up: Environment Variables
+
+3.16 'GOMP_STACKSIZE' - Set default thread stack size
 =====================================================
 
 _Description_:
@@ -1469,7 +1495,7 @@ _Reference_:
 
 File: libgomp.info,  Node: GOMP_SPINCOUNT,  Prev: GOMP_STACKSIZE,  Up: Environment Variables
 
-3.16 'GOMP_SPINCOUNT' - Set the busy-wait spin count
+3.17 'GOMP_SPINCOUNT' - Set the busy-wait spin count
 ====================================================
 
 _Description_:
@@ -1855,9 +1881,10 @@ File: libgomp.info,  Node: Reporting Bugs,  Next: Copying,  Prev: The libgomp AB
 5 Reporting Bugs
 ****************
 
-Bugs in the GNU OpenMP implementation should be reported via Bugzilla
-(http://gcc.gnu.org/bugzilla/).  For all cases, please add "openmp" to
-the keywords field in the bug report.
+Bugs in the GNU Offloading and Multi Processing Runtime Library should
+be reported via Bugzilla (http://gcc.gnu.org/bugzilla/).  Please add
+"openacc", or "openmp", or both to the keywords field in the bug report,
+as appropriate.
 
 
 File: libgomp.info,  Node: Copying,  Next: GNU Free Documentation License,  Prev: Reporting Bugs,  Up: Top
@@ -3130,8 +3157,9 @@ Library Index
 * Environment Variable <11>:             OMP_THREAD_LIMIT.      (line 6)
 * Environment Variable <12>:             OMP_WAIT_POLICY.       (line 6)
 * Environment Variable <13>:             GOMP_CPU_AFFINITY.     (line 6)
-* Environment Variable <14>:             GOMP_STACKSIZE.        (line 6)
-* Environment Variable <15>:             GOMP_SPINCOUNT.        (line 6)
+* Environment Variable <14>:             GOMP_DEBUG.            (line 6)
+* Environment Variable <15>:             GOMP_STACKSIZE.        (line 6)
+* Environment Variable <16>:             GOMP_SPINCOUNT.        (line 6)
 * FDL, GNU Free Documentation License:   GNU Free Documentation License.
                                                                 (line 6)
 * Implementation specific setting:       OMP_NESTED.            (line 6)
@@ -3144,85 +3172,86 @@ Library Index
 
 
 Tag Table:
-Node: Top1992
-Node: Enabling OpenMP3186
-Node: Runtime Library Routines3973
-Node: omp_get_active_level6960
-Node: omp_get_ancestor_thread_num7660
-Node: omp_get_cancellation8590
-Node: omp_get_default_device9404
-Node: omp_get_dynamic10080
-Node: omp_get_level10955
-Node: omp_get_max_active_levels11575
-Node: omp_get_max_threads12274
-Node: omp_get_nested13031
-Node: omp_get_num_devices13943
-Node: omp_get_num_procs14464
-Node: omp_get_num_teams15003
-Node: omp_get_num_threads15519
-Node: omp_get_proc_bind16608
-Node: omp_get_schedule17529
-Node: omp_get_team_num18475
-Node: omp_get_team_size18974
-Node: omp_get_thread_limit19934
-Node: omp_get_thread_num20553
-Node: omp_in_parallel21424
-Node: omp_in_final22073
-Node: omp_is_initial_device22747
-Node: omp_set_default_device23440
-Node: omp_set_dynamic24231
-Node: omp_set_max_active_levels25117
-Node: omp_set_nested25894
-Node: omp_set_num_threads26786
-Node: omp_set_schedule27654
-Node: omp_init_lock28705
-Node: omp_set_lock29358
-Node: omp_test_lock30213
-Node: omp_unset_lock31189
-Node: omp_destroy_lock32120
-Node: omp_init_nest_lock32797
-Node: omp_set_nest_lock33532
-Node: omp_test_nest_lock34447
-Node: omp_unset_nest_lock35474
-Node: omp_destroy_nest_lock36489
-Node: omp_get_wtick37240
-Node: omp_get_wtime37832
-Node: Environment Variables38608
-Node: OMP_CANCELLATION39950
-Node: OMP_DISPLAY_ENV40483
-Node: OMP_DEFAULT_DEVICE41186
-Node: OMP_DYNAMIC41966
-Node: OMP_MAX_ACTIVE_LEVELS42562
-Node: OMP_NESTED43201
-Node: OMP_NUM_THREADS43806
-Node: OMP_PROC_BIND44494
-Node: OMP_PLACES45686
-Node: OMP_STACKSIZE47861
-Node: OMP_SCHEDULE48685
-Node: OMP_THREAD_LIMIT49381
-Node: OMP_WAIT_POLICY49981
-Node: GOMP_CPU_AFFINITY50673
-Node: GOMP_STACKSIZE52410
-Node: GOMP_SPINCOUNT53246
-Node: The libgomp ABI54418
-Node: Implementing MASTER construct55217
-Node: Implementing CRITICAL construct55631
-Node: Implementing ATOMIC construct56370
-Node: Implementing FLUSH construct56851
-Node: Implementing BARRIER construct57122
-Node: Implementing THREADPRIVATE construct57391
-Node: Implementing PRIVATE clause58044
-Node: Implementing FIRSTPRIVATE LASTPRIVATE COPYIN and COPYPRIVATE clauses58625
-Node: Implementing REDUCTION clause59949
-Node: Implementing PARALLEL construct60506
-Node: Implementing FOR construct61763
-Node: Implementing ORDERED construct63761
-Node: Implementing SECTIONS construct64067
-Node: Implementing SINGLE construct64833
-Node: Reporting Bugs65495
-Node: Copying65805
-Node: GNU Free Documentation License103352
-Node: Funding128475
-Node: Library Index131001
+Node: Top2083
+Node: Enabling OpenMP3878
+Node: Runtime Library Routines4665
+Node: omp_get_active_level7652
+Node: omp_get_ancestor_thread_num8352
+Node: omp_get_cancellation9282
+Node: omp_get_default_device10096
+Node: omp_get_dynamic10772
+Node: omp_get_level11647
+Node: omp_get_max_active_levels12267
+Node: omp_get_max_threads12966
+Node: omp_get_nested13723
+Node: omp_get_num_devices14635
+Node: omp_get_num_procs15156
+Node: omp_get_num_teams15695
+Node: omp_get_num_threads16211
+Node: omp_get_proc_bind17300
+Node: omp_get_schedule18221
+Node: omp_get_team_num19167
+Node: omp_get_team_size19666
+Node: omp_get_thread_limit20626
+Node: omp_get_thread_num21245
+Node: omp_in_parallel22116
+Node: omp_in_final22765
+Node: omp_is_initial_device23439
+Node: omp_set_default_device24132
+Node: omp_set_dynamic24923
+Node: omp_set_max_active_levels25809
+Node: omp_set_nested26586
+Node: omp_set_num_threads27478
+Node: omp_set_schedule28346
+Node: omp_init_lock29397
+Node: omp_set_lock30050
+Node: omp_test_lock30905
+Node: omp_unset_lock31881
+Node: omp_destroy_lock32812
+Node: omp_init_nest_lock33489
+Node: omp_set_nest_lock34224
+Node: omp_test_nest_lock35139
+Node: omp_unset_nest_lock36166
+Node: omp_destroy_nest_lock37181
+Node: omp_get_wtick37932
+Node: omp_get_wtime38524
+Node: Environment Variables39300
+Node: OMP_CANCELLATION40692
+Node: OMP_DISPLAY_ENV41225
+Node: OMP_DEFAULT_DEVICE41928
+Node: OMP_DYNAMIC42708
+Node: OMP_MAX_ACTIVE_LEVELS43304
+Node: OMP_NESTED43943
+Node: OMP_NUM_THREADS44548
+Node: OMP_PROC_BIND45236
+Node: OMP_PLACES46428
+Node: OMP_STACKSIZE48603
+Node: OMP_SCHEDULE49427
+Node: OMP_THREAD_LIMIT50123
+Node: OMP_WAIT_POLICY50723
+Node: GOMP_CPU_AFFINITY51415
+Node: GOMP_DEBUG53145
+Node: GOMP_STACKSIZE53652
+Node: GOMP_SPINCOUNT54481
+Node: The libgomp ABI55653
+Node: Implementing MASTER construct56452
+Node: Implementing CRITICAL construct56866
+Node: Implementing ATOMIC construct57605
+Node: Implementing FLUSH construct58086
+Node: Implementing BARRIER construct58357
+Node: Implementing THREADPRIVATE construct58626
+Node: Implementing PRIVATE clause59279
+Node: Implementing FIRSTPRIVATE LASTPRIVATE COPYIN and COPYPRIVATE clauses59860
+Node: Implementing REDUCTION clause61184
+Node: Implementing PARALLEL construct61741
+Node: Implementing FOR construct62998
+Node: Implementing ORDERED construct64996
+Node: Implementing SECTIONS construct65302
+Node: Implementing SINGLE construct66068
+Node: Reporting Bugs66730
+Node: Copying67090
+Node: GNU Free Documentation License104637
+Node: Funding129760
+Node: Library Index132286
 
 End Tag Table

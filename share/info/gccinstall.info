@@ -1,7 +1,7 @@
 This is gccinstall.info, produced by makeinfo version 5.2 from
 install.texi.
 
-Copyright (C) 1988-2014 Free Software Foundation, Inc.
+Copyright (C) 1988-2015 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -24,7 +24,7 @@ START-INFO-DIR-ENTRY
 * gccinstall: (gccinstall).    Installing the GNU Compiler Collection.
 END-INFO-DIR-ENTRY
 
-   Copyright (C) 1988-2014 Free Software Foundation, Inc.
+   Copyright (C) 1988-2015 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -255,7 +255,7 @@ MPC Library version 0.8.1 (or later)
      configure option should be used.  See also '--with-mpc-lib' and
      '--with-mpc-include'.
 
-ISL Library version 0.12.2
+ISL Library version 0.14 (or 0.12.2)
 
      Necessary to build GCC with the Graphite loop optimizations.  It
      can be downloaded from <ftp://gcc.gnu.org/pub/gcc/infrastructure/>
@@ -264,21 +264,6 @@ ISL Library version 0.12.2
      together with GCC. Alternatively, the '--with-isl' configure option
      should be used if ISL is not installed in your default library
      search path.
-
-CLooG 0.18.1
-
-     Necessary to build GCC with the Graphite loop optimizations.  It
-     can be downloaded from <ftp://gcc.gnu.org/pub/gcc/infrastructure/>
-     as 'cloog-0.18.1.tar.gz'.  If a CLooG source distribution is found
-     in a subdirectory of your GCC sources named 'cloog', it will be
-     built together with GCC. Alternatively, the '--with-cloog'
-     configure option should be used if CLooG is not installed in your
-     default library search path.
-
-     If you want to install CLooG separately it needs to be built
-     against ISL 0.12.2 by using the '--with-isl=system' to direct CLooG
-     to pick up an already installed ISL. Using the ISL library as
-     bundled with CLooG is not supported.
 
 Tools/packages necessary for modifying GCC
 ==========================================
@@ -322,7 +307,7 @@ Tcl
      details.  Tcl 8.6 has a known regression in RE pattern handling
      that make parts of the testsuite fail.  See
      <http://core.tcl.tk/tcl/tktview/267b7e2334ee2e9de34c4b00d6e72e2f1997085f>
-     for more information.
+     for more information.  This bug has been fixed in 8.6.1.
 
 autogen version 5.5.4 (or later) and
 guile version 1.4.1 (or later)
@@ -361,6 +346,11 @@ TeX (any working version)
      Necessary for running 'texi2dvi' and 'texi2pdf', which are used
      when running 'make dvi' or 'make pdf' to create DVI or PDF files,
      respectively.
+
+Sphinx version 1.0 (or later)
+
+     Necessary to regenerate 'jit/docs/_build/texinfo' from the '.rst'
+     files in the directories below 'jit/docs'.
 
 SVN (any version)
 SSH (any version)
@@ -763,8 +753,7 @@ option.
      used within shared libraries, but yielding a slightly slower
      compiler.
 
-     Currently this option is only of use to people developing GCC
-     itself.
+     This option is required when building the libgccjit.so library.
 
      Contrast with '--enable-shared', which affects _target_ libraries.
 
@@ -1062,6 +1051,30 @@ option.
      'sse' which enables '-msse2' or 'avx' which enables '-mavx' by
      default.  This option is only supported on i386 and x86-64 targets.
 
+'--with-fp-32=MODE'
+     On MIPS targets, set the default value for the '-mfp' option when
+     using the o32 ABI. The possibilities for MODE are:
+     '32'
+          Use the o32 FP32 ABI extension, as with the '-mfp32'
+          command-line option.
+     'xx'
+          Use the o32 FPXX ABI extension, as with the '-mfpxx'
+          command-line option.
+     '64'
+          Use the o32 FP64 ABI extension, as with the '-mfp64'
+          command-line option.
+     In the absence of this configuration option the default is to use
+     the o32 FP32 ABI extension.
+
+'--with-odd-spreg-32'
+     On MIPS targets, set the '-modd-spreg' option by default when using
+     the o32 ABI.
+
+'--without-odd-spreg-32'
+     On MIPS targets, set the '-mno-odd-spreg' option by default when
+     using the o32 ABI. This is normally used in conjunction with
+     '--with-fp-32=64' in order to target the o32 FP64A ABI extension.
+
 '--with-nan=ENCODING'
      On MIPS targets, set the default encoding convention to use for the
      special not-a-number (NaN) IEEE 754 floating-point data.  The
@@ -1195,6 +1208,98 @@ option.
      parallel.  This is currently supported by 'libgfortran', 'libjava',
      'libstdc++', and 'libobjc'.
 
+'--with-aix-soname='aix', 'svr4' or 'both''
+     Traditional AIX shared library versioning (versioned 'Shared
+     Object' files as members of unversioned 'Archive Library' files
+     named 'lib.a') causes numerous headaches for package managers.
+     However, 'Import Files' as members of 'Archive Library' files allow
+     for *filename-based versioning* of shared libraries as seen on
+     Linux/SVR4, where this is called the "SONAME". But as they prevent
+     static linking, 'Import Files' may be used with 'Runtime Linking'
+     only, where the linker does search for 'libNAME.so' before
+     'libNAME.a' library filenames with the '-lNAME' linker flag.
+
+     For detailed information please refer to the AIX ld Command
+     reference.
+
+     As long as shared library creation is enabled, upon:
+     '--with-aix-soname=aix'
+     '--with-aix-soname=both'
+          A (traditional AIX) 'Shared Archive Library' file is created:
+             * using the 'libNAME.a' filename scheme
+             * with the 'Shared Object' file as archive member named
+               'libNAME.so.V' (except for 'libgcc_s', where the 'Shared
+               Object' file is named 'shr.o' for backwards
+               compatibility), which
+                  - is used for runtime loading from inside the
+                    'libNAME.a' file
+                  - is used for dynamic loading via
+                    'dlopen("libNAME.a(libNAME.so.V)", RTLD_MEMBER)'
+                  - is used for shared linking
+                  - is used for static linking, so no separate 'Static
+                    Archive Library' file is needed
+     '--with-aix-soname=both'
+     '--with-aix-soname=svr4'
+          A (second) 'Shared Archive Library' file is created:
+             * using the 'libNAME.so.V' filename scheme
+             * with the 'Shared Object' file as archive member named
+               'shr.o', which
+                  - is created with the '-G linker flag'
+                  - has the 'F_LOADONLY' flag set
+                  - is used for runtime loading from inside the
+                    'libNAME.so.V' file
+                  - is used for dynamic loading via
+                    'dlopen("libNAME.so.V(shr.o)", RTLD_MEMBER)'
+             * with the 'Import File' as archive member named 'shr.imp',
+               which
+                  - refers to 'libNAME.so.V(shr.o)' as the "SONAME", to
+                    be recorded in the 'Loader Section' of subsequent
+                    binaries
+                  - indicates whether 'libNAME.so.V(shr.o)' is 32 or 64
+                    bit
+                  - lists all the public symbols exported by
+                    'lib.so.V(shr.o)', eventually decorated with the
+                    ''weak' Keyword'
+                  - is necessary for shared linking against
+                    'lib.so.V(shr.o)'
+          A symbolic link using the 'libNAME.so' filename scheme is
+          created:
+             * pointing to the 'libNAME.so.V' 'Shared Archive Library'
+               file
+             * to permit the 'ld Command' to find 'lib.so.V(shr.imp)'
+               via the '-lNAME' argument (requires 'Runtime Linking' to
+               be enabled)
+             * to permit dynamic loading of 'lib.so.V(shr.o)' without
+               the need to specify the version number via
+               'dlopen("libNAME.so(shr.o)", RTLD_MEMBER)'
+
+     As long as static library creation is enabled, upon:
+     '--with-aix-soname=svr4'
+          A 'Static Archive Library' is created:
+             * using the 'libNAME.a' filename scheme
+             * with all the 'Static Object' files as archive members,
+               which
+                  - are used for static linking
+
+     While the aix-soname='svr4' option does not create 'Shared Object'
+     files as members of unversioned 'Archive Library' files any more,
+     package managers still are responsible to transfer 'Shared Object'
+     files found as member of a previously installed unversioned
+     'Archive Library' file into the newly installed 'Archive Library'
+     file with the same filename.
+
+     _WARNING:_ Creating 'Shared Object' files with 'Runtime Linking'
+     enabled may bloat the TOC, eventually leading to 'TOC overflow'
+     errors, requiring the use of either the '-Wl,-bbigtoc' linker flag
+     (seen to break with the 'GDB' debugger) or some of the TOC-related
+     compiler flags, *Note RS/6000 and PowerPC Options: (gcc)RS/6000 and
+     PowerPC Options.
+
+     '--with-aix-soname' is currently supported by 'libgcc_s' only, so
+     this option is still experimental and not for normal use yet.
+
+     Default is the traditional behaviour '--with-aix-soname='aix''.
+
 '--enable-languages=LANG1,LANG2,...'
      Specify that only a particular subset of compilers and their
      runtime libraries should be built.  For a list of valid values for
@@ -1249,8 +1354,8 @@ option.
      support for 'libquadmath' on systems supporting it.
 
 '--disable-libgomp'
-     Specify that the run-time libraries used by GOMP should not be
-     built.
+     Specify that the GNU Offloading and Multi Processing Runtime
+     Library should not be built.
 
 '--disable-libvtv'
      Specify that the run-time libraries used by vtable verification
@@ -1472,21 +1577,14 @@ option.
 '--with-isl=PATHNAME'
 '--with-isl-include=PATHNAME'
 '--with-isl-lib=PATHNAME'
-'--with-cloog=PATHNAME'
-'--with-cloog-include=PATHNAME'
-'--with-cloog-lib=PATHNAME'
-     If you do not have ISL and the CLooG libraries installed in a
-     standard location and you want to build GCC, you can explicitly
-     specify the directory where they are installed
-     ('--with-isl=ISLINSTALLDIR', '--with-cloog=CLOOGINSTALLDIR').  The
+     If you do not have the ISL library installed in a standard location
+     and you want to build GCC, you can explicitly specify the directory
+     where it is installed ('--with-isl=ISLINSTALLDIR').  The
      '--with-isl=ISLINSTALLDIR' option is shorthand for
      '--with-isl-lib=ISLINSTALLDIR/lib' and
-     '--with-isl-include=ISLINSTALLDIR/include'.  Likewise the
-     '--with-cloog=CLOOGINSTALLDIR' option is shorthand for
-     '--with-cloog-lib=CLOOGINSTALLDIR/lib' and
-     '--with-cloog-include=CLOOGINSTALLDIR/include'.  If these shorthand
-     assumptions are not correct, you can use the explicit include and
-     lib options directly.
+     '--with-isl-include=ISLINSTALLDIR/include'.  If this shorthand
+     assumption is not correct, you can use the explicit include and lib
+     options directly.
 
      These flags are applicable to the host platform only.  When
      building a cross compiler, they will not be used to configure
@@ -1548,10 +1646,35 @@ option.
      default for a toolchain with an assembler that accepts it and GLIBC
      2.11 or above, otherwise disabled.
 
+'--with-diagnostics-color=CHOICE'
+     Tells GCC to use CHOICE as the default for '-fdiagnostics-color='
+     option (if not used explicitly on the command line).  CHOICE can be
+     one of 'never', 'auto', 'always', and 'auto-if-env' where 'auto' is
+     the default.  'auto-if-env' means that '-fdiagnostics-color=auto'
+     will be the default if 'GCC_COLORS' is present and non-empty in the
+     environment, and '-fdiagnostics-color=never' otherwise.
+
 '--enable-lto'
 '--disable-lto'
      Enable support for link-time optimization (LTO). This is enabled by
      default, and may be disabled using '--disable-lto'.
+
+'--enable-linker-plugin-configure-flags=FLAGS'
+'--enable-linker-plugin-flags=FLAGS'
+     By default, linker plugins (such as the LTO plugin) are built for
+     the host system architecture.  For the case that the linker has a
+     different (but run-time compatible) architecture, these flags can
+     be specified to build plugins that are compatible to the linker.
+     For example, if you are building GCC for a 64-bit x86_64
+     ('x86_64-unknown-linux-gnu') host system, but have a 32-bit x86
+     GNU/Linux ('i686-pc-linux-gnu') linker executable (which is
+     executable on the former system), you can configure GCC as follows
+     for getting compatible linker plugins:
+
+          % SRCDIR/configure \
+              --host=x86_64-unknown-linux-gnu \
+              --enable-linker-plugin-configure-flags=--host=i686-pc-linux-gnu \
+              --enable-linker-plugin-flags='CC=gcc\ -m32\ -Wl,-rpath,[...]/i686-pc-linux-gnu/lib'
 
 '--with-plugin-ld=PATHNAME'
      Enable an alternate linker to be used at link-time optimization
@@ -1579,6 +1702,19 @@ option.
      that do not, this option applies only to the multilibs that use
      glibc.  However, such configurations may not work well as not all
      the relevant configuration in GCC is on a per-multilib basis.
+
+'--enable-as-accelerator-for=TARGET'
+     Build as offload target compiler.  Specify offload host triple by
+     TARGET.
+
+'--enable-offload-targets=TARGET1[=PATH1],...,TARGETN[=PATHN]'
+     Enable offloading to targets TARGET1, ..., TARGETN.  Offload
+     compilers are expected to be already installed.  Default search
+     path for them is 'EXEC-PREFIX', but it can be changed by specifying
+     paths PATH1, ..., PATHN.
+
+          % SRCDIR/configure \
+              --enable-offload-target=i686-unknown-linux-gnu=/path/to/i686/compiler,x86_64-pc-linux-gnu
 
 Cross-Compiler-Specific Options
 -------------------------------
@@ -2090,7 +2226,17 @@ configurations are:
 'bootstrap-lto'
      Enables Link-Time Optimization for host tools during bootstrapping.
      'BUILD_CONFIG=bootstrap-lto' is equivalent to adding '-flto' to
-     'BOOT_CFLAGS'.
+     'BOOT_CFLAGS'.  This option assumes that the host supports the
+     linker plugin (e.g.  GNU ld version 2.21 or later or GNU gold
+     version 2.21 or later).
+
+'bootstrap-lto-noplugin'
+     This option is similar to 'bootstrap-lto', but is intended for
+     hosts that do not support the linker plugin.  Without the linker
+     plugin static libraries are not compiled with link-time
+     optimizations.  Since the GCC middle end and back end are in
+     'libbackend.a' this means that only the front end is actually LTO
+     optimized.
 
 'bootstrap-debug'
      Verifies that the compiler generates the same executable code,
@@ -2637,6 +2783,23 @@ hosts or targets.  Not all supported hosts and targets are listed here,
 only the ones that require host-specific or target-specific information
 have to.
 
+aarch64*-*-*
+============
+
+Binutils pre 2.24 does not have support for selecting '-mabi' and does
+not support ILP32.  If it is used to build GCC 4.9 or later, GCC will
+not support option '-mabi=ilp32'.
+
+   To enable a workaround for the Cortex-A53 erratum number 835769 by
+default (for all CPUs regardless of -mcpu option given) at configure
+time use the '--enable-fix-cortex-a53-835769' option.  This will enable
+the fix by default and can be explicitly disabled during during
+compilation by passing the '-mno-fix-cortex-a53-835769' option.
+Conversely, '--disable-fix-cortex-a53-835769' will disable the
+workaround by default.  The workaround is disabled by default if neither
+of '--enable-fix-cortex-a53-835769' or '--disable-fix-cortex-a53-835769'
+is given at configure time.
+
 alpha*-*-*
 ==========
 
@@ -3006,23 +3169,6 @@ See bug 10877 for more information.
 is possible you have a hardware problem.  Further information on this
 can be found on www.bitwizard.nl.
 
-i?86-*-solaris2.9
-=================
-
-The Sun assembler in Solaris 9 has several bugs and limitations.  While
-GCC works around them, several features are missing, so it is
-recommended to use the GNU assembler instead.  There is no bundled
-version, but the current version, from GNU binutils 2.22, is known to
-work.
-
-   Solaris 2/x86 doesn't support the execution of SSE/SSE2 instructions
-before Solaris 9 4/04, even if the CPU supports them.  Programs will
-receive 'SIGILL' if they try.  The fix is available both in Solaris 9
-Update 6 and kernel patch 112234-12 or newer.  To avoid this problem,
-'-march' defaults to 'pentiumpro' on Solaris 9.  If you have the patch
-installed, you can configure GCC with an appropriate '--with-arch'
-option, but need GNU 'as' for SSE2 support.
-
 i?86-*-solaris2.10
 ==================
 
@@ -3079,23 +3225,6 @@ that for GCC versions 3.2.3 and earlier, '--enable-libunwind-exceptions'
 is required to build GCC.  For GCC 3.3 and later, this is the default.
 For gcc 3.4.3 and later, '--enable-libunwind-exceptions' is removed and
 the system libunwind library will always be used.
-
-aarch64*-*-*
-============
-
-Binutils pre 2.24 does not have support for selecting '-mabi' and does
-not support ILP32.  If it is used to build GCC 4.9 or later, GCC will
-not support option '-mabi=ilp32'.
-
-   To enable a workaround for the Cortex-A53 erratum number 835769 by
-default (for all CPUs regardless of -mcpu option given) at configure
-time use the '--enable-fix-cortex-a53-835769' option.  This will enable
-the fix by default and can be explicitly disabled during during
-compilation by passing the '-mno-fix-cortex-a53-835769' option.
-Conversely, '--disable-fix-cortex-a53-835769' will disable the
-workaround by default.  The workaround is disabled by default if neither
-of '--enable-fix-cortex-a53-835769' or '--disable-fix-cortex-a53-835769'
-is given at configure time.
 
 *-ibm-aix*
 ==========
@@ -3186,6 +3315,9 @@ available for runtime dynamic loading, but not linking:
    Archive the runtime-only shared object in the GCC 3.4 'libstdc++.a'
 archive:
      % ar -q libstdc++.a libstdc++.so.4 libstdc++.so.5
+
+   Eventually, the '--with-aix-soname=svr4' configure option may drop
+the need for this procedure for libraries that support it.
 
    Linking executables and shared libraries may produce warnings of
 duplicate symbols.  The assembly files generated by GCC for AIX always
@@ -3384,6 +3516,23 @@ nds32be-*-elf
 
 Andes NDS32 target in big endian mode.
 
+nvptx-*-none
+============
+
+Nvidia PTX target.
+
+   Instead of GNU binutils, you will need to install nvptx-tools.  Tell
+GCC where to find it:
+'--with-build-time-tools=[install-nvptx-tools]/nvptx-none/bin'.
+
+   A nvptx port of newlib is available at nvptx-newlib.  It can be
+automatically built together with GCC.  For this, add a symbolic link to
+nvptx-newlib's 'newlib' directory to the directory containing the GCC
+sources.
+
+   Use the '--disable-sjlj-exceptions' and
+'--enable-newlib-io-long-long' options when configuring.
+
 powerpc-*-*
 ===========
 
@@ -3480,10 +3629,9 @@ cross-compilation target only.
 *-*-solaris2*
 =============
 
-Support for Solaris 9 has been obsoleted in GCC 4.9, but can still be
-enabled by configuring with '--enable-obsolete'.  Support will be
-removed in GCC 4.10.  Support for Solaris 8 has removed in GCC 4.8.
-Support for Solaris 7 has been removed in GCC 4.6.
+Support for Solaris 9 has been removed in GCC 4.10.  Support for Solaris
+8 has been removed in GCC 4.8.  Support for Solaris 7 has been removed
+in GCC 4.6.
 
    Sun does not ship a C compiler with Solaris 2 before Solaris 10,
 though you can download the Sun Studio compilers for free.  In Solaris
@@ -3553,23 +3701,6 @@ itself, rather it is a kernel bug triggered by the 'expect' program
 which is used only by the GCC testsuite driver.  When the bug causes the
 'expect' program to miss anticipated output, extra testsuite failures
 appear.
-
-   There are patches for Solaris 9 (117171-11 or newer for SPARC,
-117172-11 or newer for Intel) that address this problem.
-
-   Thread-local storage (TLS) is supported in Solaris 9, but requires
-some patches.  The 'libthread' patches provide the '__tls_get_addr'
-(SPARC, 64-bit x86) resp. '___tls_get_addr' (32-bit x86) functions.  On
-Solaris 9, the necessary support on SPARC is present since FCS, while
-114432-05 or newer is required on Intel.  Additionally, on
-Solaris 9/x86, patch 113986-02 or newer is required for the Sun 'ld' and
-runtime linker ('ld.so.1') support, while Solaris 9/SPARC works since
-FCS. The linker patches must be installed even if GNU 'ld' is used.  Sun
-'as' in Solaris 9 doesn't support the necessary relocations, so GNU 'as'
-must be used.  The 'configure' script checks for those prerequisites and
-automatically enables TLS support if they are met.  Although those
-minimal patch versions should work, it is recommended to use the latest
-patch versions which include additional bug fixes.
 
 sparc*-*-*
 ==========
@@ -3705,6 +3836,12 @@ tilepro-*-linux*
 
 The TILEPro processor running GNU/Linux.  This port requires
 binutils-2.22 or newer.
+
+visium-*-elf
+============
+
+CDS VISIUMcore processor.  This configuration is intended for embedded
+systems.
 
 *-*-vxworks*
 ============
@@ -4561,7 +4698,7 @@ Concept Index
 * Menu:
 
 * Binaries:                              Binaries.           (line    6)
-* 'build_configargs':                    Configuration.      (line 1496)
+* 'build_configargs':                    Configuration.      (line 1642)
 * Configuration:                         Configuration.      (line    6)
 * configurations supported by GCC:       Configurations.     (line    6)
 * Downloading GCC:                       Downloading the source.
@@ -4571,7 +4708,7 @@ Concept Index
 * FDL, GNU Free Documentation License:   GNU Free Documentation License.
                                                              (line    6)
 * Host specific installation:            Specific.           (line    6)
-* 'host_configargs':                     Configuration.      (line 1500)
+* 'host_configargs':                     Configuration.      (line 1646)
 * Installing GCC: Binaries:              Binaries.           (line    6)
 * Installing GCC: Building:              Building.           (line    6)
 * Installing GCC: Configuration:         Configuration.      (line    6)
@@ -4581,7 +4718,7 @@ Concept Index
 * Specific installation notes:           Specific.           (line    6)
 * Target specific installation:          Specific.           (line    6)
 * Target specific installation notes:    Specific.           (line    6)
-* 'target_configargs':                   Configuration.      (line 1504)
+* 'target_configargs':                   Configuration.      (line 1650)
 * Testing:                               Testing.            (line    6)
 * Testsuite:                             Testing.            (line    6)
 
@@ -4591,97 +4728,101 @@ Tag Table:
 Node: Top1696
 Node: Installing GCC2254
 Node: Prerequisites3888
-Node: Downloading the source15564
-Node: Configuration17114
-Ref: with-gnu-as32585
-Ref: with-as33480
-Ref: with-gnu-ld34893
-Node: Building84705
-Node: Testing100075
-Node: Final install107937
-Node: Binaries113248
-Node: Specific114712
-Ref: alpha-x-x115219
-Ref: alpha-dec-osf51115708
-Ref: amd64-x-solaris210116233
-Ref: arc-x-elf32116336
-Ref: arc-linux-uclibc116512
-Ref: arm-x-eabi116653
-Ref: avr116864
-Ref: bfin117503
-Ref: cr16117744
-Ref: cris118160
-Ref: dos118975
-Ref: epiphany-x-elf119298
-Ref: x-x-freebsd119403
-Ref: h8300-hms121239
-Ref: hppa-hp-hpux121591
-Ref: hppa-hp-hpux10123963
-Ref: hppa-hp-hpux11124376
-Ref: x-x-linux-gnu130035
-Ref: ix86-x-linux130228
-Ref: ix86-x-solaris29130541
-Ref: ix86-x-solaris210131320
-Ref: ia64-x-linux132511
-Ref: ia64-x-hpux133281
-Ref: aarch64-x-x133836
-Ref: x-ibm-aix134616
-Ref: iq2000-x-elf141479
-Ref: lm32-x-elf141619
-Ref: lm32-x-uclinux141723
-Ref: m32c-x-elf141851
-Ref: m32r-x-elf141953
-Ref: m68k-x-x142055
-Ref: m68k-x-uclinux143093
-Ref: mep-x-elf143338
-Ref: microblaze-x-elf143448
-Ref: mips-x-x143567
-Ref: mips-sgi-irix5145961
-Ref: mips-sgi-irix6146041
-Ref: moxie-x-elf146228
-Ref: msp430-x-elf146275
-Ref: nds32le-x-elf146378
-Ref: nds32be-x-elf146450
-Ref: powerpc-x-x146519
-Ref: powerpc-x-darwin146724
-Ref: powerpc-x-elf147218
-Ref: powerpc-x-linux-gnu147303
-Ref: powerpc-x-netbsd147398
-Ref: powerpc-x-eabisim147486
-Ref: powerpc-x-eabi147612
-Ref: powerpcle-x-elf147688
-Ref: powerpcle-x-eabisim147780
-Ref: powerpcle-x-eabi147913
-Ref: rl78-x-elf147996
-Ref: rx-x-elf148102
-Ref: s390-x-linux148301
-Ref: s390x-x-linux148373
-Ref: s390x-ibm-tpf148460
-Ref: x-x-solaris2148591
-Ref: sparc-x-x153512
-Ref: sparc-sun-solaris2154014
-Ref: sparc-sun-solaris210156767
-Ref: sparc-x-linux157142
-Ref: sparc64-x-solaris2157367
-Ref: sparcv9-x-solaris2158020
-Ref: c6x-x-x158107
-Ref: tilegx-*-linux158199
-Ref: tilegxbe-*-linux158341
-Ref: tilepro-*-linux158484
-Ref: x-x-vxworks158605
-Ref: x86-64-x-x160128
-Ref: x86-64-x-solaris210160456
-Ref: xtensa-x-elf161118
-Ref: xtensa-x-linux161789
-Ref: windows162130
-Ref: x-x-cygwin164063
-Ref: x-x-interix164616
-Ref: x-x-mingw32164924
-Ref: older165150
-Ref: elf167267
-Node: Old167525
-Node: Configurations170658
-Node: GNU Free Documentation License174196
-Node: Concept Index199324
+Node: Downloading the source15044
+Node: Configuration16594
+Ref: with-gnu-as32054
+Ref: with-as32949
+Ref: with-gnu-ld34362
+Ref: WithAixSoname51653
+Ref: AixLdCommand52314
+Node: Building91431
+Node: Testing107323
+Node: Final install115185
+Node: Binaries120496
+Node: Specific121960
+Ref: aarch64-x-x122467
+Ref: alpha-x-x123247
+Ref: alpha-dec-osf51123736
+Ref: amd64-x-solaris210124261
+Ref: arc-x-elf32124364
+Ref: arc-linux-uclibc124540
+Ref: arm-x-eabi124681
+Ref: avr124892
+Ref: bfin125531
+Ref: cr16125772
+Ref: cris126188
+Ref: dos127003
+Ref: epiphany-x-elf127326
+Ref: x-x-freebsd127431
+Ref: h8300-hms129267
+Ref: hppa-hp-hpux129619
+Ref: hppa-hp-hpux10131991
+Ref: hppa-hp-hpux11132404
+Ref: x-x-linux-gnu138063
+Ref: ix86-x-linux138256
+Ref: ix86-x-solaris210138569
+Ref: ia64-x-linux139760
+Ref: ia64-x-hpux140530
+Ref: x-ibm-aix141085
+Ref: TransferAixShobj144268
+Ref: iq2000-x-elf148078
+Ref: lm32-x-elf148218
+Ref: lm32-x-uclinux148322
+Ref: m32c-x-elf148450
+Ref: m32r-x-elf148552
+Ref: m68k-x-x148654
+Ref: m68k-x-uclinux149692
+Ref: mep-x-elf149937
+Ref: microblaze-x-elf150047
+Ref: mips-x-x150166
+Ref: mips-sgi-irix5152560
+Ref: mips-sgi-irix6152640
+Ref: moxie-x-elf152827
+Ref: msp430-x-elf152874
+Ref: nds32le-x-elf152977
+Ref: nds32be-x-elf153049
+Ref: nvptx-x-none153118
+Ref: powerpc-x-x153645
+Ref: powerpc-x-darwin153850
+Ref: powerpc-x-elf154344
+Ref: powerpc-x-linux-gnu154429
+Ref: powerpc-x-netbsd154524
+Ref: powerpc-x-eabisim154612
+Ref: powerpc-x-eabi154738
+Ref: powerpcle-x-elf154814
+Ref: powerpcle-x-eabisim154906
+Ref: powerpcle-x-eabi155039
+Ref: rl78-x-elf155122
+Ref: rx-x-elf155228
+Ref: s390-x-linux155427
+Ref: s390x-x-linux155499
+Ref: s390x-ibm-tpf155586
+Ref: x-x-solaris2155717
+Ref: sparc-x-x159523
+Ref: sparc-sun-solaris2160025
+Ref: sparc-sun-solaris210162778
+Ref: sparc-x-linux163153
+Ref: sparc64-x-solaris2163378
+Ref: sparcv9-x-solaris2164031
+Ref: c6x-x-x164118
+Ref: tilegx-*-linux164210
+Ref: tilegxbe-*-linux164352
+Ref: tilepro-*-linux164495
+Ref: visium-x-elf164616
+Ref: x-x-vxworks164724
+Ref: x86-64-x-x166247
+Ref: x86-64-x-solaris210166575
+Ref: xtensa-x-elf167237
+Ref: xtensa-x-linux167908
+Ref: windows168249
+Ref: x-x-cygwin170182
+Ref: x-x-interix170735
+Ref: x-x-mingw32171043
+Ref: older171269
+Ref: elf173386
+Node: Old173644
+Node: Configurations176777
+Node: GNU Free Documentation License180315
+Node: Concept Index205443
 
 End Tag Table
