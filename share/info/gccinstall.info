@@ -2793,11 +2793,22 @@ not support option '-mabi=ilp32'.
    To enable a workaround for the Cortex-A53 erratum number 835769 by
 default (for all CPUs regardless of -mcpu option given) at configure
 time use the '--enable-fix-cortex-a53-835769' option.  This will enable
-the fix by default and can be explicitly disabled during during
-compilation by passing the '-mno-fix-cortex-a53-835769' option.
-Conversely, '--disable-fix-cortex-a53-835769' will disable the
+the fix by default and can be explicitly disabled during compilation by
+passing the '-mno-fix-cortex-a53-835769' option.  Conversely,
+'--disable-fix-cortex-a53-835769' will disable the workaround by
+default.  The workaround is disabled by default if neither of
+'--enable-fix-cortex-a53-835769' or '--disable-fix-cortex-a53-835769' is
+given at configure time.
+
+   To enable a workaround for the Cortex-A53 erratum number 843419 by
+default (for all CPUs regardless of -mcpu option given) at configure
+time use the '--enable-fix-cortex-a53-843419' option.  This workaround
+is applied at link time.  Enabling the workaround will cause GCC to pass
+the relevant option to the linker.  It can be explicitly disabled during
+compilation by passing the '-mno-fix-cortex-a53-843419' option.
+Conversely, '--disable-fix-cortex-a53-843419' will disable the
 workaround by default.  The workaround is disabled by default if neither
-of '--enable-fix-cortex-a53-835769' or '--disable-fix-cortex-a53-835769'
+of '--enable-fix-cortex-a53-843419' or '--disable-fix-cortex-a53-843419'
 is given at configure time.
 
 alpha*-*-*
@@ -4741,88 +4752,88 @@ Node: Final install115185
 Node: Binaries120496
 Node: Specific121960
 Ref: aarch64-x-x122467
-Ref: alpha-x-x123247
-Ref: alpha-dec-osf51123736
-Ref: amd64-x-solaris210124261
-Ref: arc-x-elf32124364
-Ref: arc-linux-uclibc124540
-Ref: arm-x-eabi124681
-Ref: avr124892
-Ref: bfin125531
-Ref: cr16125772
-Ref: cris126188
-Ref: dos127003
-Ref: epiphany-x-elf127326
-Ref: x-x-freebsd127431
-Ref: h8300-hms129267
-Ref: hppa-hp-hpux129619
-Ref: hppa-hp-hpux10131991
-Ref: hppa-hp-hpux11132404
-Ref: x-x-linux-gnu138063
-Ref: ix86-x-linux138256
-Ref: ix86-x-solaris210138569
-Ref: ia64-x-linux139760
-Ref: ia64-x-hpux140530
-Ref: x-ibm-aix141085
-Ref: TransferAixShobj144268
-Ref: iq2000-x-elf148078
-Ref: lm32-x-elf148218
-Ref: lm32-x-uclinux148322
-Ref: m32c-x-elf148450
-Ref: m32r-x-elf148552
-Ref: m68k-x-x148654
-Ref: m68k-x-uclinux149692
-Ref: mep-x-elf149937
-Ref: microblaze-x-elf150047
-Ref: mips-x-x150166
-Ref: mips-sgi-irix5152560
-Ref: mips-sgi-irix6152640
-Ref: moxie-x-elf152827
-Ref: msp430-x-elf152874
-Ref: nds32le-x-elf152977
-Ref: nds32be-x-elf153049
-Ref: nvptx-x-none153118
-Ref: powerpc-x-x153645
-Ref: powerpc-x-darwin153850
-Ref: powerpc-x-elf154344
-Ref: powerpc-x-linux-gnu154429
-Ref: powerpc-x-netbsd154524
-Ref: powerpc-x-eabisim154612
-Ref: powerpc-x-eabi154738
-Ref: powerpcle-x-elf154814
-Ref: powerpcle-x-eabisim154906
-Ref: powerpcle-x-eabi155039
-Ref: rl78-x-elf155122
-Ref: rx-x-elf155228
-Ref: s390-x-linux155427
-Ref: s390x-x-linux155499
-Ref: s390x-ibm-tpf155586
-Ref: x-x-solaris2155717
-Ref: sparc-x-x159523
-Ref: sparc-sun-solaris2160025
-Ref: sparc-sun-solaris210162778
-Ref: sparc-x-linux163153
-Ref: sparc64-x-solaris2163378
-Ref: sparcv9-x-solaris2164031
-Ref: c6x-x-x164118
-Ref: tilegx-*-linux164210
-Ref: tilegxbe-*-linux164352
-Ref: tilepro-*-linux164495
-Ref: visium-x-elf164616
-Ref: x-x-vxworks164724
-Ref: x86-64-x-x166247
-Ref: x86-64-x-solaris210166575
-Ref: xtensa-x-elf167237
-Ref: xtensa-x-linux167908
-Ref: windows168249
-Ref: x-x-cygwin170182
-Ref: x-x-interix170735
-Ref: x-x-mingw32171043
-Ref: older171269
-Ref: elf173386
-Node: Old173644
-Node: Configurations176777
-Node: GNU Free Documentation License180315
-Node: Concept Index205443
+Ref: alpha-x-x123899
+Ref: alpha-dec-osf51124388
+Ref: amd64-x-solaris210124913
+Ref: arc-x-elf32125016
+Ref: arc-linux-uclibc125192
+Ref: arm-x-eabi125333
+Ref: avr125544
+Ref: bfin126183
+Ref: cr16126424
+Ref: cris126840
+Ref: dos127655
+Ref: epiphany-x-elf127978
+Ref: x-x-freebsd128083
+Ref: h8300-hms129919
+Ref: hppa-hp-hpux130271
+Ref: hppa-hp-hpux10132643
+Ref: hppa-hp-hpux11133056
+Ref: x-x-linux-gnu138715
+Ref: ix86-x-linux138908
+Ref: ix86-x-solaris210139221
+Ref: ia64-x-linux140412
+Ref: ia64-x-hpux141182
+Ref: x-ibm-aix141737
+Ref: TransferAixShobj144920
+Ref: iq2000-x-elf148730
+Ref: lm32-x-elf148870
+Ref: lm32-x-uclinux148974
+Ref: m32c-x-elf149102
+Ref: m32r-x-elf149204
+Ref: m68k-x-x149306
+Ref: m68k-x-uclinux150344
+Ref: mep-x-elf150589
+Ref: microblaze-x-elf150699
+Ref: mips-x-x150818
+Ref: mips-sgi-irix5153212
+Ref: mips-sgi-irix6153292
+Ref: moxie-x-elf153479
+Ref: msp430-x-elf153526
+Ref: nds32le-x-elf153629
+Ref: nds32be-x-elf153701
+Ref: nvptx-x-none153770
+Ref: powerpc-x-x154297
+Ref: powerpc-x-darwin154502
+Ref: powerpc-x-elf154996
+Ref: powerpc-x-linux-gnu155081
+Ref: powerpc-x-netbsd155176
+Ref: powerpc-x-eabisim155264
+Ref: powerpc-x-eabi155390
+Ref: powerpcle-x-elf155466
+Ref: powerpcle-x-eabisim155558
+Ref: powerpcle-x-eabi155691
+Ref: rl78-x-elf155774
+Ref: rx-x-elf155880
+Ref: s390-x-linux156079
+Ref: s390x-x-linux156151
+Ref: s390x-ibm-tpf156238
+Ref: x-x-solaris2156369
+Ref: sparc-x-x160175
+Ref: sparc-sun-solaris2160677
+Ref: sparc-sun-solaris210163430
+Ref: sparc-x-linux163805
+Ref: sparc64-x-solaris2164030
+Ref: sparcv9-x-solaris2164683
+Ref: c6x-x-x164770
+Ref: tilegx-*-linux164862
+Ref: tilegxbe-*-linux165004
+Ref: tilepro-*-linux165147
+Ref: visium-x-elf165268
+Ref: x-x-vxworks165376
+Ref: x86-64-x-x166899
+Ref: x86-64-x-solaris210167227
+Ref: xtensa-x-elf167889
+Ref: xtensa-x-linux168560
+Ref: windows168901
+Ref: x-x-cygwin170834
+Ref: x-x-interix171387
+Ref: x-x-mingw32171695
+Ref: older171921
+Ref: elf174038
+Node: Old174296
+Node: Configurations177429
+Node: GNU Free Documentation License180967
+Node: Concept Index206095
 
 End Tag Table
