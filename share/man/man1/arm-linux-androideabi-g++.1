@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 "2015-06-08" "gcc-5.1.1" "GNU"
+.TH GCC 1 "2015-07-16" "gcc-5.2.0" "GNU"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -1097,7 +1097,7 @@ See \s-1RS/6000\s0 and PowerPC Options.
 \&\-maes \-mpclmul \-mfsgsbase \-mrdrnd \-mf16c \-mfma \-mprefetchwt1 
 \&\-mclflushopt \-mxsavec \-mxsaves 
 \&\-msse4a \-m3dnow \-mpopcnt \-mabm \-mbmi \-mtbm \-mfma4 \-mxop \-mlzcnt 
-\&\-mbmi2 \-mfxsr \-mxsave \-mxsaveopt \-mrtm \-mlwp \-mmpx \-mthreads 
+\&\-mbmi2 \-mfxsr \-mxsave \-mxsaveopt \-mrtm \-mlwp \-mmpx \-mmwaitx \-mthreads 
 \&\-mno\-align\-stringops  \-minline\-all\-stringops 
 \&\-minline\-stringops\-dynamically \-mstringop\-strategy=\fR\fIalg\fR 
 \&\fB\-mmemcpy\-strategy=\fR\fIstrategy\fR \fB\-mmemset\-strategy=\fR\fIstrategy\fR 
@@ -18955,7 +18955,8 @@ The default is to not print debug information.
 Generate code that runs on \fIcpu-type\fR, which is the name of a system
 representing a certain processor type.  Possible values for
 \&\fIcpu-type\fR are \fBg5\fR, \fBg6\fR, \fBz900\fR, \fBz990\fR,
-\&\fBz9\-109\fR, \fBz9\-ec\fR, \fBz10\fR,  \fBz196\fR, and \fBzEC12\fR.
+\&\fBz9\-109\fR, \fBz9\-ec\fR, \fBz10\fR,  \fBz196\fR, \fBzEC12\fR,
+and \fBz13\fR.
 When generating code using the instructions available on z/Architecture,
 the default is \fB\-march=z900\fR.  Otherwise, the default is
 \&\fB\-march=g5\fR.
@@ -20928,7 +20929,7 @@ in ordinary \s-1CPU\s0 registers instead.
 .IX Item "-mno-fancy-math-387"
 Some 387 emulators do not support the \f(CW\*(C`sin\*(C'\fR, \f(CW\*(C`cos\*(C'\fR and
 \&\f(CW\*(C`sqrt\*(C'\fR instructions for the 387.  Specify this option to avoid
-generating those instructions.  This option is the default on FreeBSD,
+generating those instructions.  This option is the default on
 OpenBSD and NetBSD.  This option is overridden when \fB\-march\fR
 indicates that the target \s-1CPU\s0 always has an \s-1FPU\s0 and so the
 instruction does not need emulation.  These
@@ -21229,11 +21230,13 @@ preferred alignment to \fB\-mpreferred\-stack\-boundary=2\fR.
 .IX Item "-mtbm"
 .IP "\fB\-mmpx\fR" 4
 .IX Item "-mmpx"
+.IP "\fB\-mmwaitx\fR" 4
+.IX Item "-mmwaitx"
 .PD
 These switches enable the use of instructions in the \s-1MMX, SSE,
 SSE2, SSE3, SSSE3, SSE4.1, AVX, AVX2, AVX512F, AVX512PF, AVX512ER, AVX512CD,
 SHA, AES, PCLMUL, FSGSBASE, RDRND, F16C, FMA, SSE4A, FMA4, XOP, LWP, ABM,
-BMI, BMI2, FXSR, XSAVE, XSAVEOPT, LZCNT, RTM, MPX\s0 or 3DNow!
+BMI, BMI2, FXSR, XSAVE, XSAVEOPT, LZCNT, RTM, MPX, MWAITX\s0 or 3DNow!
 extended instruction sets.  Each has a corresponding \fB\-mno\-\fR option
 to disable use of these instructions.
 .Sp
