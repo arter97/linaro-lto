@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 "2015-07-16" "gcc-5.2.0" "GNU"
+.TH GCC 1 "2015-09-14" "gcc-5.2.1" "GNU"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -688,7 +688,7 @@ in the following sections.
 \&\-mcpu=\fR\fIcpu\fR
 .Sp
 \&\fIGNU/Linux Options\fR
-\&\fB\-mglibc \-muclibc \-mbionic \-mandroid 
+\&\fB\-mglibc \-muclibc \-mmusl \-mbionic \-mandroid 
 \&\-tno\-android\-cc \-tno\-android\-ld\fR
 .Sp
 \&\fIH8/300 Options\fR
@@ -11483,8 +11483,12 @@ corresponding flag to the linker.
 Specify the name of the target architecture, optionally suffixed by one or
 more feature modifiers.  This option has the form
 \&\fB\-march=\fR\fIarch\fR{\fB+\fR[\fBno\fR]\fIfeature\fR}*, where the
-only permissible value for \fIarch\fR is \fBarmv8\-a\fR.  The permissible
-values for \fIfeature\fR are documented in the sub-section below.
+only permissible value for \fIarch\fR is \fBarmv8\-a\fR.
+The permissible values for \fIfeature\fR are documented in the sub-section
+below.  Additionally on native AArch64 GNU/Linux systems the value
+\&\fBnative\fR is available.  This option causes the compiler to pick the
+architecture of the host system.  If the compiler is unable to recognize the
+architecture of the host system this option has no effect.
 .Sp
 Where conflicting feature modifiers are specified, the right-most feature is
 used.
@@ -11507,6 +11511,13 @@ Additionally, this option can specify that \s-1GCC\s0 should tune the performanc
 of the code for a big.LITTLE system.  Permissible values for this
 option are: \fBcortex\-a57.cortex\-a53\fR, \fBcortex\-a72.cortex\-a53\fR.
 .Sp
+Additionally on native AArch64 GNU/Linux systems the value \fBnative\fR
+is available.
+This option causes the compiler to pick the architecture of and tune the
+performance of the code for the processor of the host system.
+If the compiler is unable to recognize the processor of the host system
+this option has no effect.
+.Sp
 Where none of \fB\-mtune=\fR, \fB\-mcpu=\fR or \fB\-march=\fR
 are specified, the code is tuned to perform well across a range
 of target processors.
@@ -11518,7 +11529,11 @@ Specify the name of the target processor, optionally suffixed by one or more
 feature modifiers.  This option has the form
 \&\fB\-mcpu=\fR\fIcpu\fR{\fB+\fR[\fBno\fR]\fIfeature\fR}*, where the
 permissible values for \fIcpu\fR are the same as those available for
-\&\fB\-mtune\fR.
+\&\fB\-mtune\fR.  Additionally on native AArch64 GNU/Linux systems the
+value \fBnative\fR is available.
+This option causes the compiler to tune the performance of the code for the
+processor of the host system.  If the compiler is unable to recognize the
+processor of the host system this option has no effect.
 .Sp
 The permissible values for \fIfeature\fR are documented in the sub-section
 below.
@@ -12206,9 +12221,9 @@ Permissible names are: \fBarm2\fR, \fBarm250\fR,
 \&\fBarm10e\fR, \fBarm1020e\fR, \fBarm1022e\fR,
 \&\fBarm1136j\-s\fR, \fBarm1136jf\-s\fR, \fBmpcore\fR, \fBmpcorenovfp\fR,
 \&\fBarm1156t2\-s\fR, \fBarm1156t2f\-s\fR, \fBarm1176jz\-s\fR, \fBarm1176jzf\-s\fR,
-\&\fBcortex\-a5\fR, \fBcortex\-a7\fR, \fBcortex\-a8\fR, \fBcortex\-a9\fR,
-\&\fBcortex\-a12\fR, \fBcortex\-a15\fR, \fBcortex\-a53\fR,
-\&\fBcortex\-a57\fR, \fBcortex\-a72\fR,
+\&\fBgeneric\-armv7\-a\fR, \fBcortex\-a5\fR, \fBcortex\-a7\fR, \fBcortex\-a8\fR,
+\&\fBcortex\-a9\fR, \fBcortex\-a12\fR, \fBcortex\-a15\fR, \fBcortex\-a17\fR,
+\&\fBcortex\-a53\fR, \fBcortex\-a57\fR, \fBcortex\-a72\fR,
 \&\fBcortex\-r4\fR,
 \&\fBcortex\-r4f\fR, \fBcortex\-r5\fR, \fBcortex\-r7\fR, \fBcortex\-m7\fR,
 \&\fBcortex\-m4\fR,
@@ -12228,8 +12243,8 @@ Permissible names are: \fBarm2\fR, \fBarm250\fR,
 .Sp
 Additionally, this option can specify that \s-1GCC\s0 should tune the performance
 of the code for a big.LITTLE system.  Permissible names are:
-\&\fBcortex\-a15.cortex\-a7\fR, \fBcortex\-a57.cortex\-a53\fR,
-\&\fBcortex\-a72.cortex\-a53\fR.
+\&\fBcortex\-a15.cortex\-a7\fR, \fBcortex\-a17.cortex\-a7\fR,
+\&\fBcortex\-a57.cortex\-a53\fR, \fBcortex\-a72.cortex\-a53\fR.
 .Sp
 \&\fB\-mtune=generic\-\fR\fIarch\fR specifies that \s-1GCC\s0 should tune the
 performance for a blend of processors within architecture \fIarch\fR.
@@ -14257,11 +14272,16 @@ These \fB\-m\fR options are defined for GNU/Linux targets:
 .IP "\fB\-mglibc\fR" 4
 .IX Item "-mglibc"
 Use the \s-1GNU C\s0 library.  This is the default except
-on \fB*\-*\-linux\-*uclibc*\fR and \fB*\-*\-linux\-*android*\fR targets.
+on \fB*\-*\-linux\-*uclibc*\fR, \fB*\-*\-linux\-*musl*\fR and
+\&\fB*\-*\-linux\-*android*\fR targets.
 .IP "\fB\-muclibc\fR" 4
 .IX Item "-muclibc"
 Use uClibc C library.  This is the default on
 \&\fB*\-*\-linux\-*uclibc*\fR targets.
+.IP "\fB\-mmusl\fR" 4
+.IX Item "-mmusl"
+Use the musl C library.  This is the default on
+\&\fB*\-*\-linux\-*musl*\fR targets.
 .IP "\fB\-mbionic\fR" 4
 .IX Item "-mbionic"
 Use Bionic C library.  This is the default on
