@@ -1,5 +1,5 @@
 /* bfdlink.h -- header file for BFD link routines
-   Copyright (C) 1993-2015 Free Software Foundation, Inc.
+   Copyright (C) 1993-2014 Free Software Foundation, Inc.
    Written by Steve Chamberlain and Ian Lance Taylor, Cygnus Support.
 
    This file is part of BFD, the Binary File Descriptor library.
@@ -91,13 +91,7 @@ struct bfd_link_hash_entry
   /* Type of this entry.  */
   ENUM_BITFIELD (bfd_link_hash_type) type : 8;
 
-  /* Symbol is referenced in a normal object file, as distict from a LTO
-     IR object file.  */
   unsigned int non_ir_ref : 1;
-
-  /* Symbol is a built-in define.  These will be overridden by PROVIDE
-     in a linker script.  */
-  unsigned int linker_def : 1;
 
   /* A union of information depending upon the type.  */
   union
@@ -259,30 +253,22 @@ struct flag_info
 struct bfd_elf_dynamic_list;
 struct bfd_elf_version_tree;
 
-/* Types of output.  */
-
-enum output_type
-{
-  type_pde,
-  type_pie,
-  type_relocatable,
-  type_dll,
-};
-
-#define bfd_link_pde(info)	   ((info)->type == type_pde)
-#define bfd_link_dll(info)	   ((info)->type == type_dll)
-#define bfd_link_relocatable(info) ((info)->type == type_relocatable)
-#define bfd_link_pie(info)	   ((info)->type == type_pie)
-#define bfd_link_executable(info)  (bfd_link_pde (info) || bfd_link_pie (info))
-#define bfd_link_pic(info)	   (bfd_link_dll (info) || bfd_link_pie (info))
-
 /* This structure holds all the information needed to communicate
    between BFD and the linker when doing a link.  */
 
 struct bfd_link_info
 {
-  /* Output type.  */
-  ENUM_BITFIELD (output_type) type : 2;
+  /* TRUE if BFD should generate a shared object (or a pie).  */
+  unsigned int shared: 1;
+
+  /* TRUE if generating an executable, position independent or not.  */
+  unsigned int executable : 1;
+
+  /* TRUE if generating a position independent executable.  */
+  unsigned int pie: 1;
+
+  /* TRUE if BFD should generate a relocatable object file.  */
+  unsigned int relocatable: 1;
 
   /* TRUE if BFD should pre-bind symbols in a shared object.  */
   unsigned int symbolic: 1;
@@ -308,6 +294,9 @@ struct bfd_link_info
 
   /* TRUE if the LTO plugin is active.  */
   unsigned int lto_plugin_active: 1;
+
+  /* TRUE if we are loading LTO outputs.  */
+  unsigned int loading_lto_outputs: 1;
 
   /* TRUE if global symbols in discarded sections should be stripped.  */
   unsigned int strip_discarded: 1;
@@ -350,9 +339,9 @@ struct bfd_link_info
   /* TRUE if PT_GNU_RELRO segment should be created.  */
   unsigned int relro: 1;
 
-  /* Nonzero if .eh_frame_hdr section and PT_GNU_EH_FRAME ELF segment
-     should be created.  1 for DWARF2 tables, 2 for compact tables.  */
-  unsigned int eh_frame_hdr_type: 2;
+  /* TRUE if .eh_frame_hdr section and PT_GNU_EH_FRAME ELF segment
+     should be created.  */
+  unsigned int eh_frame_hdr: 1;
 
   /* TRUE if we should warn when adding a DT_TEXTREL to a shared object.  */
   unsigned int warn_shared_textrel: 1;
@@ -431,9 +420,6 @@ struct bfd_link_info
   /* TRUE if BND prefix in PLT entries is always generated.  */
   unsigned int bndplt: 1;
 
-  /* TRUE if generation of .interp/PT_INTERP should be suppressed.  */
-  unsigned int nointerp: 1;
-
   /* Char that may appear as the first char of a symbol, but should be
      skipped (like symbol_leading_char) when looking up symbols in
      wrap_hash.  Used by PowerPC Linux for 'dot' symbols.  */
@@ -441,9 +427,6 @@ struct bfd_link_info
 
   /* Separator between archive and filename in linker script filespecs.  */
   char path_separator;
-
-  /* Compress DWARF debug sections.  */
-  enum compressed_debug_section_type compress_debug;
 
   /* Default stack size.  Zero means default (often zero itself), -1
      means explicitly zero-sized.  */
@@ -530,11 +513,6 @@ struct bfd_link_info
      time the relaxation pass is restarted due to a previous
      relaxation returning true in *AGAIN.  */
   int relax_trip;
-
-  /* > 0 to treat protected data defined in the shared library as
-     reference external.  0 to treat it as internal.  -1 to let
-     backend to decide.  */
-  int extern_protected_data;
 
   /* Non-zero if auto-import thunks for DATA items in pei386 DLLs
      should be generated/linked against.  Set to 1 if this feature

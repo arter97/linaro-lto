@@ -57,7 +57,7 @@ Introduction
 
 This manual documents how to use the GNU compilers, as well as their
 features and incompatibilities, and how to report bugs.  It corresponds
-to the compilers (Linaro GCC Snapshot 5.2-2015.09) version 5.2.1.  The
+to the compilers (Linaro GCC Snapshot 5.2-2015.10) version 5.2.1.  The
 internals of the GNU compilers, including how to port them to new
 targets and some information about how to write front ends for new
 languages, are documented in a separate manual.  *Note Introduction:
@@ -5188,25 +5188,26 @@ program or GCC:
      Enable AddressSanitizer, a fast memory error detector.  Memory
      access instructions are instrumented to detect out-of-bounds and
      use-after-free bugs.  See
-     <http://code.google.com/p/address-sanitizer/> for more details.
-     The run-time behavior can be influenced using the 'ASAN_OPTIONS'
-     environment variable; see
-     <https://code.google.com/p/address-sanitizer/wiki/Flags#Run-time_flags>
+     <https://github.com/google/sanitizers/wiki/AddressSanitizer> for
+     more details.  The run-time behavior can be influenced using the
+     'ASAN_OPTIONS' environment variable.  When set to 'help=1', the
+     available options are shown at startup of the instrumended program.
+     See
+     <https://github.com/google/sanitizers/wiki/AddressSanitizerFlags#run-time-flags>
      for a list of supported options.
 
 '-fsanitize=kernel-address'
      Enable AddressSanitizer for Linux kernel.  See
-     <http://code.google.com/p/address-sanitizer/wiki/AddressSanitizerForKernel>
-     for more details.
+     <https://github.com/google/kasan/wiki> for more details.
 
 '-fsanitize=thread'
      Enable ThreadSanitizer, a fast data race detector.  Memory access
      instructions are instrumented to detect data race bugs.  See
-     <http://code.google.com/p/thread-sanitizer/> for more details.  The
-     run-time behavior can be influenced using the 'TSAN_OPTIONS'
-     environment variable; see
-     <https://code.google.com/p/thread-sanitizer/wiki/Flags> for a list
-     of supported options.
+     <https://github.com/google/sanitizers/wiki#threadsanitizer> for
+     more details.  The run-time behavior can be influenced using the
+     'TSAN_OPTIONS' environment variable; see
+     <https://github.com/google/sanitizers/wiki/ThreadSanitizerFlags>
+     for a list of supported options.
 
 '-fsanitize=leak'
      Enable LeakSanitizer, a memory leak detector.  This option only
@@ -5214,7 +5215,7 @@ program or GCC:
      '-fsanitize=address' nor '-fsanitize=thread' is used.  In that case
      the executable is linked against a library that overrides 'malloc'
      and other allocator functions.  See
-     <https://code.google.com/p/address-sanitizer/wiki/LeakSanitizer>
+     <https://github.com/google/sanitizers/wiki/AddressSanitizerLeakSanitizer>
      for more details.  The run-time behavior can be influenced using
      the 'LSAN_OPTIONS' environment variable.
 
@@ -11880,7 +11881,10 @@ These options are defined for AArch64 implementations:
      configured for an 'aarch64_be-*-*' target.
 
 '-mgeneral-regs-only'
-     Generate code which uses only the general registers.
+     Generate code which uses only the general-purpose registers.  This
+     is equivalent to feature modifier 'nofp' of '-march' or '-mcpu',
+     except that '-mgeneral-regs-only' takes precedence over any
+     conflicting feature modifier regardless of sequence.
 
 '-mlittle-endian'
      Generate little-endian code.  This is the default when GCC is
@@ -11937,23 +11941,26 @@ These options are defined for AArch64 implementations:
 '-march=NAME'
      Specify the name of the target architecture, optionally suffixed by
      one or more feature modifiers.  This option has the form
-     '-march=ARCH{+[no]FEATURE}*', where the only permissible value for
-     ARCH is 'armv8-a'.  The permissible values for FEATURE are
-     documented in the sub-section below.  Additionally on native
-     AArch64 GNU/Linux systems the value 'native' is available.  This
-     option causes the compiler to pick the architecture of the host
-     system.  If the compiler is unable to recognize the architecture of
-     the host system this option has no effect.
+     '-march=ARCH{+[no]FEATURE}*'.
 
-     Where conflicting feature modifiers are specified, the right-most
-     feature is used.
+     The permissible values for ARCH are 'armv8-a' or 'armv8.1-a'.
 
-     GCC uses this name to determine what kind of instructions it can
-     emit when generating assembly code.
+     For the permissible values for FEATURE, see the sub-section on
+     *note '-march' and '-mcpu' Feature Modifiers:
+     aarch64-feature-modifiers.  Where conflicting feature modifiers are
+     specified, the right-most feature is used.
 
-     Where '-march' is specified without either of '-mtune' or '-mcpu'
-     also being specified, the code is tuned to perform well across a
-     range of target processors implementing the target architecture.
+     Additionally on native AArch64 GNU/Linux systems the value 'native'
+     is available.  This option causes the compiler to pick the
+     architecture of the host system.  If the compiler is unable to
+     recognize the architecture of the host system this option has no
+     effect.
+
+     GCC uses NAME to determine what kind of instructions it can emit
+     when generating assembly code.  If '-march' is specified without
+     either of '-mtune' or '-mcpu' also being specified, the code is
+     tuned to perform well across a range of target processors
+     implementing the target architecture.
 
 '-mtune=NAME'
      Specify the name of the target processor for which GCC should tune
@@ -11982,42 +11989,64 @@ These options are defined for AArch64 implementations:
      Specify the name of the target processor, optionally suffixed by
      one or more feature modifiers.  This option has the form
      '-mcpu=CPU{+[no]FEATURE}*', where the permissible values for CPU
-     are the same as those available for '-mtune'.  Additionally on
-     native AArch64 GNU/Linux systems the value 'native' is available.
-     This option causes the compiler to tune the performance of the code
-     for the processor of the host system.  If the compiler is unable to
-     recognize the processor of the host system this option has no
-     effect.
-
-     The permissible values for FEATURE are documented in the
-     sub-section below.
-
+     are the same as those available for '-mtune'.  The permissible
+     values for FEATURE are documented in the sub-section on *note
+     '-march' and '-mcpu' Feature Modifiers: aarch64-feature-modifiers.
      Where conflicting feature modifiers are specified, the right-most
      feature is used.
 
-     GCC uses this name to determine what kind of instructions it can
-     emit when generating assembly code (as if by '-march') and to
-     determine the target processor for which to tune for performance
-     (as if by '-mtune').  Where this option is used in conjunction with
-     '-march' or '-mtune', those options take precedence over the
-     appropriate part of this option.
+     Additionally on native AArch64 GNU/Linux systems the value 'native'
+     is available.  This option causes the compiler to tune the
+     performance of the code for the processor of the host system.  If
+     the compiler is unable to recognize the processor of the host
+     system this option has no effect.
+
+     GCC uses NAME to determine what kind of instructions it can emit
+     when generating assembly code (as if by '-march') and to determine
+     the target processor for which to tune for performance (as if by
+     '-mtune').  Where this option is used in conjunction with '-march'
+     or '-mtune', those options take precedence over the appropriate
+     part of this option.
+
+'-moverride=STRING'
+     Override tuning decisions made by the back-end in response to a
+     '-mtune=' switch.  The syntax, semantics, and accepted values for
+     STRING in this option are not guaranteed to be consistent across
+     releases.
+
+     This option is only intended to be useful when developing GCC.
 
 3.17.1.1 '-march' and '-mcpu' Feature Modifiers
 ...............................................
 
-Feature modifiers used with '-march' and '-mcpu' can be one the
-following:
+Feature modifiers used with '-march' and '-mcpu' can be any of the
+following and their inverses 'noFEATURE':
 
 'crc'
      Enable CRC extension.
 'crypto'
-     Enable Crypto extension.  This implies Advanced SIMD is enabled.
+     Enable Crypto extension.  This also enables Advanced SIMD and
+     floating-point instructions.
 'fp'
-     Enable floating-point instructions.
+     Enable floating-point instructions.  This is on by default for all
+     possible values for options '-march' and '-mcpu'.
 'simd'
-     Enable Advanced SIMD instructions.  This implies floating-point
-     instructions are enabled.  This is the default for all current
-     possible values for options '-march' and '-mcpu='.
+     Enable Advanced SIMD instructions.  This also enables
+     floating-point instructions.  This is on by default for all
+     possible values for options '-march' and '-mcpu'.
+'lse'
+     Enable Large System Extension instructions.
+'pan'
+     Enable Privileged Access Never support.
+'lor'
+     Enable Limited Ordering Regions support.
+'rdma'
+     Enable ARMv8.1 Advanced SIMD instructions.  This implies Advanced
+     SIMD is enabled.
+
+ That is, 'crypto' implies 'simd' implies 'fp'.  Conversely, 'nofp' (or
+equivalently, '-mgeneral-regs-only') implies 'nosimd' implies
+'nocrypto'.
 
 
 File: gcc.info,  Node: Adapteva Epiphany Options,  Next: ARC Options,  Prev: AArch64 Options,  Up: Submodel Options
@@ -12616,7 +12645,7 @@ These '-m' options are defined for the ARM port:
      with or instead of the '-mcpu=' option.  Permissible names are:
      'armv2', 'armv2a', 'armv3', 'armv3m', 'armv4', 'armv4t', 'armv5',
      'armv5t', 'armv5e', 'armv5te', 'armv6', 'armv6j', 'armv6t2',
-     'armv6z', 'armv6zk', 'armv6-m', 'armv7', 'armv7-a', 'armv7-r',
+     'armv6z', 'armv6kz', 'armv6-m', 'armv7', 'armv7-a', 'armv7-r',
      'armv7-m', 'armv7e-m', 'armv7ve', 'armv8-a', 'armv8-a+crc',
      'iwmmxt', 'iwmmxt2', 'ep9312'.
 
@@ -12810,6 +12839,11 @@ These '-m' options are defined for the ARM port:
      states.  The default for most configurations is to generate code
      that executes in ARM state, but the default can be changed by
      configuring GCC with the '--with-mode='STATE configure option.
+
+     You can also override the ARM and Thumb mode for each function by
+     using the 'target("thumb")' and 'target("arm")' function attributes
+     (*note ARM Function Attributes::) or pragmas (*note Function
+     Specific Option Pragmas::).
 
 '-mtpcs-frame'
      Generate a stack frame that is compliant with the Thumb Procedure
@@ -19386,7 +19420,7 @@ These '-m' options are supported on the SPARC:
 '-mno-user-mode'
      Do not generate code that can only run in supervisor mode.  This is
      relevant only for the 'casa' instruction emitted for the LEON3
-     processor.  The default is '-mno-user-mode'.
+     processor.  This is the default.
 
 '-mno-faster-structs'
 '-mfaster-structs'
@@ -24716,7 +24750,7 @@ C90 mode.  For example, you could do:
 the enclosing block.
 
 
-File: gcc.info,  Node: Function Attributes,  Next: Label Attributes,  Prev: Mixed Declarations,  Up: C Extensions
+File: gcc.info,  Node: Function Attributes,  Next: Variable Attributes,  Prev: Mixed Declarations,  Up: C Extensions
 
 6.31 Declaring Attributes of Functions
 ======================================
@@ -25519,8 +25553,9 @@ The following attributes are supported on most targets.
      a single string.
 
      The options supported are specific to each target; refer to *note
-     x86 Function Attributes::, *note PowerPC Function Attributes::, and
-     *note Nios II Function Attributes::, for details.
+     x86 Function Attributes::, *note PowerPC Function Attributes::,
+     *note ARM Function Attributes::,and *note Nios II Function
+     Attributes::, for details.
 
 'unused'
      This attribute, attached to a function, means that the function is
@@ -25798,6 +25833,21 @@ These function attributes are supported for ARM targets:
 
      Variadic functions always use the '"aapcs"' calling convention and
      the compiler rejects attempts to specify an alternative.
+
+'target (OPTIONS)'
+     As discussed in *note Common Function Attributes::, this attribute
+     allows specification of target-specific compilation options.
+
+     On ARM, the following options are allowed:
+
+     'thumb'
+          Force code generation in the Thumb (T16/T32) ISA, depending on
+          the architecture level.
+
+     'arm'
+          Force code generation in the ARM (A32) ISA.
+
+     Functions from different modes can be inlined in the caller's mode.
 
 
 File: gcc.info,  Node: AVR Function Attributes,  Next: Blackfin Function Attributes,  Prev: ARM Function Attributes,  Up: Function Attributes
@@ -27233,354 +27283,9 @@ These function attributes are supported by the Xstormy16 back end:
      attribute is present.
 
 
-File: gcc.info,  Node: Label Attributes,  Next: Attribute Syntax,  Prev: Function Attributes,  Up: C Extensions
+File: gcc.info,  Node: Variable Attributes,  Next: Type Attributes,  Prev: Function Attributes,  Up: C Extensions
 
-6.32 Label Attributes
-=====================
-
-GCC allows attributes to be set on C labels.  *Note Attribute Syntax::,
-for details of the exact syntax for using attributes.  Other attributes
-are available for functions (*note Function Attributes::), variables
-(*note Variable Attributes::) and for types (*note Type Attributes::).
-
- This example uses the 'cold' label attribute to indicate the
-'ErrorHandling' branch is unlikely to be taken and that the
-'ErrorHandling' label is unused:
-
-
-        asm goto ("some asm" : : : : NoError);
-
-     /* This branch (the fall-through from the asm) is less commonly used */
-     ErrorHandling:
-        __attribute__((cold, unused)); /* Semi-colon is required here */
-        printf("error\n");
-        return 0;
-
-     NoError:
-        printf("no error\n");
-        return 1;
-
-'unused'
-     This feature is intended for program-generated code that may
-     contain unused labels, but which is compiled with '-Wall'.  It is
-     not normally appropriate to use in it human-written code, though it
-     could be useful in cases where the code that jumps to the label is
-     contained within an '#ifdef' conditional.
-
-'hot'
-     The 'hot' attribute on a label is used to inform the compiler that
-     the path following the label is more likely than paths that are not
-     so annotated.  This attribute is used in cases where
-     '__builtin_expect' cannot be used, for instance with computed goto
-     or 'asm goto'.
-
-'cold'
-     The 'cold' attribute on labels is used to inform the compiler that
-     the path following the label is unlikely to be executed.  This
-     attribute is used in cases where '__builtin_expect' cannot be used,
-     for instance with computed goto or 'asm goto'.
-
-
-File: gcc.info,  Node: Attribute Syntax,  Next: Function Prototypes,  Prev: Label Attributes,  Up: C Extensions
-
-6.33 Attribute Syntax
-=====================
-
-This section describes the syntax with which '__attribute__' may be
-used, and the constructs to which attribute specifiers bind, for the C
-language.  Some details may vary for C++ and Objective-C.  Because of
-infelicities in the grammar for attributes, some forms described here
-may not be successfully parsed in all cases.
-
- There are some problems with the semantics of attributes in C++.  For
-example, there are no manglings for attributes, although they may affect
-code generation, so problems may arise when attributed types are used in
-conjunction with templates or overloading.  Similarly, 'typeid' does not
-distinguish between types with different attributes.  Support for
-attributes in C++ may be restricted in future to attributes on
-declarations only, but not on nested declarators.
-
- *Note Function Attributes::, for details of the semantics of attributes
-applying to functions.  *Note Variable Attributes::, for details of the
-semantics of attributes applying to variables.  *Note Type Attributes::,
-for details of the semantics of attributes applying to structure, union
-and enumerated types.  *Note Label Attributes::, for details of the
-semantics of attributes applying to labels.
-
- An "attribute specifier" is of the form '__attribute__
-((ATTRIBUTE-LIST))'.  An "attribute list" is a possibly empty
-comma-separated sequence of "attributes", where each attribute is one of
-the following:
-
-   * Empty.  Empty attributes are ignored.
-
-   * An attribute name (which may be an identifier such as 'unused', or
-     a reserved word such as 'const').
-
-   * An attribute name followed by a parenthesized list of parameters
-     for the attribute.  These parameters take one of the following
-     forms:
-
-        * An identifier.  For example, 'mode' attributes use this form.
-
-        * An identifier followed by a comma and a non-empty
-          comma-separated list of expressions.  For example, 'format'
-          attributes use this form.
-
-        * A possibly empty comma-separated list of expressions.  For
-          example, 'format_arg' attributes use this form with the list
-          being a single integer constant expression, and 'alias'
-          attributes use this form with the list being a single string
-          constant.
-
- An "attribute specifier list" is a sequence of one or more attribute
-specifiers, not separated by any other tokens.
-
- You may optionally specify attribute names with '__' preceding and
-following the name.  This allows you to use them in header files without
-being concerned about a possible macro of the same name.  For example,
-you may use the attribute name '__noreturn__' instead of 'noreturn'.
-
-Label Attributes
-................
-
-In GNU C, an attribute specifier list may appear after the colon
-following a label, other than a 'case' or 'default' label.  GNU C++ only
-permits attributes on labels if the attribute specifier is immediately
-followed by a semicolon (i.e., the label applies to an empty statement).
-If the semicolon is missing, C++ label attributes are ambiguous, as it
-is permissible for a declaration, which could begin with an attribute
-list, to be labelled in C++.  Declarations cannot be labelled in C90 or
-C99, so the ambiguity does not arise there.
-
-Type Attributes
-...............
-
-An attribute specifier list may appear as part of a 'struct', 'union' or
-'enum' specifier.  It may go either immediately after the 'struct',
-'union' or 'enum' keyword, or after the closing brace.  The former
-syntax is preferred.  Where attribute specifiers follow the closing
-brace, they are considered to relate to the structure, union or
-enumerated type defined, not to any enclosing declaration the type
-specifier appears in, and the type defined is not complete until after
-the attribute specifiers.
-
-All other attributes
-....................
-
-Otherwise, an attribute specifier appears as part of a declaration,
-counting declarations of unnamed parameters and type names, and relates
-to that declaration (which may be nested in another declaration, for
-example in the case of a parameter declaration), or to a particular
-declarator within a declaration.  Where an attribute specifier is
-applied to a parameter declared as a function or an array, it should
-apply to the function or array rather than the pointer to which the
-parameter is implicitly converted, but this is not yet correctly
-implemented.
-
- Any list of specifiers and qualifiers at the start of a declaration may
-contain attribute specifiers, whether or not such a list may in that
-context contain storage class specifiers.  (Some attributes, however,
-are essentially in the nature of storage class specifiers, and only make
-sense where storage class specifiers may be used; for example,
-'section'.)  There is one necessary limitation to this syntax: the first
-old-style parameter declaration in a function definition cannot begin
-with an attribute specifier, because such an attribute applies to the
-function instead by syntax described below (which, however, is not yet
-implemented in this case).  In some other cases, attribute specifiers
-are permitted by this grammar but not yet supported by the compiler.
-All attribute specifiers in this place relate to the declaration as a
-whole.  In the obsolescent usage where a type of 'int' is implied by the
-absence of type specifiers, such a list of specifiers and qualifiers may
-be an attribute specifier list with no other specifiers or qualifiers.
-
- At present, the first parameter in a function prototype must have some
-type specifier that is not an attribute specifier; this resolves an
-ambiguity in the interpretation of 'void f(int (__attribute__((foo))
-x))', but is subject to change.  At present, if the parentheses of a
-function declarator contain only attributes then those attributes are
-ignored, rather than yielding an error or warning or implying a single
-parameter of type int, but this is subject to change.
-
- An attribute specifier list may appear immediately before a declarator
-(other than the first) in a comma-separated list of declarators in a
-declaration of more than one identifier using a single list of
-specifiers and qualifiers.  Such attribute specifiers apply only to the
-identifier before whose declarator they appear.  For example, in
-
-     __attribute__((noreturn)) void d0 (void),
-         __attribute__((format(printf, 1, 2))) d1 (const char *, ...),
-          d2 (void);
-
-the 'noreturn' attribute applies to all the functions declared; the
-'format' attribute only applies to 'd1'.
-
- An attribute specifier list may appear immediately before the comma,
-'=' or semicolon terminating the declaration of an identifier other than
-a function definition.  Such attribute specifiers apply to the declared
-object or function.  Where an assembler name for an object or function
-is specified (*note Asm Labels::), the attribute must follow the 'asm'
-specification.
-
- An attribute specifier list may, in future, be permitted to appear
-after the declarator in a function definition (before any old-style
-parameter declarations or the function body).
-
- Attribute specifiers may be mixed with type qualifiers appearing inside
-the '[]' of a parameter array declarator, in the C99 construct by which
-such qualifiers are applied to the pointer to which the array is
-implicitly converted.  Such attribute specifiers apply to the pointer,
-not to the array, but at present this is not implemented and they are
-ignored.
-
- An attribute specifier list may appear at the start of a nested
-declarator.  At present, there are some limitations in this usage: the
-attributes correctly apply to the declarator, but for most individual
-attributes the semantics this implies are not implemented.  When
-attribute specifiers follow the '*' of a pointer declarator, they may be
-mixed with any type qualifiers present.  The following describes the
-formal semantics of this syntax.  It makes the most sense if you are
-familiar with the formal specification of declarators in the ISO C
-standard.
-
- Consider (as in C99 subclause 6.7.5 paragraph 4) a declaration 'T D1',
-where 'T' contains declaration specifiers that specify a type TYPE (such
-as 'int') and 'D1' is a declarator that contains an identifier IDENT.
-The type specified for IDENT for derived declarators whose type does not
-include an attribute specifier is as in the ISO C standard.
-
- If 'D1' has the form '( ATTRIBUTE-SPECIFIER-LIST D )', and the
-declaration 'T D' specifies the type "DERIVED-DECLARATOR-TYPE-LIST TYPE"
-for IDENT, then 'T D1' specifies the type "DERIVED-DECLARATOR-TYPE-LIST
-ATTRIBUTE-SPECIFIER-LIST TYPE" for IDENT.
-
- If 'D1' has the form '* TYPE-QUALIFIER-AND-ATTRIBUTE-SPECIFIER-LIST D',
-and the declaration 'T D' specifies the type
-"DERIVED-DECLARATOR-TYPE-LIST TYPE" for IDENT, then 'T D1' specifies the
-type "DERIVED-DECLARATOR-TYPE-LIST
-TYPE-QUALIFIER-AND-ATTRIBUTE-SPECIFIER-LIST pointer to TYPE" for IDENT.
-
- For example,
-
-     void (__attribute__((noreturn)) ****f) (void);
-
-specifies the type "pointer to pointer to pointer to pointer to
-non-returning function returning 'void'".  As another example,
-
-     char *__attribute__((aligned(8))) *f;
-
-specifies the type "pointer to 8-byte-aligned pointer to 'char'".  Note
-again that this does not work with most attributes; for example, the
-usage of 'aligned' and 'noreturn' attributes given above is not yet
-supported.
-
- For compatibility with existing code written for compiler versions that
-did not implement attributes on nested declarators, some laxity is
-allowed in the placing of attributes.  If an attribute that only applies
-to types is applied to a declaration, it is treated as applying to the
-type of that declaration.  If an attribute that only applies to
-declarations is applied to the type of a declaration, it is treated as
-applying to that declaration; and, for compatibility with code placing
-the attributes immediately before the identifier declared, such an
-attribute applied to a function return type is treated as applying to
-the function type, and such an attribute applied to an array element
-type is treated as applying to the array type.  If an attribute that
-only applies to function types is applied to a pointer-to-function type,
-it is treated as applying to the pointer target type; if such an
-attribute is applied to a function return type that is not a
-pointer-to-function type, it is treated as applying to the function
-type.
-
-
-File: gcc.info,  Node: Function Prototypes,  Next: C++ Comments,  Prev: Attribute Syntax,  Up: C Extensions
-
-6.34 Prototypes and Old-Style Function Definitions
-==================================================
-
-GNU C extends ISO C to allow a function prototype to override a later
-old-style non-prototype definition.  Consider the following example:
-
-     /* Use prototypes unless the compiler is old-fashioned.  */
-     #ifdef __STDC__
-     #define P(x) x
-     #else
-     #define P(x) ()
-     #endif
-
-     /* Prototype function declaration.  */
-     int isroot P((uid_t));
-
-     /* Old-style function definition.  */
-     int
-     isroot (x)   /* ??? lossage here ??? */
-          uid_t x;
-     {
-       return x == 0;
-     }
-
- Suppose the type 'uid_t' happens to be 'short'.  ISO C does not allow
-this example, because subword arguments in old-style non-prototype
-definitions are promoted.  Therefore in this example the function
-definition's argument is really an 'int', which does not match the
-prototype argument type of 'short'.
-
- This restriction of ISO C makes it hard to write code that is portable
-to traditional C compilers, because the programmer does not know whether
-the 'uid_t' type is 'short', 'int', or 'long'.  Therefore, in cases like
-these GNU C allows a prototype to override a later old-style definition.
-More precisely, in GNU C, a function prototype argument type overrides
-the argument type specified by a later old-style definition if the
-former type is the same as the latter type before promotion.  Thus in
-GNU C the above example is equivalent to the following:
-
-     int isroot (uid_t);
-
-     int
-     isroot (uid_t x)
-     {
-       return x == 0;
-     }
-
-GNU C++ does not support old-style function definitions, so this
-extension is irrelevant.
-
-
-File: gcc.info,  Node: C++ Comments,  Next: Dollar Signs,  Prev: Function Prototypes,  Up: C Extensions
-
-6.35 C++ Style Comments
-=======================
-
-In GNU C, you may use C++ style comments, which start with '//' and
-continue until the end of the line.  Many other C implementations allow
-such comments, and they are included in the 1999 C standard.  However,
-C++ style comments are not recognized if you specify an '-std' option
-specifying a version of ISO C before C99, or '-ansi' (equivalent to
-'-std=c90').
-
-
-File: gcc.info,  Node: Dollar Signs,  Next: Character Escapes,  Prev: C++ Comments,  Up: C Extensions
-
-6.36 Dollar Signs in Identifier Names
-=====================================
-
-In GNU C, you may normally use dollar signs in identifier names.  This
-is because many traditional C implementations allow such identifiers.
-However, dollar signs in identifiers are not supported on a few target
-machines, typically because the target assembler does not allow them.
-
-
-File: gcc.info,  Node: Character Escapes,  Next: Variable Attributes,  Prev: Dollar Signs,  Up: C Extensions
-
-6.37 The Character <ESC> in Constants
-=====================================
-
-You can use the sequence '\e' in a string or character constant to stand
-for the ASCII character <ESC>.
-
-
-File: gcc.info,  Node: Variable Attributes,  Next: Type Attributes,  Prev: Character Escapes,  Up: C Extensions
-
-6.38 Specifying Attributes of Variables
+6.32 Specifying Attributes of Variables
 =======================================
 
 The keyword '__attribute__' allows you to specify special attributes of
@@ -27614,7 +27319,7 @@ attributes.
 
 File: gcc.info,  Node: Common Variable Attributes,  Next: AVR Variable Attributes,  Up: Variable Attributes
 
-6.38.1 Common Variable Attributes
+6.32.1 Common Variable Attributes
 ---------------------------------
 
 The following attributes are supported on most targets.
@@ -27859,7 +27564,7 @@ The following attributes are supported on most targets.
 
 File: gcc.info,  Node: AVR Variable Attributes,  Next: Blackfin Variable Attributes,  Prev: Common Variable Attributes,  Up: Variable Attributes
 
-6.38.2 AVR Variable Attributes
+6.32.2 AVR Variable Attributes
 ------------------------------
 
 'progmem'
@@ -27928,7 +27633,7 @@ File: gcc.info,  Node: AVR Variable Attributes,  Next: Blackfin Variable Attribu
 
 File: gcc.info,  Node: Blackfin Variable Attributes,  Next: H8/300 Variable Attributes,  Prev: AVR Variable Attributes,  Up: Variable Attributes
 
-6.38.3 Blackfin Variable Attributes
+6.32.3 Blackfin Variable Attributes
 -----------------------------------
 
 Three attributes are currently defined for the Blackfin.
@@ -27951,7 +27656,7 @@ Three attributes are currently defined for the Blackfin.
 
 File: gcc.info,  Node: H8/300 Variable Attributes,  Next: IA-64 Variable Attributes,  Prev: Blackfin Variable Attributes,  Up: Variable Attributes
 
-6.38.4 H8/300 Variable Attributes
+6.32.4 H8/300 Variable Attributes
 ---------------------------------
 
 These variable attributes are available for H8/300 targets:
@@ -27976,7 +27681,7 @@ These variable attributes are available for H8/300 targets:
 
 File: gcc.info,  Node: IA-64 Variable Attributes,  Next: M32R/D Variable Attributes,  Prev: H8/300 Variable Attributes,  Up: Variable Attributes
 
-6.38.5 IA-64 Variable Attributes
+6.32.5 IA-64 Variable Attributes
 --------------------------------
 
 The IA-64 back end supports the following variable attribute:
@@ -27994,7 +27699,7 @@ The IA-64 back end supports the following variable attribute:
 
 File: gcc.info,  Node: M32R/D Variable Attributes,  Next: MeP Variable Attributes,  Prev: IA-64 Variable Attributes,  Up: Variable Attributes
 
-6.38.6 M32R/D Variable Attributes
+6.32.6 M32R/D Variable Attributes
 ---------------------------------
 
 One attribute is currently defined for the M32R/D.
@@ -28014,7 +27719,7 @@ One attribute is currently defined for the M32R/D.
 
 File: gcc.info,  Node: MeP Variable Attributes,  Next: Microsoft Windows Variable Attributes,  Prev: M32R/D Variable Attributes,  Up: Variable Attributes
 
-6.38.7 MeP Variable Attributes
+6.32.7 MeP Variable Attributes
 ------------------------------
 
 The MeP target has a number of addressing modes and busses.  The 'near'
@@ -28066,7 +27771,7 @@ attributes.
 
 File: gcc.info,  Node: Microsoft Windows Variable Attributes,  Next: PowerPC Variable Attributes,  Prev: MeP Variable Attributes,  Up: Variable Attributes
 
-6.38.8 Microsoft Windows Variable Attributes
+6.32.8 Microsoft Windows Variable Attributes
 --------------------------------------------
 
 You can use these attributes on Microsoft Windows targets.  *note x86
@@ -28125,7 +27830,7 @@ available on all x86 targets.
 
 File: gcc.info,  Node: PowerPC Variable Attributes,  Next: SPU Variable Attributes,  Prev: Microsoft Windows Variable Attributes,  Up: Variable Attributes
 
-6.38.9 PowerPC Variable Attributes
+6.32.9 PowerPC Variable Attributes
 ----------------------------------
 
 Three attributes currently are defined for PowerPC configurations:
@@ -28140,7 +27845,7 @@ in *note PowerPC Type Attributes::.
 
 File: gcc.info,  Node: SPU Variable Attributes,  Next: x86 Variable Attributes,  Prev: PowerPC Variable Attributes,  Up: Variable Attributes
 
-6.38.10 SPU Variable Attributes
+6.32.10 SPU Variable Attributes
 -------------------------------
 
 The SPU supports the 'spu_vector' attribute for variables.  For
@@ -28150,7 +27855,7 @@ SPU Type Attributes::.
 
 File: gcc.info,  Node: x86 Variable Attributes,  Next: Xstormy16 Variable Attributes,  Prev: SPU Variable Attributes,  Up: Variable Attributes
 
-6.38.11 x86 Variable Attributes
+6.32.11 x86 Variable Attributes
 -------------------------------
 
 Two attributes are currently defined for x86 configurations: 'ms_struct'
@@ -28275,7 +27980,7 @@ and 'gcc_struct'.
 
 File: gcc.info,  Node: Xstormy16 Variable Attributes,  Prev: x86 Variable Attributes,  Up: Variable Attributes
 
-6.38.12 Xstormy16 Variable Attributes
+6.32.12 Xstormy16 Variable Attributes
 -------------------------------------
 
 One attribute is currently defined for xstormy16 configurations:
@@ -28289,9 +27994,9 @@ One attribute is currently defined for xstormy16 configurations:
      either the '.bss_below100' section or the '.data_below100' section.
 
 
-File: gcc.info,  Node: Type Attributes,  Next: Alignment,  Prev: Variable Attributes,  Up: C Extensions
+File: gcc.info,  Node: Type Attributes,  Next: Label Attributes,  Prev: Variable Attributes,  Up: C Extensions
 
-6.39 Specifying Attributes of Types
+6.33 Specifying Attributes of Types
 ===================================
 
 The keyword '__attribute__' allows you to specify special attributes of
@@ -28325,7 +28030,7 @@ attributes.
 
 File: gcc.info,  Node: Common Type Attributes,  Next: ARM Type Attributes,  Up: Type Attributes
 
-6.39.1 Common Type Attributes
+6.33.1 Common Type Attributes
 -----------------------------
 
 The following type attributes are supported on most targets.
@@ -28625,7 +28330,7 @@ packed))'.
 
 File: gcc.info,  Node: ARM Type Attributes,  Next: MeP Type Attributes,  Prev: Common Type Attributes,  Up: Type Attributes
 
-6.39.2 ARM Type Attributes
+6.33.2 ARM Type Attributes
 --------------------------
 
 On those ARM targets that support 'dllimport' (such as Symbian OS), you
@@ -28649,7 +28354,7 @@ table for 'C' is not exported.  (You can use '__attribute__' instead of
 
 File: gcc.info,  Node: MeP Type Attributes,  Next: PowerPC Type Attributes,  Prev: ARM Type Attributes,  Up: Type Attributes
 
-6.39.3 MeP Type Attributes
+6.33.3 MeP Type Attributes
 --------------------------
 
 Many of the MeP variable attributes may be applied to types as well.
@@ -28660,7 +28365,7 @@ types.
 
 File: gcc.info,  Node: PowerPC Type Attributes,  Next: SPU Type Attributes,  Prev: MeP Type Attributes,  Up: Type Attributes
 
-6.39.4 PowerPC Type Attributes
+6.33.4 PowerPC Type Attributes
 ------------------------------
 
 Three attributes currently are defined for PowerPC configurations:
@@ -28685,7 +28390,7 @@ followed by unsigned).
 
 File: gcc.info,  Node: SPU Type Attributes,  Next: x86 Type Attributes,  Prev: PowerPC Type Attributes,  Up: Type Attributes
 
-6.39.5 SPU Type Attributes
+6.33.5 SPU Type Attributes
 --------------------------
 
 The SPU supports the 'spu_vector' attribute for types.  This attribute
@@ -28696,7 +28401,7 @@ to support the '__vector' keyword.
 
 File: gcc.info,  Node: x86 Type Attributes,  Prev: SPU Type Attributes,  Up: Type Attributes
 
-6.39.6 x86 Type Attributes
+6.33.6 x86 Type Attributes
 --------------------------
 
 Two attributes are currently defined for x86 configurations: 'ms_struct'
@@ -28716,7 +28421,352 @@ and 'gcc_struct'.
      Windows x86 compilers to match the native Microsoft compiler.
 
 
-File: gcc.info,  Node: Alignment,  Next: Inline,  Prev: Type Attributes,  Up: C Extensions
+File: gcc.info,  Node: Label Attributes,  Next: Attribute Syntax,  Prev: Type Attributes,  Up: C Extensions
+
+6.34 Label Attributes
+=====================
+
+GCC allows attributes to be set on C labels.  *Note Attribute Syntax::,
+for details of the exact syntax for using attributes.  Other attributes
+are available for functions (*note Function Attributes::), variables
+(*note Variable Attributes::) and for types (*note Type Attributes::).
+
+ This example uses the 'cold' label attribute to indicate the
+'ErrorHandling' branch is unlikely to be taken and that the
+'ErrorHandling' label is unused:
+
+
+        asm goto ("some asm" : : : : NoError);
+
+     /* This branch (the fall-through from the asm) is less commonly used */
+     ErrorHandling:
+        __attribute__((cold, unused)); /* Semi-colon is required here */
+        printf("error\n");
+        return 0;
+
+     NoError:
+        printf("no error\n");
+        return 1;
+
+'unused'
+     This feature is intended for program-generated code that may
+     contain unused labels, but which is compiled with '-Wall'.  It is
+     not normally appropriate to use in it human-written code, though it
+     could be useful in cases where the code that jumps to the label is
+     contained within an '#ifdef' conditional.
+
+'hot'
+     The 'hot' attribute on a label is used to inform the compiler that
+     the path following the label is more likely than paths that are not
+     so annotated.  This attribute is used in cases where
+     '__builtin_expect' cannot be used, for instance with computed goto
+     or 'asm goto'.
+
+'cold'
+     The 'cold' attribute on labels is used to inform the compiler that
+     the path following the label is unlikely to be executed.  This
+     attribute is used in cases where '__builtin_expect' cannot be used,
+     for instance with computed goto or 'asm goto'.
+
+
+File: gcc.info,  Node: Attribute Syntax,  Next: Function Prototypes,  Prev: Label Attributes,  Up: C Extensions
+
+6.35 Attribute Syntax
+=====================
+
+This section describes the syntax with which '__attribute__' may be
+used, and the constructs to which attribute specifiers bind, for the C
+language.  Some details may vary for C++ and Objective-C.  Because of
+infelicities in the grammar for attributes, some forms described here
+may not be successfully parsed in all cases.
+
+ There are some problems with the semantics of attributes in C++.  For
+example, there are no manglings for attributes, although they may affect
+code generation, so problems may arise when attributed types are used in
+conjunction with templates or overloading.  Similarly, 'typeid' does not
+distinguish between types with different attributes.  Support for
+attributes in C++ may be restricted in future to attributes on
+declarations only, but not on nested declarators.
+
+ *Note Function Attributes::, for details of the semantics of attributes
+applying to functions.  *Note Variable Attributes::, for details of the
+semantics of attributes applying to variables.  *Note Type Attributes::,
+for details of the semantics of attributes applying to structure, union
+and enumerated types.  *Note Label Attributes::, for details of the
+semantics of attributes applying to labels.
+
+ An "attribute specifier" is of the form '__attribute__
+((ATTRIBUTE-LIST))'.  An "attribute list" is a possibly empty
+comma-separated sequence of "attributes", where each attribute is one of
+the following:
+
+   * Empty.  Empty attributes are ignored.
+
+   * An attribute name (which may be an identifier such as 'unused', or
+     a reserved word such as 'const').
+
+   * An attribute name followed by a parenthesized list of parameters
+     for the attribute.  These parameters take one of the following
+     forms:
+
+        * An identifier.  For example, 'mode' attributes use this form.
+
+        * An identifier followed by a comma and a non-empty
+          comma-separated list of expressions.  For example, 'format'
+          attributes use this form.
+
+        * A possibly empty comma-separated list of expressions.  For
+          example, 'format_arg' attributes use this form with the list
+          being a single integer constant expression, and 'alias'
+          attributes use this form with the list being a single string
+          constant.
+
+ An "attribute specifier list" is a sequence of one or more attribute
+specifiers, not separated by any other tokens.
+
+ You may optionally specify attribute names with '__' preceding and
+following the name.  This allows you to use them in header files without
+being concerned about a possible macro of the same name.  For example,
+you may use the attribute name '__noreturn__' instead of 'noreturn'.
+
+Label Attributes
+................
+
+In GNU C, an attribute specifier list may appear after the colon
+following a label, other than a 'case' or 'default' label.  GNU C++ only
+permits attributes on labels if the attribute specifier is immediately
+followed by a semicolon (i.e., the label applies to an empty statement).
+If the semicolon is missing, C++ label attributes are ambiguous, as it
+is permissible for a declaration, which could begin with an attribute
+list, to be labelled in C++.  Declarations cannot be labelled in C90 or
+C99, so the ambiguity does not arise there.
+
+Type Attributes
+...............
+
+An attribute specifier list may appear as part of a 'struct', 'union' or
+'enum' specifier.  It may go either immediately after the 'struct',
+'union' or 'enum' keyword, or after the closing brace.  The former
+syntax is preferred.  Where attribute specifiers follow the closing
+brace, they are considered to relate to the structure, union or
+enumerated type defined, not to any enclosing declaration the type
+specifier appears in, and the type defined is not complete until after
+the attribute specifiers.
+
+All other attributes
+....................
+
+Otherwise, an attribute specifier appears as part of a declaration,
+counting declarations of unnamed parameters and type names, and relates
+to that declaration (which may be nested in another declaration, for
+example in the case of a parameter declaration), or to a particular
+declarator within a declaration.  Where an attribute specifier is
+applied to a parameter declared as a function or an array, it should
+apply to the function or array rather than the pointer to which the
+parameter is implicitly converted, but this is not yet correctly
+implemented.
+
+ Any list of specifiers and qualifiers at the start of a declaration may
+contain attribute specifiers, whether or not such a list may in that
+context contain storage class specifiers.  (Some attributes, however,
+are essentially in the nature of storage class specifiers, and only make
+sense where storage class specifiers may be used; for example,
+'section'.)  There is one necessary limitation to this syntax: the first
+old-style parameter declaration in a function definition cannot begin
+with an attribute specifier, because such an attribute applies to the
+function instead by syntax described below (which, however, is not yet
+implemented in this case).  In some other cases, attribute specifiers
+are permitted by this grammar but not yet supported by the compiler.
+All attribute specifiers in this place relate to the declaration as a
+whole.  In the obsolescent usage where a type of 'int' is implied by the
+absence of type specifiers, such a list of specifiers and qualifiers may
+be an attribute specifier list with no other specifiers or qualifiers.
+
+ At present, the first parameter in a function prototype must have some
+type specifier that is not an attribute specifier; this resolves an
+ambiguity in the interpretation of 'void f(int (__attribute__((foo))
+x))', but is subject to change.  At present, if the parentheses of a
+function declarator contain only attributes then those attributes are
+ignored, rather than yielding an error or warning or implying a single
+parameter of type int, but this is subject to change.
+
+ An attribute specifier list may appear immediately before a declarator
+(other than the first) in a comma-separated list of declarators in a
+declaration of more than one identifier using a single list of
+specifiers and qualifiers.  Such attribute specifiers apply only to the
+identifier before whose declarator they appear.  For example, in
+
+     __attribute__((noreturn)) void d0 (void),
+         __attribute__((format(printf, 1, 2))) d1 (const char *, ...),
+          d2 (void);
+
+the 'noreturn' attribute applies to all the functions declared; the
+'format' attribute only applies to 'd1'.
+
+ An attribute specifier list may appear immediately before the comma,
+'=' or semicolon terminating the declaration of an identifier other than
+a function definition.  Such attribute specifiers apply to the declared
+object or function.  Where an assembler name for an object or function
+is specified (*note Asm Labels::), the attribute must follow the 'asm'
+specification.
+
+ An attribute specifier list may, in future, be permitted to appear
+after the declarator in a function definition (before any old-style
+parameter declarations or the function body).
+
+ Attribute specifiers may be mixed with type qualifiers appearing inside
+the '[]' of a parameter array declarator, in the C99 construct by which
+such qualifiers are applied to the pointer to which the array is
+implicitly converted.  Such attribute specifiers apply to the pointer,
+not to the array, but at present this is not implemented and they are
+ignored.
+
+ An attribute specifier list may appear at the start of a nested
+declarator.  At present, there are some limitations in this usage: the
+attributes correctly apply to the declarator, but for most individual
+attributes the semantics this implies are not implemented.  When
+attribute specifiers follow the '*' of a pointer declarator, they may be
+mixed with any type qualifiers present.  The following describes the
+formal semantics of this syntax.  It makes the most sense if you are
+familiar with the formal specification of declarators in the ISO C
+standard.
+
+ Consider (as in C99 subclause 6.7.5 paragraph 4) a declaration 'T D1',
+where 'T' contains declaration specifiers that specify a type TYPE (such
+as 'int') and 'D1' is a declarator that contains an identifier IDENT.
+The type specified for IDENT for derived declarators whose type does not
+include an attribute specifier is as in the ISO C standard.
+
+ If 'D1' has the form '( ATTRIBUTE-SPECIFIER-LIST D )', and the
+declaration 'T D' specifies the type "DERIVED-DECLARATOR-TYPE-LIST TYPE"
+for IDENT, then 'T D1' specifies the type "DERIVED-DECLARATOR-TYPE-LIST
+ATTRIBUTE-SPECIFIER-LIST TYPE" for IDENT.
+
+ If 'D1' has the form '* TYPE-QUALIFIER-AND-ATTRIBUTE-SPECIFIER-LIST D',
+and the declaration 'T D' specifies the type
+"DERIVED-DECLARATOR-TYPE-LIST TYPE" for IDENT, then 'T D1' specifies the
+type "DERIVED-DECLARATOR-TYPE-LIST
+TYPE-QUALIFIER-AND-ATTRIBUTE-SPECIFIER-LIST pointer to TYPE" for IDENT.
+
+ For example,
+
+     void (__attribute__((noreturn)) ****f) (void);
+
+specifies the type "pointer to pointer to pointer to pointer to
+non-returning function returning 'void'".  As another example,
+
+     char *__attribute__((aligned(8))) *f;
+
+specifies the type "pointer to 8-byte-aligned pointer to 'char'".  Note
+again that this does not work with most attributes; for example, the
+usage of 'aligned' and 'noreturn' attributes given above is not yet
+supported.
+
+ For compatibility with existing code written for compiler versions that
+did not implement attributes on nested declarators, some laxity is
+allowed in the placing of attributes.  If an attribute that only applies
+to types is applied to a declaration, it is treated as applying to the
+type of that declaration.  If an attribute that only applies to
+declarations is applied to the type of a declaration, it is treated as
+applying to that declaration; and, for compatibility with code placing
+the attributes immediately before the identifier declared, such an
+attribute applied to a function return type is treated as applying to
+the function type, and such an attribute applied to an array element
+type is treated as applying to the array type.  If an attribute that
+only applies to function types is applied to a pointer-to-function type,
+it is treated as applying to the pointer target type; if such an
+attribute is applied to a function return type that is not a
+pointer-to-function type, it is treated as applying to the function
+type.
+
+
+File: gcc.info,  Node: Function Prototypes,  Next: C++ Comments,  Prev: Attribute Syntax,  Up: C Extensions
+
+6.36 Prototypes and Old-Style Function Definitions
+==================================================
+
+GNU C extends ISO C to allow a function prototype to override a later
+old-style non-prototype definition.  Consider the following example:
+
+     /* Use prototypes unless the compiler is old-fashioned.  */
+     #ifdef __STDC__
+     #define P(x) x
+     #else
+     #define P(x) ()
+     #endif
+
+     /* Prototype function declaration.  */
+     int isroot P((uid_t));
+
+     /* Old-style function definition.  */
+     int
+     isroot (x)   /* ??? lossage here ??? */
+          uid_t x;
+     {
+       return x == 0;
+     }
+
+ Suppose the type 'uid_t' happens to be 'short'.  ISO C does not allow
+this example, because subword arguments in old-style non-prototype
+definitions are promoted.  Therefore in this example the function
+definition's argument is really an 'int', which does not match the
+prototype argument type of 'short'.
+
+ This restriction of ISO C makes it hard to write code that is portable
+to traditional C compilers, because the programmer does not know whether
+the 'uid_t' type is 'short', 'int', or 'long'.  Therefore, in cases like
+these GNU C allows a prototype to override a later old-style definition.
+More precisely, in GNU C, a function prototype argument type overrides
+the argument type specified by a later old-style definition if the
+former type is the same as the latter type before promotion.  Thus in
+GNU C the above example is equivalent to the following:
+
+     int isroot (uid_t);
+
+     int
+     isroot (uid_t x)
+     {
+       return x == 0;
+     }
+
+GNU C++ does not support old-style function definitions, so this
+extension is irrelevant.
+
+
+File: gcc.info,  Node: C++ Comments,  Next: Dollar Signs,  Prev: Function Prototypes,  Up: C Extensions
+
+6.37 C++ Style Comments
+=======================
+
+In GNU C, you may use C++ style comments, which start with '//' and
+continue until the end of the line.  Many other C implementations allow
+such comments, and they are included in the 1999 C standard.  However,
+C++ style comments are not recognized if you specify an '-std' option
+specifying a version of ISO C before C99, or '-ansi' (equivalent to
+'-std=c90').
+
+
+File: gcc.info,  Node: Dollar Signs,  Next: Character Escapes,  Prev: C++ Comments,  Up: C Extensions
+
+6.38 Dollar Signs in Identifier Names
+=====================================
+
+In GNU C, you may normally use dollar signs in identifier names.  This
+is because many traditional C implementations allow such identifiers.
+However, dollar signs in identifiers are not supported on a few target
+machines, typically because the target assembler does not allow them.
+
+
+File: gcc.info,  Node: Character Escapes,  Next: Alignment,  Prev: Dollar Signs,  Up: C Extensions
+
+6.39 The Character <ESC> in Constants
+=====================================
+
+You can use the sequence '\e' in a string or character constant to stand
+for the ASCII character <ESC>.
+
+
+File: gcc.info,  Node: Alignment,  Next: Inline,  Prev: Character Escapes,  Up: C Extensions
 
 6.40 Inquiring on Alignment of Types or Variables
 =================================================
@@ -48736,33 +48786,33 @@ look up both forms.
 * c <1>:                                 Link Options.       (line   20)
 * client_name:                           Darwin Options.     (line  196)
 * compatibility_version:                 Darwin Options.     (line  196)
-* coverage:                              Debugging Options.  (line  725)
+* coverage:                              Debugging Options.  (line  726)
 * current_version:                       Darwin Options.     (line  196)
-* d:                                     Debugging Options.  (line  857)
+* d:                                     Debugging Options.  (line  858)
 * D:                                     Preprocessor Options.
                                                              (line   46)
-* da:                                    Debugging Options.  (line 1059)
-* dA:                                    Debugging Options.  (line 1062)
-* dD:                                    Debugging Options.  (line 1066)
+* da:                                    Debugging Options.  (line 1060)
+* dA:                                    Debugging Options.  (line 1063)
+* dD:                                    Debugging Options.  (line 1067)
 * dD <1>:                                Preprocessor Options.
                                                              (line  626)
 * dead_strip:                            Darwin Options.     (line  196)
 * dependency-file:                       Darwin Options.     (line  196)
-* dH:                                    Debugging Options.  (line 1070)
+* dH:                                    Debugging Options.  (line 1071)
 * dI:                                    Preprocessor Options.
                                                              (line  635)
 * dM:                                    Preprocessor Options.
                                                              (line  611)
 * dN:                                    Preprocessor Options.
                                                              (line  632)
-* dp:                                    Debugging Options.  (line 1073)
-* dP:                                    Debugging Options.  (line 1078)
+* dp:                                    Debugging Options.  (line 1074)
+* dP:                                    Debugging Options.  (line 1079)
 * dU:                                    Preprocessor Options.
                                                              (line  639)
-* dumpmachine:                           Debugging Options.  (line 1650)
-* dumpspecs:                             Debugging Options.  (line 1658)
-* dumpversion:                           Debugging Options.  (line 1654)
-* dx:                                    Debugging Options.  (line 1082)
+* dumpmachine:                           Debugging Options.  (line 1651)
+* dumpspecs:                             Debugging Options.  (line 1659)
+* dumpversion:                           Debugging Options.  (line 1655)
+* dx:                                    Debugging Options.  (line 1083)
 * dylib_file:                            Darwin Options.     (line  196)
 * dylinker_install_name:                 Darwin Options.     (line  196)
 * dynamic:                               Darwin Options.     (line  196)
@@ -48787,7 +48837,7 @@ look up both forms.
 * falign-loops:                          Optimize Options.   (line 1596)
 * fallow-parameterless-variadic-functions: C Dialect Options.
                                                              (line  189)
-* fasan-shadow-offset:                   Debugging Options.  (line  353)
+* fasan-shadow-offset:                   Debugging Options.  (line  354)
 * fassociative-math:                     Optimize Options.   (line 2120)
 * fasynchronous-unwind-tables:           Code Gen Options.   (line  146)
 * fauto-inc-dec:                         Optimize Options.   (line  526)
@@ -48803,30 +48853,30 @@ look up both forms.
 * fcheck-data-deps:                      Optimize Options.   (line 1195)
 * fcheck-new:                            C++ Dialect Options.
                                                              (line   73)
-* fcheck-pointer-bounds:                 Debugging Options.  (line  392)
-* fchkp-check-incomplete-type:           Debugging Options.  (line  432)
-* fchkp-check-read:                      Debugging Options.  (line  482)
-* fchkp-check-write:                     Debugging Options.  (line  486)
-* fchkp-first-field-has-own-bounds:      Debugging Options.  (line  443)
-* fchkp-instrument-calls:                Debugging Options.  (line  494)
-* fchkp-instrument-marked-only:          Debugging Options.  (line  498)
-* fchkp-narrow-bounds:                   Debugging Options.  (line  436)
-* fchkp-narrow-to-innermost-array:       Debugging Options.  (line  449)
-* fchkp-optimize:                        Debugging Options.  (line  454)
-* fchkp-store-bounds:                    Debugging Options.  (line  490)
+* fcheck-pointer-bounds:                 Debugging Options.  (line  393)
+* fchkp-check-incomplete-type:           Debugging Options.  (line  433)
+* fchkp-check-read:                      Debugging Options.  (line  483)
+* fchkp-check-write:                     Debugging Options.  (line  487)
+* fchkp-first-field-has-own-bounds:      Debugging Options.  (line  444)
+* fchkp-instrument-calls:                Debugging Options.  (line  495)
+* fchkp-instrument-marked-only:          Debugging Options.  (line  499)
+* fchkp-narrow-bounds:                   Debugging Options.  (line  437)
+* fchkp-narrow-to-innermost-array:       Debugging Options.  (line  450)
+* fchkp-optimize:                        Debugging Options.  (line  455)
+* fchkp-store-bounds:                    Debugging Options.  (line  491)
 * fchkp-treat-zero-dynamic-size-as-infinite: Debugging Options.
-                                                             (line  475)
-* fchkp-use-fast-string-functions:       Debugging Options.  (line  458)
-* fchkp-use-nochk-string-functions:      Debugging Options.  (line  462)
-* fchkp-use-static-bounds:               Debugging Options.  (line  466)
-* fchkp-use-static-const-bounds:         Debugging Options.  (line  470)
-* fchkp-use-wrappers:                    Debugging Options.  (line  503)
+                                                             (line  476)
+* fchkp-use-fast-string-functions:       Debugging Options.  (line  459)
+* fchkp-use-nochk-string-functions:      Debugging Options.  (line  463)
+* fchkp-use-static-bounds:               Debugging Options.  (line  467)
+* fchkp-use-static-const-bounds:         Debugging Options.  (line  471)
+* fchkp-use-wrappers:                    Debugging Options.  (line  504)
 * fcilkplus:                             C Dialect Options.  (line  289)
 * fcombine-stack-adjustments:            Optimize Options.   (line  887)
 * fcommon:                               Common Variable Attributes.
                                                              (line   89)
-* fcompare-debug:                        Debugging Options.  (line  516)
-* fcompare-debug-second:                 Debugging Options.  (line  542)
+* fcompare-debug:                        Debugging Options.  (line  517)
+* fcompare-debug-second:                 Debugging Options.  (line  543)
 * fcompare-elim:                         Optimize Options.   (line 1933)
 * fcond-mismatch:                        C Dialect Options.  (line  353)
 * fconserve-stack:                       Optimize Options.   (line  902)
@@ -48841,12 +48891,12 @@ look up both forms.
 * fcx-fortran-rules:                     Optimize Options.   (line 2235)
 * fcx-limited-range:                     Optimize Options.   (line 2223)
 * fdata-sections:                        Optimize Options.   (line 2352)
-* fdbg-cnt:                              Debugging Options.  (line  777)
-* fdbg-cnt-list:                         Debugging Options.  (line  774)
+* fdbg-cnt:                              Debugging Options.  (line  778)
+* fdbg-cnt-list:                         Debugging Options.  (line  775)
 * fdce:                                  Optimize Options.   (line  532)
 * fdebug-cpp:                            Preprocessor Options.
                                                              (line  526)
-* fdebug-prefix-map:                     Debugging Options.  (line  636)
+* fdebug-prefix-map:                     Debugging Options.  (line  637)
 * fdebug-types-section:                  Debugging Options.  (line   79)
 * fdeclone-ctor-dtor:                    Optimize Options.   (line  555)
 * fdeduce-init-list:                     C++ Dialect Options.
@@ -48867,127 +48917,127 @@ look up both forms.
                                                              (line   88)
 * fdirectives-only:                      Preprocessor Options.
                                                              (line  475)
-* fdisable-:                             Debugging Options.  (line  787)
+* fdisable-:                             Debugging Options.  (line  788)
 * fdollars-in-identifiers:               Preprocessor Options.
                                                              (line  496)
 * fdollars-in-identifiers <1>:           Interoperation.     (line  141)
 * fdse:                                  Optimize Options.   (line  536)
 * fdump-ada-spec:                        Overall Options.    (line  362)
-* fdump-class-hierarchy:                 Debugging Options.  (line 1117)
-* fdump-final-insns:                     Debugging Options.  (line  510)
+* fdump-class-hierarchy:                 Debugging Options.  (line 1118)
+* fdump-final-insns:                     Debugging Options.  (line  511)
 * fdump-go-spec:                         Overall Options.    (line  371)
-* fdump-ipa:                             Debugging Options.  (line 1125)
-* fdump-noaddr:                          Debugging Options.  (line 1086)
-* fdump-passes:                          Debugging Options.  (line 1142)
-* fdump-rtl-alignments:                  Debugging Options.  (line  878)
-* fdump-rtl-all:                         Debugging Options.  (line 1059)
-* fdump-rtl-asmcons:                     Debugging Options.  (line  881)
-* fdump-rtl-auto_inc_dec:                Debugging Options.  (line  885)
-* fdump-rtl-barriers:                    Debugging Options.  (line  889)
-* fdump-rtl-bbpart:                      Debugging Options.  (line  892)
-* fdump-rtl-bbro:                        Debugging Options.  (line  895)
-* fdump-rtl-btl2:                        Debugging Options.  (line  899)
-* fdump-rtl-btl2 <1>:                    Debugging Options.  (line  899)
-* fdump-rtl-bypass:                      Debugging Options.  (line  903)
-* fdump-rtl-ce1:                         Debugging Options.  (line  914)
-* fdump-rtl-ce2:                         Debugging Options.  (line  914)
-* fdump-rtl-ce3:                         Debugging Options.  (line  914)
-* fdump-rtl-combine:                     Debugging Options.  (line  906)
-* fdump-rtl-compgotos:                   Debugging Options.  (line  909)
-* fdump-rtl-cprop_hardreg:               Debugging Options.  (line  918)
-* fdump-rtl-csa:                         Debugging Options.  (line  921)
-* fdump-rtl-cse1:                        Debugging Options.  (line  925)
-* fdump-rtl-cse2:                        Debugging Options.  (line  925)
-* fdump-rtl-dbr:                         Debugging Options.  (line  932)
-* fdump-rtl-dce:                         Debugging Options.  (line  929)
-* fdump-rtl-dce1:                        Debugging Options.  (line  936)
-* fdump-rtl-dce2:                        Debugging Options.  (line  936)
-* fdump-rtl-dfinish:                     Debugging Options.  (line 1055)
-* fdump-rtl-dfinit:                      Debugging Options.  (line 1055)
-* fdump-rtl-eh:                          Debugging Options.  (line  940)
-* fdump-rtl-eh_ranges:                   Debugging Options.  (line  943)
-* fdump-rtl-expand:                      Debugging Options.  (line  946)
-* fdump-rtl-fwprop1:                     Debugging Options.  (line  950)
-* fdump-rtl-fwprop2:                     Debugging Options.  (line  950)
-* fdump-rtl-gcse1:                       Debugging Options.  (line  955)
-* fdump-rtl-gcse2:                       Debugging Options.  (line  955)
-* fdump-rtl-init-regs:                   Debugging Options.  (line  959)
-* fdump-rtl-initvals:                    Debugging Options.  (line  962)
-* fdump-rtl-into_cfglayout:              Debugging Options.  (line  965)
-* fdump-rtl-ira:                         Debugging Options.  (line  968)
-* fdump-rtl-jump:                        Debugging Options.  (line  971)
-* fdump-rtl-loop2:                       Debugging Options.  (line  974)
-* fdump-rtl-mach:                        Debugging Options.  (line  978)
-* fdump-rtl-mode_sw:                     Debugging Options.  (line  982)
-* fdump-rtl-outof_cfglayout:             Debugging Options.  (line  988)
-* fdump-rtl-PASS:                        Debugging Options.  (line  857)
-* fdump-rtl-peephole2:                   Debugging Options.  (line  991)
-* fdump-rtl-postreload:                  Debugging Options.  (line  994)
-* fdump-rtl-pro_and_epilogue:            Debugging Options.  (line  997)
-* fdump-rtl-ree:                         Debugging Options.  (line 1005)
-* fdump-rtl-regclass:                    Debugging Options.  (line 1055)
-* fdump-rtl-rnreg:                       Debugging Options.  (line  985)
-* fdump-rtl-sched1:                      Debugging Options.  (line 1001)
-* fdump-rtl-sched2:                      Debugging Options.  (line 1001)
-* fdump-rtl-seqabstr:                    Debugging Options.  (line 1008)
-* fdump-rtl-shorten:                     Debugging Options.  (line 1011)
-* fdump-rtl-sibling:                     Debugging Options.  (line 1014)
-* fdump-rtl-sms:                         Debugging Options.  (line 1025)
-* fdump-rtl-split1:                      Debugging Options.  (line 1021)
-* fdump-rtl-split2:                      Debugging Options.  (line 1021)
-* fdump-rtl-split3:                      Debugging Options.  (line 1021)
-* fdump-rtl-split4:                      Debugging Options.  (line 1021)
-* fdump-rtl-split5:                      Debugging Options.  (line 1021)
-* fdump-rtl-stack:                       Debugging Options.  (line 1029)
-* fdump-rtl-subreg1:                     Debugging Options.  (line 1035)
-* fdump-rtl-subreg2:                     Debugging Options.  (line 1035)
-* fdump-rtl-subregs_of_mode_finish:      Debugging Options.  (line 1055)
-* fdump-rtl-subregs_of_mode_init:        Debugging Options.  (line 1055)
-* fdump-rtl-unshare:                     Debugging Options.  (line 1039)
-* fdump-rtl-vartrack:                    Debugging Options.  (line 1042)
-* fdump-rtl-vregs:                       Debugging Options.  (line 1045)
-* fdump-rtl-web:                         Debugging Options.  (line 1048)
-* fdump-statistics:                      Debugging Options.  (line 1146)
-* fdump-translation-unit:                Debugging Options.  (line 1108)
-* fdump-tree:                            Debugging Options.  (line 1158)
-* fdump-tree-alias:                      Debugging Options.  (line 1280)
-* fdump-tree-all:                        Debugging Options.  (line 1364)
-* fdump-tree-ccp:                        Debugging Options.  (line 1284)
-* fdump-tree-cfg:                        Debugging Options.  (line 1268)
-* fdump-tree-ch:                         Debugging Options.  (line 1272)
-* fdump-tree-copyprop:                   Debugging Options.  (line 1300)
-* fdump-tree-copyrename:                 Debugging Options.  (line 1340)
-* fdump-tree-dce:                        Debugging Options.  (line 1308)
-* fdump-tree-dom:                        Debugging Options.  (line 1321)
-* fdump-tree-dse:                        Debugging Options.  (line 1326)
-* fdump-tree-forwprop:                   Debugging Options.  (line 1335)
-* fdump-tree-fre:                        Debugging Options.  (line 1296)
-* fdump-tree-gimple:                     Debugging Options.  (line 1263)
-* fdump-tree-nrv:                        Debugging Options.  (line 1345)
-* fdump-tree-optimized:                  Debugging Options.  (line 1260)
-* fdump-tree-original:                   Debugging Options.  (line 1257)
-* fdump-tree-phiopt:                     Debugging Options.  (line 1330)
-* fdump-tree-pre:                        Debugging Options.  (line 1292)
-* fdump-tree-sink:                       Debugging Options.  (line 1317)
-* fdump-tree-slp:                        Debugging Options.  (line 1355)
-* fdump-tree-sra:                        Debugging Options.  (line 1312)
-* fdump-tree-ssa:                        Debugging Options.  (line 1276)
-* fdump-tree-storeccp:                   Debugging Options.  (line 1288)
-* fdump-tree-store_copyprop:             Debugging Options.  (line 1304)
-* fdump-tree-vect:                       Debugging Options.  (line 1350)
-* fdump-tree-vrp:                        Debugging Options.  (line 1360)
-* fdump-unnumbered:                      Debugging Options.  (line 1096)
-* fdump-unnumbered-links:                Debugging Options.  (line 1102)
-* fdwarf2-cfi-asm:                       Debugging Options.  (line  640)
+* fdump-ipa:                             Debugging Options.  (line 1126)
+* fdump-noaddr:                          Debugging Options.  (line 1087)
+* fdump-passes:                          Debugging Options.  (line 1143)
+* fdump-rtl-alignments:                  Debugging Options.  (line  879)
+* fdump-rtl-all:                         Debugging Options.  (line 1060)
+* fdump-rtl-asmcons:                     Debugging Options.  (line  882)
+* fdump-rtl-auto_inc_dec:                Debugging Options.  (line  886)
+* fdump-rtl-barriers:                    Debugging Options.  (line  890)
+* fdump-rtl-bbpart:                      Debugging Options.  (line  893)
+* fdump-rtl-bbro:                        Debugging Options.  (line  896)
+* fdump-rtl-btl2:                        Debugging Options.  (line  900)
+* fdump-rtl-btl2 <1>:                    Debugging Options.  (line  900)
+* fdump-rtl-bypass:                      Debugging Options.  (line  904)
+* fdump-rtl-ce1:                         Debugging Options.  (line  915)
+* fdump-rtl-ce2:                         Debugging Options.  (line  915)
+* fdump-rtl-ce3:                         Debugging Options.  (line  915)
+* fdump-rtl-combine:                     Debugging Options.  (line  907)
+* fdump-rtl-compgotos:                   Debugging Options.  (line  910)
+* fdump-rtl-cprop_hardreg:               Debugging Options.  (line  919)
+* fdump-rtl-csa:                         Debugging Options.  (line  922)
+* fdump-rtl-cse1:                        Debugging Options.  (line  926)
+* fdump-rtl-cse2:                        Debugging Options.  (line  926)
+* fdump-rtl-dbr:                         Debugging Options.  (line  933)
+* fdump-rtl-dce:                         Debugging Options.  (line  930)
+* fdump-rtl-dce1:                        Debugging Options.  (line  937)
+* fdump-rtl-dce2:                        Debugging Options.  (line  937)
+* fdump-rtl-dfinish:                     Debugging Options.  (line 1056)
+* fdump-rtl-dfinit:                      Debugging Options.  (line 1056)
+* fdump-rtl-eh:                          Debugging Options.  (line  941)
+* fdump-rtl-eh_ranges:                   Debugging Options.  (line  944)
+* fdump-rtl-expand:                      Debugging Options.  (line  947)
+* fdump-rtl-fwprop1:                     Debugging Options.  (line  951)
+* fdump-rtl-fwprop2:                     Debugging Options.  (line  951)
+* fdump-rtl-gcse1:                       Debugging Options.  (line  956)
+* fdump-rtl-gcse2:                       Debugging Options.  (line  956)
+* fdump-rtl-init-regs:                   Debugging Options.  (line  960)
+* fdump-rtl-initvals:                    Debugging Options.  (line  963)
+* fdump-rtl-into_cfglayout:              Debugging Options.  (line  966)
+* fdump-rtl-ira:                         Debugging Options.  (line  969)
+* fdump-rtl-jump:                        Debugging Options.  (line  972)
+* fdump-rtl-loop2:                       Debugging Options.  (line  975)
+* fdump-rtl-mach:                        Debugging Options.  (line  979)
+* fdump-rtl-mode_sw:                     Debugging Options.  (line  983)
+* fdump-rtl-outof_cfglayout:             Debugging Options.  (line  989)
+* fdump-rtl-PASS:                        Debugging Options.  (line  858)
+* fdump-rtl-peephole2:                   Debugging Options.  (line  992)
+* fdump-rtl-postreload:                  Debugging Options.  (line  995)
+* fdump-rtl-pro_and_epilogue:            Debugging Options.  (line  998)
+* fdump-rtl-ree:                         Debugging Options.  (line 1006)
+* fdump-rtl-regclass:                    Debugging Options.  (line 1056)
+* fdump-rtl-rnreg:                       Debugging Options.  (line  986)
+* fdump-rtl-sched1:                      Debugging Options.  (line 1002)
+* fdump-rtl-sched2:                      Debugging Options.  (line 1002)
+* fdump-rtl-seqabstr:                    Debugging Options.  (line 1009)
+* fdump-rtl-shorten:                     Debugging Options.  (line 1012)
+* fdump-rtl-sibling:                     Debugging Options.  (line 1015)
+* fdump-rtl-sms:                         Debugging Options.  (line 1026)
+* fdump-rtl-split1:                      Debugging Options.  (line 1022)
+* fdump-rtl-split2:                      Debugging Options.  (line 1022)
+* fdump-rtl-split3:                      Debugging Options.  (line 1022)
+* fdump-rtl-split4:                      Debugging Options.  (line 1022)
+* fdump-rtl-split5:                      Debugging Options.  (line 1022)
+* fdump-rtl-stack:                       Debugging Options.  (line 1030)
+* fdump-rtl-subreg1:                     Debugging Options.  (line 1036)
+* fdump-rtl-subreg2:                     Debugging Options.  (line 1036)
+* fdump-rtl-subregs_of_mode_finish:      Debugging Options.  (line 1056)
+* fdump-rtl-subregs_of_mode_init:        Debugging Options.  (line 1056)
+* fdump-rtl-unshare:                     Debugging Options.  (line 1040)
+* fdump-rtl-vartrack:                    Debugging Options.  (line 1043)
+* fdump-rtl-vregs:                       Debugging Options.  (line 1046)
+* fdump-rtl-web:                         Debugging Options.  (line 1049)
+* fdump-statistics:                      Debugging Options.  (line 1147)
+* fdump-translation-unit:                Debugging Options.  (line 1109)
+* fdump-tree:                            Debugging Options.  (line 1159)
+* fdump-tree-alias:                      Debugging Options.  (line 1281)
+* fdump-tree-all:                        Debugging Options.  (line 1365)
+* fdump-tree-ccp:                        Debugging Options.  (line 1285)
+* fdump-tree-cfg:                        Debugging Options.  (line 1269)
+* fdump-tree-ch:                         Debugging Options.  (line 1273)
+* fdump-tree-copyprop:                   Debugging Options.  (line 1301)
+* fdump-tree-copyrename:                 Debugging Options.  (line 1341)
+* fdump-tree-dce:                        Debugging Options.  (line 1309)
+* fdump-tree-dom:                        Debugging Options.  (line 1322)
+* fdump-tree-dse:                        Debugging Options.  (line 1327)
+* fdump-tree-forwprop:                   Debugging Options.  (line 1336)
+* fdump-tree-fre:                        Debugging Options.  (line 1297)
+* fdump-tree-gimple:                     Debugging Options.  (line 1264)
+* fdump-tree-nrv:                        Debugging Options.  (line 1346)
+* fdump-tree-optimized:                  Debugging Options.  (line 1261)
+* fdump-tree-original:                   Debugging Options.  (line 1258)
+* fdump-tree-phiopt:                     Debugging Options.  (line 1331)
+* fdump-tree-pre:                        Debugging Options.  (line 1293)
+* fdump-tree-sink:                       Debugging Options.  (line 1318)
+* fdump-tree-slp:                        Debugging Options.  (line 1356)
+* fdump-tree-sra:                        Debugging Options.  (line 1313)
+* fdump-tree-ssa:                        Debugging Options.  (line 1277)
+* fdump-tree-storeccp:                   Debugging Options.  (line 1289)
+* fdump-tree-store_copyprop:             Debugging Options.  (line 1305)
+* fdump-tree-vect:                       Debugging Options.  (line 1351)
+* fdump-tree-vrp:                        Debugging Options.  (line 1361)
+* fdump-unnumbered:                      Debugging Options.  (line 1097)
+* fdump-unnumbered-links:                Debugging Options.  (line 1103)
+* fdwarf2-cfi-asm:                       Debugging Options.  (line  641)
 * fearly-inlining:                       Optimize Options.   (line  290)
-* feliminate-dwarf2-dups:                Debugging Options.  (line  555)
+* feliminate-dwarf2-dups:                Debugging Options.  (line  556)
 * feliminate-unused-debug-symbols:       Debugging Options.  (line   67)
-* feliminate-unused-debug-types:         Debugging Options.  (line 1662)
+* feliminate-unused-debug-types:         Debugging Options.  (line 1663)
 * femit-class-debug-always:              Debugging Options.  (line   71)
-* femit-struct-debug-baseonly:           Debugging Options.  (line  560)
-* femit-struct-debug-detailed:           Debugging Options.  (line  587)
-* femit-struct-debug-reduced:            Debugging Options.  (line  573)
-* fenable-:                              Debugging Options.  (line  787)
+* femit-struct-debug-baseonly:           Debugging Options.  (line  561)
+* femit-struct-debug-detailed:           Debugging Options.  (line  588)
+* femit-struct-debug-reduced:            Debugging Options.  (line  574)
+* fenable-:                              Debugging Options.  (line  788)
 * fexceptions:                           Code Gen Options.   (line  109)
 * fexcess-precision:                     Optimize Options.   (line 2047)
 * fexec-charset:                         Preprocessor Options.
@@ -49090,11 +49140,11 @@ look up both forms.
 * flto-report:                           Optimize Options.   (line 1885)
 * flto-report-wpa:                       Optimize Options.   (line 1893)
 * fmax-errors:                           Warning Options.    (line   18)
-* fmem-report:                           Debugging Options.  (line  664)
-* fmem-report-wpa:                       Debugging Options.  (line  668)
+* fmem-report:                           Debugging Options.  (line  665)
+* fmem-report-wpa:                       Debugging Options.  (line  669)
 * fmerge-all-constants:                  Optimize Options.   (line  363)
 * fmerge-constants:                      Optimize Options.   (line  353)
-* fmerge-debug-strings:                  Debugging Options.  (line  629)
+* fmerge-debug-strings:                  Debugging Options.  (line  630)
 * fmessage-length:                       Language Independent Options.
                                                              (line   14)
 * fmodulo-sched:                         Optimize Options.   (line  374)
@@ -49117,28 +49167,28 @@ look up both forms.
 * fno-builtin <3>:                       Other Builtins.     (line   14)
 * fno-canonical-system-headers:          Preprocessor Options.
                                                              (line  503)
-* fno-check-pointer-bounds:              Debugging Options.  (line  392)
-* fno-chkp-check-incomplete-type:        Debugging Options.  (line  432)
-* fno-chkp-check-read:                   Debugging Options.  (line  482)
-* fno-chkp-check-write:                  Debugging Options.  (line  486)
-* fno-chkp-first-field-has-own-bounds:   Debugging Options.  (line  443)
-* fno-chkp-instrument-calls:             Debugging Options.  (line  494)
-* fno-chkp-instrument-marked-only:       Debugging Options.  (line  498)
-* fno-chkp-narrow-bounds:                Debugging Options.  (line  436)
-* fno-chkp-narrow-to-innermost-array:    Debugging Options.  (line  449)
-* fno-chkp-optimize:                     Debugging Options.  (line  454)
-* fno-chkp-store-bounds:                 Debugging Options.  (line  490)
+* fno-check-pointer-bounds:              Debugging Options.  (line  393)
+* fno-chkp-check-incomplete-type:        Debugging Options.  (line  433)
+* fno-chkp-check-read:                   Debugging Options.  (line  483)
+* fno-chkp-check-write:                  Debugging Options.  (line  487)
+* fno-chkp-first-field-has-own-bounds:   Debugging Options.  (line  444)
+* fno-chkp-instrument-calls:             Debugging Options.  (line  495)
+* fno-chkp-instrument-marked-only:       Debugging Options.  (line  499)
+* fno-chkp-narrow-bounds:                Debugging Options.  (line  437)
+* fno-chkp-narrow-to-innermost-array:    Debugging Options.  (line  450)
+* fno-chkp-optimize:                     Debugging Options.  (line  455)
+* fno-chkp-store-bounds:                 Debugging Options.  (line  491)
 * fno-chkp-treat-zero-dynamic-size-as-infinite: Debugging Options.
-                                                             (line  475)
-* fno-chkp-use-fast-string-functions:    Debugging Options.  (line  458)
-* fno-chkp-use-nochk-string-functions:   Debugging Options.  (line  462)
-* fno-chkp-use-static-bounds:            Debugging Options.  (line  466)
-* fno-chkp-use-static-const-bounds:      Debugging Options.  (line  470)
-* fno-chkp-use-wrappers:                 Debugging Options.  (line  503)
+                                                             (line  476)
+* fno-chkp-use-fast-string-functions:    Debugging Options.  (line  459)
+* fno-chkp-use-nochk-string-functions:   Debugging Options.  (line  463)
+* fno-chkp-use-static-bounds:            Debugging Options.  (line  467)
+* fno-chkp-use-static-const-bounds:      Debugging Options.  (line  471)
+* fno-chkp-use-wrappers:                 Debugging Options.  (line  504)
 * fno-common:                            Code Gen Options.   (line  229)
 * fno-common <1>:                        Common Variable Attributes.
                                                              (line   89)
-* fno-compare-debug:                     Debugging Options.  (line  516)
+* fno-compare-debug:                     Debugging Options.  (line  517)
 * fno-debug-types-section:               Debugging Options.  (line   79)
 * fno-default-inline:                    Inline.             (line   71)
 * fno-defer-pop:                         Optimize Options.   (line  186)
@@ -49146,10 +49196,10 @@ look up both forms.
                                                              (line   94)
 * fno-diagnostics-show-option:           Language Independent Options.
                                                              (line   88)
-* fno-dwarf2-cfi-asm:                    Debugging Options.  (line  640)
+* fno-dwarf2-cfi-asm:                    Debugging Options.  (line  641)
 * fno-elide-constructors:                C++ Dialect Options.
                                                              (line  122)
-* fno-eliminate-unused-debug-types:      Debugging Options.  (line 1662)
+* fno-eliminate-unused-debug-types:      Debugging Options.  (line 1663)
 * fno-enforce-eh-specs:                  C++ Dialect Options.
                                                              (line  128)
 * fno-ext-numeric-literals:              C++ Dialect Options.
@@ -49182,7 +49232,7 @@ look up both forms.
 * fno-local-ivars:                       Objective-C and Objective-C++ Dialect Options.
                                                              (line  153)
 * fno-math-errno:                        Optimize Options.   (line 2084)
-* fno-merge-debug-strings:               Debugging Options.  (line  629)
+* fno-merge-debug-strings:               Debugging Options.  (line  630)
 * fno-nil-receivers:                     Objective-C and Objective-C++ Dialect Options.
                                                              (line   49)
 * fno-nonansi-builtins:                  C++ Dialect Options.
@@ -49197,8 +49247,8 @@ look up both forms.
                                                              (line  228)
 * fno-rtti:                              C++ Dialect Options.
                                                              (line  245)
-* fno-sanitize-recover:                  Debugging Options.  (line  358)
-* fno-sanitize=all:                      Debugging Options.  (line  347)
+* fno-sanitize-recover:                  Debugging Options.  (line  359)
+* fno-sanitize=all:                      Debugging Options.  (line  348)
 * fno-sched-interblock:                  Optimize Options.   (line  731)
 * fno-sched-spec:                        Optimize Options.   (line  736)
 * fno-set-stack-executable:              x86 Windows Options.
@@ -49215,8 +49265,8 @@ look up both forms.
 * fno-unsigned-bitfields:                C Dialect Options.  (line  391)
 * fno-use-cxa-get-exception-ptr:         C++ Dialect Options.
                                                              (line  305)
-* fno-var-tracking-assignments:          Debugging Options.  (line 1568)
-* fno-var-tracking-assignments-toggle:   Debugging Options.  (line 1579)
+* fno-var-tracking-assignments:          Debugging Options.  (line 1569)
+* fno-var-tracking-assignments-toggle:   Debugging Options.  (line 1580)
 * fno-weak:                              C++ Dialect Options.
                                                              (line  419)
 * fno-working-directory:                 Preprocessor Options.
@@ -49245,7 +49295,7 @@ look up both forms.
 * fopenacc:                              C Dialect Options.  (line  263)
 * fopenmp:                               C Dialect Options.  (line  276)
 * fopenmp-simd:                          C Dialect Options.  (line  285)
-* fopt-info:                             Debugging Options.  (line 1370)
+* fopt-info:                             Debugging Options.  (line 1371)
 * foptimize-sibling-calls:               Optimize Options.   (line  234)
 * foptimize-strlen:                      Optimize Options.   (line  239)
 * force_cpusubtype_ALL:                  Darwin Options.     (line  135)
@@ -49269,23 +49319,23 @@ look up both forms.
 * fplan9-extensions <1>:                 Unnamed Fields.     (line   43)
 * fplugin:                               Overall Options.    (line  351)
 * fplugin-arg:                           Overall Options.    (line  358)
-* fpost-ipa-mem-report:                  Debugging Options.  (line  673)
-* fpre-ipa-mem-report:                   Debugging Options.  (line  672)
+* fpost-ipa-mem-report:                  Debugging Options.  (line  674)
+* fpre-ipa-mem-report:                   Debugging Options.  (line  673)
 * fpredictive-commoning:                 Optimize Options.   (line 1403)
 * fprefetch-loop-arrays:                 Optimize Options.   (line 1410)
 * fpreprocessed:                         Preprocessor Options.
                                                              (line  507)
-* fprofile-arcs:                         Debugging Options.  (line  710)
+* fprofile-arcs:                         Debugging Options.  (line  711)
 * fprofile-arcs <1>:                     Other Builtins.     (line  260)
 * fprofile-correction:                   Optimize Options.   (line 1952)
 * fprofile-dir:                          Optimize Options.   (line 1959)
 * fprofile-generate:                     Optimize Options.   (line 1970)
 * fprofile-reorder-functions:            Optimize Options.   (line 2276)
-* fprofile-report:                       Debugging Options.  (line  677)
+* fprofile-report:                       Debugging Options.  (line  678)
 * fprofile-use:                          Optimize Options.   (line 1984)
 * fprofile-values:                       Optimize Options.   (line 2267)
 * fpu:                                   RX Options.         (line   17)
-* frandom-seed:                          Debugging Options.  (line 1462)
+* frandom-seed:                          Debugging Options.  (line 1463)
 * freciprocal-math:                      Optimize Options.   (line 2137)
 * frecord-gcc-switches:                  Code Gen Options.   (line  267)
 * free:                                  Optimize Options.   (line  614)
@@ -49300,34 +49350,34 @@ look up both forms.
                                                              (line  240)
 * frepo <1>:                             Template Instantiation.
                                                              (line   54)
-* freport-bug:                           Debugging Options.  (line 1092)
+* freport-bug:                           Debugging Options.  (line 1093)
 * frerun-cse-after-loop:                 Optimize Options.   (line  455)
 * freschedule-modulo-scheduled-loops:    Optimize Options.   (line  830)
 * frounding-math:                        Optimize Options.   (line 2184)
-* fsanitize-recover:                     Debugging Options.  (line  358)
-* fsanitize-undefined-trap-on-error:     Debugging Options.  (line  385)
+* fsanitize-recover:                     Debugging Options.  (line  359)
+* fsanitize-undefined-trap-on-error:     Debugging Options.  (line  386)
 * fsanitize=address:                     Debugging Options.  (line  199)
-* fsanitize=alignment:                   Debugging Options.  (line  287)
-* fsanitize=bool:                        Debugging Options.  (line  325)
-* fsanitize=bounds:                      Debugging Options.  (line  281)
-* fsanitize=enum:                        Debugging Options.  (line  330)
-* fsanitize=float-cast-overflow:         Debugging Options.  (line  305)
-* fsanitize=float-divide-by-zero:        Debugging Options.  (line  299)
-* fsanitize=integer-divide-by-zero:      Debugging Options.  (line  244)
-* fsanitize=kernel-address:              Debugging Options.  (line  209)
-* fsanitize=leak:                        Debugging Options.  (line  223)
-* fsanitize=nonnull-attribute:           Debugging Options.  (line  313)
-* fsanitize=null:                        Debugging Options.  (line  258)
-* fsanitize=object-size:                 Debugging Options.  (line  294)
-* fsanitize=return:                      Debugging Options.  (line  266)
-* fsanitize=returns-nonnull-attribute:   Debugging Options.  (line  319)
-* fsanitize=shift:                       Debugging Options.  (line  238)
-* fsanitize=signed-integer-overflow:     Debugging Options.  (line  272)
-* fsanitize=thread:                      Debugging Options.  (line  214)
-* fsanitize=undefined:                   Debugging Options.  (line  233)
-* fsanitize=unreachable:                 Debugging Options.  (line  248)
-* fsanitize=vla-bound:                   Debugging Options.  (line  254)
-* fsanitize=vptr:                        Debugging Options.  (line  336)
+* fsanitize=alignment:                   Debugging Options.  (line  288)
+* fsanitize=bool:                        Debugging Options.  (line  326)
+* fsanitize=bounds:                      Debugging Options.  (line  282)
+* fsanitize=enum:                        Debugging Options.  (line  331)
+* fsanitize=float-cast-overflow:         Debugging Options.  (line  306)
+* fsanitize=float-divide-by-zero:        Debugging Options.  (line  300)
+* fsanitize=integer-divide-by-zero:      Debugging Options.  (line  245)
+* fsanitize=kernel-address:              Debugging Options.  (line  211)
+* fsanitize=leak:                        Debugging Options.  (line  224)
+* fsanitize=nonnull-attribute:           Debugging Options.  (line  314)
+* fsanitize=null:                        Debugging Options.  (line  259)
+* fsanitize=object-size:                 Debugging Options.  (line  295)
+* fsanitize=return:                      Debugging Options.  (line  267)
+* fsanitize=returns-nonnull-attribute:   Debugging Options.  (line  320)
+* fsanitize=shift:                       Debugging Options.  (line  239)
+* fsanitize=signed-integer-overflow:     Debugging Options.  (line  273)
+* fsanitize=thread:                      Debugging Options.  (line  215)
+* fsanitize=undefined:                   Debugging Options.  (line  234)
+* fsanitize=unreachable:                 Debugging Options.  (line  249)
+* fsanitize=vla-bound:                   Debugging Options.  (line  255)
+* fsanitize=vptr:                        Debugging Options.  (line  337)
 * fsched-critical-path-heuristic:        Optimize Options.   (line  796)
 * fsched-dep-count-heuristic:            Optimize Options.   (line  823)
 * fsched-group-heuristic:                Optimize Options.   (line  790)
@@ -49339,7 +49389,7 @@ look up both forms.
 * fsched-spec-load-dangerous:            Optimize Options.   (line  755)
 * fsched-stalled-insns:                  Optimize Options.   (line  761)
 * fsched-stalled-insns-dep:              Optimize Options.   (line  771)
-* fsched-verbose:                        Debugging Options.  (line 1472)
+* fsched-verbose:                        Debugging Options.  (line 1473)
 * fsched2-use-superblocks:               Optimize Options.   (line  780)
 * fschedule-fusion:                      Optimize Options.   (line 2303)
 * fschedule-insns:                       Optimize Options.   (line  712)
@@ -49382,7 +49432,7 @@ look up both forms.
 * fstack-protector-all:                  Optimize Options.   (line 2394)
 * fstack-protector-explicit:             Optimize Options.   (line 2402)
 * fstack-protector-strong:               Optimize Options.   (line 2397)
-* fstack-usage:                          Debugging Options.  (line  681)
+* fstack-usage:                          Debugging Options.  (line  682)
 * fstack_reuse:                          Code Gen Options.   (line   21)
 * fstats:                                C++ Dialect Options.
                                                              (line  265)
@@ -49400,9 +49450,9 @@ look up both forms.
                                                              (line  279)
 * ftemplate-depth:                       C++ Dialect Options.
                                                              (line  283)
-* ftest-coverage:                        Debugging Options.  (line  765)
+* ftest-coverage:                        Debugging Options.  (line  766)
 * fthread-jumps:                         Optimize Options.   (line  421)
-* ftime-report:                          Debugging Options.  (line  660)
+* ftime-report:                          Debugging Options.  (line  661)
 * ftls-model:                            Code Gen Options.   (line  535)
 * ftracer:                               Optimize Options.   (line 2311)
 * ftrack-macro-expansion:                Preprocessor Options.
@@ -49465,9 +49515,9 @@ look up both forms.
 * fuse-ld=gold:                          Link Options.       (line   28)
 * fuse-ld=mcld:                          Link Options.       (line   31)
 * fuse-linker-plugin:                    Optimize Options.   (line 1897)
-* fvar-tracking:                         Debugging Options.  (line 1558)
-* fvar-tracking-assignments:             Debugging Options.  (line 1568)
-* fvar-tracking-assignments-toggle:      Debugging Options.  (line 1579)
+* fvar-tracking:                         Debugging Options.  (line 1559)
+* fvar-tracking-assignments:             Debugging Options.  (line 1569)
+* fvar-tracking-assignments-toggle:      Debugging Options.  (line 1580)
 * fvariable-expansion-in-unroller:       Optimize Options.   (line 1391)
 * fvect-cost-model:                      Optimize Options.   (line 1347)
 * fverbose-asm:                          Code Gen Options.   (line  258)
@@ -49741,7 +49791,7 @@ look up both forms.
 * mARC600:                               ARC Options.        (line   19)
 * mARC601:                               ARC Options.        (line   23)
 * mARC700:                               ARC Options.        (line   26)
-* march:                                 AArch64 Options.    (line   79)
+* march:                                 AArch64 Options.    (line   82)
 * march <1>:                             ARM Options.        (line   65)
 * march <2>:                             C6X Options.        (line    7)
 * march <3>:                             CRIS Options.       (line   10)
@@ -49759,7 +49809,7 @@ look up both forms.
 * marm:                                  ARM Options.        (line  260)
 * mas100-syntax:                         RX Options.         (line   76)
 * masm-hex:                              MSP430 Options.     (line    9)
-* masm-syntax-unified:                   ARM Options.        (line  350)
+* masm-syntax-unified:                   ARM Options.        (line  355)
 * masm=DIALECT:                          x86 Options.        (line  328)
 * matomic-model=MODEL:                   SH Options.         (line  214)
 * matomic-updates:                       SPU Options.        (line   83)
@@ -49849,8 +49899,8 @@ look up both forms.
                                                              (line  603)
 * mcall-sysv-noeabi:                     RS/6000 and PowerPC Options.
                                                              (line  606)
-* mcallee-super-interworking:            ARM Options.        (line  279)
-* mcaller-super-interworking:            ARM Options.        (line  286)
+* mcallee-super-interworking:            ARM Options.        (line  284)
+* mcaller-super-interworking:            ARM Options.        (line  291)
 * mcallgraph-data:                       MCore Options.      (line   31)
 * mcase-vector-pcrel:                    ARC Options.        (line  206)
 * mcbcond:                               SPARC Options.      (line  223)
@@ -49866,7 +49916,7 @@ look up both forms.
 * mcmodel:                               NDS32 Options.      (line   55)
 * mcmodel <1>:                           SPARC Options.      (line  261)
 * mcmodel=kernel:                        x86 Options.        (line  986)
-* mcmodel=large:                         AArch64 Options.    (line   44)
+* mcmodel=large:                         AArch64 Options.    (line   47)
 * mcmodel=large <1>:                     RS/6000 and PowerPC Options.
                                                              (line  129)
 * mcmodel=large <2>:                     TILE-Gx Options.    (line   14)
@@ -49874,12 +49924,12 @@ look up both forms.
 * mcmodel=medium:                        RS/6000 and PowerPC Options.
                                                              (line  125)
 * mcmodel=medium <1>:                    x86 Options.        (line  991)
-* mcmodel=small:                         AArch64 Options.    (line   38)
+* mcmodel=small:                         AArch64 Options.    (line   41)
 * mcmodel=small <1>:                     RS/6000 and PowerPC Options.
                                                              (line  121)
 * mcmodel=small <2>:                     TILE-Gx Options.    (line    9)
 * mcmodel=small <3>:                     x86 Options.        (line  980)
-* mcmodel=tiny:                          AArch64 Options.    (line   31)
+* mcmodel=tiny:                          AArch64 Options.    (line   34)
 * mcmov:                                 NDS32 Options.      (line   21)
 * mcmove:                                Adapteva Epiphany Options.
                                                              (line   23)
@@ -49902,7 +49952,7 @@ look up both forms.
 * mcop64:                                MeP Options.        (line   56)
 * mcorea:                                Blackfin Options.   (line  156)
 * mcoreb:                                Blackfin Options.   (line  163)
-* mcpu:                                  AArch64 Options.    (line  123)
+* mcpu:                                  AArch64 Options.    (line  129)
 * mcpu <1>:                              ARC Options.        (line   14)
 * mcpu <2>:                              ARM Options.        (line  130)
 * mcpu <3>:                              CRIS Options.       (line   10)
@@ -50032,9 +50082,9 @@ look up both forms.
 * mfix-24k:                              MIPS Options.       (line  610)
 * mfix-and-continue:                     Darwin Options.     (line  104)
 * mfix-at697f:                           SPARC Options.      (line  243)
-* mfix-cortex-a53-835769:                AArch64 Options.    (line   67)
-* mfix-cortex-a53-843419:                AArch64 Options.    (line   74)
-* mfix-cortex-m3-ldrd:                   ARM Options.        (line  319)
+* mfix-cortex-a53-835769:                AArch64 Options.    (line   70)
+* mfix-cortex-a53-843419:                AArch64 Options.    (line   77)
+* mfix-cortex-m3-ldrd:                   ARM Options.        (line  324)
 * mfix-r10000:                           MIPS Options.       (line  632)
 * mfix-r4000:                            MIPS Options.       (line  616)
 * mfix-r4400:                            MIPS Options.       (line  626)
@@ -50234,7 +50284,7 @@ look up both forms.
 * mlinux:                                CRIS Options.       (line   91)
 * mlittle:                               RS/6000 and PowerPC Options.
                                                              (line  522)
-* mlittle-endian:                        AArch64 Options.    (line   27)
+* mlittle-endian:                        AArch64 Options.    (line   30)
 * mlittle-endian <1>:                    ARC Options.        (line  353)
 * mlittle-endian <2>:                    ARM Options.        (line   57)
 * mlittle-endian <3>:                    C6X Options.        (line   16)
@@ -50351,7 +50401,7 @@ look up both forms.
 * mn-flash:                              AVR Options.        (line  178)
 * mnan=2008:                             MIPS Options.       (line  318)
 * mnan=legacy:                           MIPS Options.       (line  318)
-* mneon-for-64bits:                      ARM Options.        (line  339)
+* mneon-for-64bits:                      ARM Options.        (line  344)
 * mnested-cond-exec:                     FRV Options.        (line  230)
 * mnhwloop:                              Score Options.      (line   15)
 * mno-16-bit:                            NDS32 Options.      (line   42)
@@ -50440,8 +50490,8 @@ look up both forms.
 * mno-faster-structs:                    SPARC Options.      (line   91)
 * mno-fix:                               DEC Alpha Options.  (line  163)
 * mno-fix-24k:                           MIPS Options.       (line  610)
-* mno-fix-cortex-a53-835769:             AArch64 Options.    (line   67)
-* mno-fix-cortex-a53-843419:             AArch64 Options.    (line   74)
+* mno-fix-cortex-a53-835769:             AArch64 Options.    (line   70)
+* mno-fix-cortex-a53-843419:             AArch64 Options.    (line   77)
 * mno-fix-r10000:                        MIPS Options.       (line  632)
 * mno-fix-r4000:                         MIPS Options.       (line  616)
 * mno-fix-r4400:                         MIPS Options.       (line  626)
@@ -50543,7 +50593,7 @@ look up both forms.
                                                              (line  104)
 * mno-nested-cond-exec:                  FRV Options.        (line  237)
 * mno-odd-spreg:                         MIPS Options.       (line  291)
-* mno-omit-leaf-frame-pointer:           AArch64 Options.    (line   54)
+* mno-omit-leaf-frame-pointer:           AArch64 Options.    (line   57)
 * mno-optimize-membar:                   FRV Options.        (line  249)
 * mno-opts:                              MeP Options.        (line   93)
 * mno-pack:                              FRV Options.        (line  151)
@@ -50650,7 +50700,7 @@ look up both forms.
 * mno-toplevel-symbols:                  MMIX Options.       (line   39)
 * mno-tpf-trace:                         S/390 and zSeries Options.
                                                              (line  129)
-* mno-unaligned-access:                  ARM Options.        (line  326)
+* mno-unaligned-access:                  ARM Options.        (line  331)
 * mno-unaligned-doubles:                 SPARC Options.      (line   73)
 * mno-uninit-const-in-rodata:            MIPS Options.       (line  501)
 * mno-update:                            RS/6000 and PowerPC Options.
@@ -50700,11 +50750,12 @@ look up both forms.
 * mnosplit-lohi:                         Adapteva Epiphany Options.
                                                              (line  109)
 * modd-spreg:                            MIPS Options.       (line  291)
-* momit-leaf-frame-pointer:              AArch64 Options.    (line   54)
+* momit-leaf-frame-pointer:              AArch64 Options.    (line   57)
 * momit-leaf-frame-pointer <1>:          Blackfin Options.   (line   43)
 * momit-leaf-frame-pointer <2>:          x86 Options.        (line  876)
 * mone-byte-bool:                        Darwin Options.     (line   90)
 * moptimize-membar:                      FRV Options.        (line  244)
+* moverride:                             AArch64 Options.    (line  152)
 * MP:                                    Preprocessor Options.
                                                              (line  239)
 * mpa-risc-1-0:                          HPPA Options.       (line   19)
@@ -50760,7 +50811,7 @@ look up both forms.
 * mpreferred-stack-boundary:             x86 Options.        (line  529)
 * mprefetchwt1:                          x86 Options.        (line  600)
 * mpretend-cmove:                        SH Options.         (line  507)
-* mprint-tune-info:                      ARM Options.        (line  363)
+* mprint-tune-info:                      ARM Options.        (line  368)
 * mprioritize-restricted-insns:          RS/6000 and PowerPC Options.
                                                              (line  545)
 * mprolog-function:                      V850 Options.       (line   23)
@@ -50810,7 +50861,7 @@ look up both forms.
                                                              (line  507)
 * mrenesas:                              SH Options.         (line  173)
 * mrepeat:                               MeP Options.        (line   96)
-* mrestrict-it:                          ARM Options.        (line  357)
+* mrestrict-it:                          ARM Options.        (line  362)
 * mreturn-pointer-on-d0:                 MN10300 Options.    (line   36)
 * mrh850-abi:                            V850 Options.       (line  127)
 * mrmw:                                  AVR Options.        (line  199)
@@ -50913,7 +50964,7 @@ look up both forms.
 * msize-level:                           ARC Options.        (line  281)
 * mskip-rax-setup:                       x86 Options.        (line  919)
 * mslow-bytes:                           MCore Options.      (line   35)
-* mslow-flash-data:                      ARM Options.        (line  344)
+* mslow-flash-data:                      ARM Options.        (line  349)
 * msmall:                                MSP430 Options.     (line   47)
 * msmall-data:                           DEC Alpha Options.  (line  187)
 * msmall-data-limit:                     RX Options.         (line   47)
@@ -50973,7 +51024,7 @@ look up both forms.
                                                              (line  154)
 * mstackrealign:                         x86 Options.        (line  520)
 * mstdmain:                              SPU Options.        (line   44)
-* mstrict-align:                         AArch64 Options.    (line   49)
+* mstrict-align:                         AArch64 Options.    (line   52)
 * mstrict-align <1>:                     M680x0 Options.     (line  283)
 * mstrict-align <2>:                     RS/6000 and PowerPC Options.
                                                              (line  491)
@@ -51009,10 +51060,10 @@ look up both forms.
 * mtiny=:                                MeP Options.        (line  125)
 * mTLS:                                  FRV Options.        (line   90)
 * mtls:                                  FRV Options.        (line   94)
-* mtls-dialect:                          ARM Options.        (line  302)
+* mtls-dialect:                          ARM Options.        (line  307)
 * mtls-dialect <1>:                      x86 Options.        (line  797)
-* mtls-dialect=desc:                     AArch64 Options.    (line   58)
-* mtls-dialect=traditional:              AArch64 Options.    (line   62)
+* mtls-dialect=desc:                     AArch64 Options.    (line   61)
+* mtls-dialect=traditional:              AArch64 Options.    (line   65)
 * mtls-direct-seg-refs:                  x86 Options.        (line  884)
 * mtls-markers:                          RS/6000 and PowerPC Options.
                                                              (line  813)
@@ -51021,13 +51072,13 @@ look up both forms.
                                                              (line  516)
 * mtomcat-stats:                         FRV Options.        (line  254)
 * mtoplevel-symbols:                     MMIX Options.       (line   39)
-* mtp:                                   ARM Options.        (line  294)
-* mtpcs-frame:                           ARM Options.        (line  267)
-* mtpcs-leaf-frame:                      ARM Options.        (line  273)
+* mtp:                                   ARM Options.        (line  299)
+* mtpcs-frame:                           ARM Options.        (line  272)
+* mtpcs-leaf-frame:                      ARM Options.        (line  278)
 * mtpf-trace:                            S/390 and zSeries Options.
                                                              (line  129)
 * mtrap-precision:                       DEC Alpha Options.  (line  109)
-* mtune:                                 AArch64 Options.    (line  100)
+* mtune:                                 AArch64 Options.    (line  106)
 * mtune <1>:                             ARC Options.        (line  302)
 * mtune <2>:                             ARC Options.        (line  388)
 * mtune <3>:                             ARM Options.        (line   87)
@@ -51056,7 +51107,7 @@ look up both forms.
 * multiply_defined_unused:               Darwin Options.     (line  196)
 * multi_module:                          Darwin Options.     (line  196)
 * munalign-prob-threshold:               ARC Options.        (line  330)
-* munaligned-access:                     ARM Options.        (line  326)
+* munaligned-access:                     ARM Options.        (line  331)
 * munaligned-doubles:                    SPARC Options.      (line   73)
 * municode:                              x86 Windows Options.
                                                              (line   30)
@@ -51119,7 +51170,7 @@ look up both forms.
                                                              (line   35)
 * mwindows:                              x86 Windows Options.
                                                              (line   41)
-* mword-relocations:                     ARM Options.        (line  313)
+* mword-relocations:                     ARM Options.        (line  318)
 * mx32:                                  x86 Options.        (line  955)
 * mxgot:                                 M680x0 Options.     (line  315)
 * mxgot <1>:                             MIPS Options.       (line  227)
@@ -51186,7 +51237,7 @@ look up both forms.
 * Ofast:                                 Optimize Options.   (line  159)
 * Og:                                    Optimize Options.   (line  165)
 * Os:                                    Optimize Options.   (line  149)
-* p:                                     Debugging Options.  (line  644)
+* p:                                     Debugging Options.  (line  645)
 * P:                                     Preprocessor Options.
                                                              (line  646)
 * pagezero_size:                         Darwin Options.     (line  196)
@@ -51207,29 +51258,29 @@ look up both forms.
 * pedantic-errors <3>:                   Non-bugs.           (line  216)
 * pedantic-errors <4>:                   Warnings and Errors.
                                                              (line   25)
-* pg:                                    Debugging Options.  (line  650)
+* pg:                                    Debugging Options.  (line  651)
 * pie:                                   Link Options.       (line  108)
 * pipe:                                  Overall Options.    (line  215)
 * prebind:                               Darwin Options.     (line  196)
 * prebind_all_twolevel_modules:          Darwin Options.     (line  196)
-* print-file-name:                       Debugging Options.  (line 1583)
-* print-libgcc-file-name:                Debugging Options.  (line 1617)
-* print-multi-directory:                 Debugging Options.  (line 1589)
-* print-multi-lib:                       Debugging Options.  (line 1594)
-* print-multi-os-directory:              Debugging Options.  (line 1601)
-* print-multiarch:                       Debugging Options.  (line 1610)
+* print-file-name:                       Debugging Options.  (line 1584)
+* print-libgcc-file-name:                Debugging Options.  (line 1618)
+* print-multi-directory:                 Debugging Options.  (line 1590)
+* print-multi-lib:                       Debugging Options.  (line 1595)
+* print-multi-os-directory:              Debugging Options.  (line 1602)
+* print-multiarch:                       Debugging Options.  (line 1611)
 * print-objc-runtime-info:               Objective-C and Objective-C++ Dialect Options.
                                                              (line  217)
-* print-prog-name:                       Debugging Options.  (line 1614)
-* print-search-dirs:                     Debugging Options.  (line 1625)
-* print-sysroot:                         Debugging Options.  (line 1638)
-* print-sysroot-headers-suffix:          Debugging Options.  (line 1645)
+* print-prog-name:                       Debugging Options.  (line 1615)
+* print-search-dirs:                     Debugging Options.  (line 1626)
+* print-sysroot:                         Debugging Options.  (line 1639)
+* print-sysroot-headers-suffix:          Debugging Options.  (line 1646)
 * private_bundle:                        Darwin Options.     (line  196)
 * pthread:                               RS/6000 and PowerPC Options.
                                                              (line  820)
 * pthread <1>:                           Solaris 2 Options.  (line   36)
 * pthreads:                              Solaris 2 Options.  (line   30)
-* Q:                                     Debugging Options.  (line  656)
+* Q:                                     Debugging Options.  (line  657)
 * Qn:                                    System V Options.   (line   18)
 * Qy:                                    System V Options.   (line   14)
 * rdynamic:                              Link Options.       (line  114)
@@ -51239,8 +51290,8 @@ look up both forms.
 * S:                                     Overall Options.    (line  175)
 * S <1>:                                 Link Options.       (line   20)
 * s:                                     Link Options.       (line  121)
-* save-temps:                            Debugging Options.  (line 1490)
-* save-temps=obj:                        Debugging Options.  (line 1516)
+* save-temps:                            Debugging Options.  (line 1491)
+* save-temps=obj:                        Debugging Options.  (line 1517)
 * sectalign:                             Darwin Options.     (line  196)
 * sectcreate:                            Darwin Options.     (line  196)
 * sectobjectsymbols:                     Darwin Options.     (line  196)
@@ -51290,7 +51341,7 @@ look up both forms.
 * target-help <1>:                       Preprocessor Options.
                                                              (line  698)
 * threads:                               HPPA Options.       (line  198)
-* time:                                  Debugging Options.  (line 1531)
+* time:                                  Debugging Options.  (line 1532)
 * tno-android-cc:                        GNU/Linux Options.  (line   36)
 * tno-android-ld:                        GNU/Linux Options.  (line   40)
 * traditional:                           C Dialect Options.  (line  347)
@@ -51806,8 +51857,8 @@ Keyword Index
 * '+' in constraint:                     Modifiers.          (line   12)
 * '-lgcc', use with '-nodefaultlibs':    Link Options.       (line   94)
 * '-lgcc', use with '-nostdlib':         Link Options.       (line   94)
-* '-march' feature modifiers:            AArch64 Options.    (line  149)
-* '-mcpu' feature modifiers:             AArch64 Options.    (line  149)
+* '-march' feature modifiers:            AArch64 Options.    (line  162)
+* '-mcpu' feature modifiers:             AArch64 Options.    (line  162)
 * '-nodefaultlibs' and unresolved references: Link Options.  (line   94)
 * '-nostdlib' and unresolved references: Link Options.       (line   94)
 * .sdata/.sdata2 references (PowerPC):   RS/6000 and PowerPC Options.
@@ -52857,7 +52908,7 @@ Keyword Index
                                                              (line    9)
 * 'gcc_struct' variable attribute, x86:  x86 Variable Attributes.
                                                              (line   11)
-* 'gcov':                                Debugging Options.  (line  724)
+* 'gcov':                                Debugging Options.  (line  725)
 * gettext:                               Other Builtins.     (line    6)
 * global offset table:                   Code Gen Options.   (line  279)
 * global register after 'longjmp':       Global Reg Vars.    (line   65)
@@ -52869,7 +52920,7 @@ Keyword Index
                                                              (line  345)
 * Go:                                    G++ and GCC.        (line    6)
 * goto with computed label:              Labels as Values.   (line    6)
-* 'gprof':                               Debugging Options.  (line  649)
+* 'gprof':                               Debugging Options.  (line  650)
 * grouping options:                      Invoking GCC.       (line   26)
 * 'H' in constraint:                     Simple Constraints. (line   96)
 * half-precision floating point:         Half-Precision.     (line    6)
@@ -53416,7 +53467,7 @@ Keyword Index
                                                              (line  112)
 * Pointer Bounds Checker builtins:       Pointer Bounds Checker builtins.
                                                              (line    6)
-* Pointer Bounds Checker options:        Debugging Options.  (line  392)
+* Pointer Bounds Checker options:        Debugging Options.  (line  393)
 * pointer to member function:            Bound member functions.
                                                              (line    6)
 * pointers to arrays:                    Pointers to Arrays. (line    6)
@@ -53482,7 +53533,7 @@ Keyword Index
                                                              (line    6)
 * printf:                                Other Builtins.     (line    6)
 * printf_unlocked:                       Other Builtins.     (line    6)
-* 'prof':                                Debugging Options.  (line  643)
+* 'prof':                                Debugging Options.  (line  644)
 * 'progmem' variable attribute, AVR:     AVR Variable Attributes.
                                                              (line    7)
 * promotion of formal parameters:        Function Prototypes.
@@ -53728,11 +53779,13 @@ Keyword Index
 * tanl:                                  Other Builtins.     (line    6)
 * 'target' function attribute:           Common Function Attributes.
                                                              (line  701)
-* 'target' function attribute <1>:       Nios II Function Attributes.
+* 'target' function attribute <1>:       ARM Function Attributes.
+                                                             (line   70)
+* 'target' function attribute <2>:       Nios II Function Attributes.
                                                              (line    9)
-* 'target' function attribute <2>:       PowerPC Function Attributes.
+* 'target' function attribute <3>:       PowerPC Function Attributes.
                                                              (line   21)
-* 'target' function attribute <3>:       x86 Function Attributes.
+* 'target' function attribute <4>:       x86 Function Attributes.
                                                              (line  103)
 * target machine, specifying:            Target Options.     (line    6)
 * target options:                        Target Options.     (line    6)
@@ -53746,6 +53799,8 @@ Keyword Index
                                                              (line   28)
 * 'target("arch=ARCH")' function attribute, x86: x86 Function Attributes.
                                                              (line  217)
+* 'target("arm")' function attribute, ARM: ARM Function Attributes.
+                                                             (line   80)
 * 'target("avoid-indexed-addresses")' function attribute, PowerPC: PowerPC Function Attributes.
                                                              (line  149)
 * 'target("cld")' function attribute, x86: x86 Function Attributes.
@@ -53836,6 +53891,8 @@ Keyword Index
                                                              (line  175)
 * 'target("string")' function attribute, PowerPC: PowerPC Function Attributes.
                                                              (line  126)
+* 'target("thumb")' function attribute, ARM: ARM Function Attributes.
+                                                             (line   76)
 * 'target("tune=TUNE")' function attribute, PowerPC: PowerPC Function Attributes.
                                                              (line  171)
 * 'target("tune=TUNE")' function attribute, x86: x86 Function Attributes.
@@ -53924,7 +53981,7 @@ Keyword Index
 * unresolved references and '-nodefaultlibs': Link Options.  (line   94)
 * unresolved references and '-nostdlib': Link Options.       (line   94)
 * 'unused' function attribute:           Common Function Attributes.
-                                                             (line  733)
+                                                             (line  734)
 * 'unused' label attribute:              Label Attributes.   (line   29)
 * 'unused' type attribute:               Common Type Attributes.
                                                              (line  274)
@@ -53933,7 +53990,7 @@ Keyword Index
 * 'ur' fixed-suffix:                     Fixed-Point.        (line    6)
 * 'UR' fixed-suffix:                     Fixed-Point.        (line    6)
 * 'used' function attribute:             Common Function Attributes.
-                                                             (line  738)
+                                                             (line  739)
 * 'used' variable attribute:             Common Variable Attributes.
                                                              (line  210)
 * User stack pointer in interrupts on the Blackfin: Blackfin Function Attributes.
@@ -53968,7 +54025,7 @@ Keyword Index
 * vfprintf:                              Other Builtins.     (line    6)
 * vfscanf:                               Other Builtins.     (line    6)
 * 'visibility' function attribute:       Common Function Attributes.
-                                                             (line  748)
+                                                             (line  749)
 * 'visibility' type attribute:           Common Type Attributes.
                                                              (line  283)
 * Visium options:                        Visium Options.     (line    6)
@@ -54016,13 +54073,13 @@ Keyword Index
                                                              (line    6)
 * 'warn_unused' type attribute:          C++ Attributes.     (line   79)
 * 'warn_unused_result' function attribute: Common Function Attributes.
-                                                             (line  844)
+                                                             (line  845)
 * 'weak' function attribute:             Common Function Attributes.
-                                                             (line  861)
+                                                             (line  862)
 * 'weak' variable attribute:             Common Variable Attributes.
                                                              (line  242)
 * 'weakref' function attribute:          Common Function Attributes.
-                                                             (line  870)
+                                                             (line  871)
 * whitespace:                            Incompatibilities.  (line  112)
 * Windows Options for x86:               x86 Windows Options.
                                                              (line    6)
@@ -54062,365 +54119,366 @@ Node: Objective-C and Objective-C++ Dialect Options130547
 Node: Language Independent Options141782
 Node: Warning Options146606
 Node: Debugging Options224988
-Node: Optimize Options296304
-Ref: Type-punning359547
-Node: Preprocessor Options448466
-Ref: Wtrigraphs453249
-Ref: dashMF457999
-Ref: fdollars-in-identifiers468880
-Node: Assembler Options479081
-Node: Link Options479772
-Ref: Link Options-Footnote-1493360
-Node: Directory Options493696
-Node: Spec Files500250
-Node: Target Options522066
-Node: Submodel Options522465
-Node: AArch64 Options524230
-Node: Adapteva Epiphany Options530914
-Node: ARC Options536862
-Node: ARM Options549306
-Node: AVR Options567049
-Node: Blackfin Options588357
-Node: C6X Options596375
-Node: CRIS Options597918
-Node: CR16 Options601657
-Node: Darwin Options602568
-Node: DEC Alpha Options610008
-Node: FR30 Options621624
-Node: FRV Options622188
-Node: GNU/Linux Options628952
-Node: H8/300 Options630333
-Node: HPPA Options631785
-Node: IA-64 Options640975
-Node: LM32 Options649022
-Node: M32C Options649545
-Node: M32R/D Options650818
-Node: M680x0 Options654363
-Node: MCore Options668398
-Node: MeP Options669900
-Node: MicroBlaze Options673860
-Node: MIPS Options676662
-Node: MMIX Options710119
-Node: MN10300 Options712596
-Node: Moxie Options715137
-Node: MSP430 Options715624
-Node: NDS32 Options719123
-Node: Nios II Options721017
-Node: Nvidia PTX Options731216
-Node: PDP-11 Options731607
-Node: picoChip Options733304
-Node: PowerPC Options735442
-Node: RL78 Options735663
-Node: RS/6000 and PowerPC Options736510
-Node: RX Options776831
-Node: S/390 and zSeries Options784179
-Node: Score Options792724
-Node: SH Options793573
-Node: Solaris 2 Options814444
-Node: SPARC Options815966
-Node: SPU Options829255
-Node: System V Options834194
-Node: TILE-Gx Options835020
-Node: TILEPro Options836038
-Node: V850 Options836542
-Node: VAX Options843229
-Node: Visium Options843767
-Node: VMS Options846075
-Node: VxWorks Options846891
-Node: x86 Options848043
-Node: x86 Windows Options891664
-Node: Xstormy16 Options894461
-Node: Xtensa Options894755
-Node: zSeries Options899080
-Node: Code Gen Options899276
-Node: Environment Variables930060
-Node: Precompiled Headers938063
-Node: C Implementation944066
-Node: Translation implementation945756
-Node: Environment implementation946347
-Node: Identifiers implementation946901
-Node: Characters implementation947987
-Node: Integers implementation951637
-Node: Floating point implementation953522
-Node: Arrays and pointers implementation956585
-Ref: Arrays and pointers implementation-Footnote-1958045
-Node: Hints implementation958171
-Node: Structures unions enumerations and bit-fields implementation959656
-Node: Qualifiers implementation961880
-Node: Declarators implementation963660
-Node: Statements implementation964001
-Node: Preprocessing directives implementation964327
-Node: Library functions implementation966648
-Node: Architecture implementation967297
-Node: Locale-specific behavior implementation968942
-Node: C++ Implementation969247
-Node: Conditionally-supported behavior970530
-Node: Exception handling971147
-Node: C Extensions971555
-Node: Statement Exprs976711
-Node: Local Labels981188
-Node: Labels as Values984161
-Ref: Labels as Values-Footnote-1986688
-Node: Nested Functions986873
-Node: Constructing Calls990831
-Node: Typeof995548
-Node: Conditionals999477
-Node: __int1281000366
-Node: Long Long1000891
-Node: Complex1002367
-Node: Floating Types1004955
-Node: Half-Precision1006075
-Node: Decimal Float1008260
-Node: Hex Floats1010116
-Node: Fixed-Point1011153
-Node: Named Address Spaces1014413
-Ref: AVR Named Address Spaces1015094
-Node: Zero Length1020302
-Node: Empty Structures1023342
-Node: Variable Length1023748
-Node: Variadic Macros1026604
-Node: Escaped Newlines1028982
-Node: Subscripting1029843
-Node: Pointer Arith1030568
-Node: Pointers to Arrays1031142
-Node: Initializers1031887
-Node: Compound Literals1032388
-Node: Designated Inits1035734
-Node: Case Ranges1039472
-Node: Cast to Union1040153
-Node: Mixed Declarations1041243
-Node: Function Attributes1041753
-Node: Common Function Attributes1044680
-Node: ARC Function Attributes1087158
-Node: ARM Function Attributes1088849
-Node: AVR Function Attributes1091820
-Node: Blackfin Function Attributes1095295
-Node: CR16 Function Attributes1097793
-Node: Epiphany Function Attributes1098320
-Node: H8/300 Function Attributes1101072
-Node: IA-64 Function Attributes1102268
-Node: M32C Function Attributes1103308
-Node: M32R/D Function Attributes1105646
-Node: m68k Function Attributes1107120
-Node: MCORE Function Attributes1108064
-Node: MeP Function Attributes1108875
-Node: MicroBlaze Function Attributes1110176
-Node: Microsoft Windows Function Attributes1111242
-Node: MIPS Function Attributes1115811
-Node: MSP430 Function Attributes1120386
-Node: NDS32 Function Attributes1122724
-Node: Nios II Function Attributes1125148
-Node: PowerPC Function Attributes1126442
-Node: RL78 Function Attributes1133492
-Node: RX Function Attributes1134732
-Node: S/390 Function Attributes1137271
-Node: SH Function Attributes1138210
-Node: SPU Function Attributes1141631
-Node: Symbian OS Function Attributes1142439
-Node: Visium Function Attributes1142778
-Node: x86 Function Attributes1143312
-Node: Xstormy16 Function Attributes1152123
-Node: Label Attributes1152630
-Node: Attribute Syntax1154473
-Node: Function Prototypes1165000
-Node: C++ Comments1166780
-Node: Dollar Signs1167299
-Node: Character Escapes1167764
-Node: Variable Attributes1168058
-Node: Common Variable Attributes1169305
-Node: AVR Variable Attributes1180091
-Node: Blackfin Variable Attributes1182729
-Node: H8/300 Variable Attributes1183587
-Node: IA-64 Variable Attributes1184660
-Node: M32R/D Variable Attributes1185411
-Node: MeP Variable Attributes1186194
-Node: Microsoft Windows Variable Attributes1188287
-Node: PowerPC Variable Attributes1190741
-Node: SPU Variable Attributes1191302
-Node: x86 Variable Attributes1191669
-Node: Xstormy16 Variable Attributes1196397
-Node: Type Attributes1196967
-Node: Common Type Attributes1198191
-Node: ARM Type Attributes1211552
-Node: MeP Type Attributes1212337
-Node: PowerPC Type Attributes1212739
-Node: SPU Type Attributes1213728
-Node: x86 Type Attributes1214147
-Node: Alignment1214932
-Node: Inline1216302
-Node: Volatiles1221278
-Node: Using Assembly Language with C1224177
-Node: Basic Asm1225381
-Node: Extended Asm1229525
-Ref: Volatile1233329
-Ref: AssemblerTemplate1237414
-Ref: OutputOperands1241652
-Ref: InputOperands1248571
-Ref: Clobbers1252807
-Ref: GotoLabels1256113
-Ref: x86Operandmodifiers1258248
-Ref: x86floatingpointasmoperands1260419
-Node: Constraints1263748
-Node: Simple Constraints1264854
-Node: Multi-Alternative1272168
-Node: Modifiers1274175
-Node: Machine Constraints1277679
-Node: Asm Labels1334716
-Node: Explicit Reg Vars1336414
-Node: Global Reg Vars1338030
-Node: Local Reg Vars1342530
-Node: Size of an asm1345653
-Node: Alternate Keywords1346897
-Node: Incomplete Enums1348396
-Node: Function Names1349152
-Node: Return Address1350755
-Node: Vector Extensions1354262
-Node: Offsetof1361557
-Node: __sync Builtins1362390
-Node: __atomic Builtins1367966
-Node: Integer Overflow Builtins1380491
-Node: x86 specific memory model extensions for transactional memory1384616
-Node: Object Size Checking1385885
-Node: Pointer Bounds Checker builtins1391391
-Node: Cilk Plus Builtins1397397
-Node: Other Builtins1398302
-Node: Target Builtins1427929
-Node: AArch64 Built-in Functions1429421
-Node: Alpha Built-in Functions1429876
-Node: Altera Nios II Built-in Functions1432924
-Node: ARC Built-in Functions1436911
-Node: ARC SIMD Built-in Functions1442123
-Node: ARM iWMMXt Built-in Functions1451019
-Node: ARM C Language Extensions (ACLE)1458015
-Node: ARM Floating Point Status and Control Intrinsics1459292
-Node: AVR Built-in Functions1459768
-Node: Blackfin Built-in Functions1462875
-Node: FR-V Built-in Functions1463494
-Node: Argument Types1464362
-Node: Directly-mapped Integer Functions1466116
-Node: Directly-mapped Media Functions1467200
-Node: Raw read/write Functions1475406
-Node: Other Built-in Functions1476314
-Node: MIPS DSP Built-in Functions1477500
-Node: MIPS Paired-Single Support1489997
-Node: MIPS Loongson Built-in Functions1491496
-Node: Paired-Single Arithmetic1498011
-Node: Paired-Single Built-in Functions1498959
-Node: MIPS-3D Built-in Functions1501626
-Node: Other MIPS Built-in Functions1507004
-Node: MSP430 Built-in Functions1508009
-Node: NDS32 Built-in Functions1509410
-Node: picoChip Built-in Functions1510703
-Node: PowerPC Built-in Functions1512046
-Node: PowerPC AltiVec/VSX Built-in Functions1515754
-Node: PowerPC Hardware Transactional Memory Built-in Functions1655545
-Node: RX Built-in Functions1662518
-Node: S/390 System z Built-in Functions1666551
-Node: SH Built-in Functions1671780
-Node: SPARC VIS Built-in Functions1673508
-Node: SPU Built-in Functions1679111
-Node: TI C6X Built-in Functions1680928
-Node: TILE-Gx Built-in Functions1681953
-Node: TILEPro Built-in Functions1683072
-Node: x86 Built-in Functions1684172
-Node: x86 transactional memory intrinsics1743708
-Node: Target Format Checks1746928
-Node: Solaris Format Checks1747360
-Node: Darwin Format Checks1747786
-Node: Pragmas1748604
-Node: ARM Pragmas1749340
-Node: M32C Pragmas1749943
-Node: MeP Pragmas1751015
-Node: RS/6000 and PowerPC Pragmas1753083
-Node: Darwin Pragmas1753824
-Node: Solaris Pragmas1754891
-Node: Symbol-Renaming Pragmas1756055
-Node: Structure-Packing Pragmas1757672
-Node: Weak Pragmas1759316
-Node: Diagnostic Pragmas1760050
-Node: Visibility Pragmas1763159
-Node: Push/Pop Macro Pragmas1763844
-Node: Function Specific Option Pragmas1764817
-Node: Loop-Specific Pragmas1766665
-Node: Unnamed Fields1767758
-Node: Thread-Local1769955
-Node: C99 Thread-Local Edits1772060
-Node: C++98 Thread-Local Edits1774058
-Node: Binary constants1777503
-Node: C++ Extensions1778174
-Node: C++ Volatiles1779885
-Node: Restricted Pointers1782233
-Node: Vague Linkage1783824
-Node: C++ Interface1787447
-Ref: C++ Interface-Footnote-11791244
-Node: Template Instantiation1791382
-Node: Bound member functions1797967
-Node: C++ Attributes1799499
-Node: Function Multiversioning1803938
-Node: Namespace Association1805755
-Node: Type Traits1807135
-Node: Java Exceptions1813618
-Node: Deprecated Features1815008
-Node: Backwards Compatibility1817975
-Node: Objective-C1819322
-Node: GNU Objective-C runtime API1819929
-Node: Modern GNU Objective-C runtime API1820936
-Node: Traditional GNU Objective-C runtime API1823372
-Node: Executing code before main1824099
-Node: What you can and what you cannot do in +load1826843
-Node: Type encoding1829213
-Node: Legacy type encoding1834240
-Node: @encode1835330
-Node: Method signatures1835875
-Node: Garbage Collection1837867
-Node: Constant string objects1840557
-Node: compatibility_alias1843066
-Node: Exceptions1843791
-Node: Synchronization1846501
-Node: Fast enumeration1847685
-Node: Using fast enumeration1847997
-Node: c99-like fast enumeration syntax1849208
-Node: Fast enumeration details1849911
-Node: Fast enumeration protocol1852251
-Node: Messaging with the GNU Objective-C runtime1855403
-Node: Dynamically registering methods1856775
-Node: Forwarding hook1858466
-Node: Compatibility1861506
-Node: Gcov1868062
-Node: Gcov Intro1868597
-Node: Invoking Gcov1871315
-Node: Gcov and Optimization1885555
-Node: Gcov Data Files1888557
-Node: Cross-profiling1889952
-Node: Gcov-tool1891806
-Node: Gcov-tool Intro1892229
-Node: Invoking Gcov-tool1894199
-Node: Trouble1896778
-Node: Actual Bugs1898195
-Node: Interoperation1898642
-Node: Incompatibilities1905533
-Node: Fixed Headers1913685
-Node: Standard Libraries1915343
-Node: Disappointments1916715
-Node: C++ Misunderstandings1921074
-Node: Static Definitions1921885
-Node: Name lookup1922938
-Ref: Name lookup-Footnote-11927718
-Node: Temporaries1927907
-Node: Copy Assignment1929883
-Node: Non-bugs1931690
-Node: Warnings and Errors1942196
-Node: Bugs1943958
-Node: Bug Criteria1944425
-Node: Bug Reporting1946635
-Node: Service1946856
-Node: Contributing1947675
-Node: Funding1948415
-Node: GNU Project1950905
-Node: Copying1951551
-Node: GNU Free Documentation License1989060
-Node: Contributors2014178
-Node: Option Index2052943
-Node: Keyword Index2275282
+Node: Optimize Options296425
+Ref: Type-punning359668
+Node: Preprocessor Options448587
+Ref: Wtrigraphs453370
+Ref: dashMF458120
+Ref: fdollars-in-identifiers469001
+Node: Assembler Options479202
+Node: Link Options479893
+Ref: Link Options-Footnote-1493481
+Node: Directory Options493817
+Node: Spec Files500371
+Node: Target Options522187
+Node: Submodel Options522586
+Node: AArch64 Options524351
+Ref: aarch64-feature-modifiers531255
+Node: Adapteva Epiphany Options532232
+Node: ARC Options538180
+Node: ARM Options550624
+Node: AVR Options568611
+Node: Blackfin Options589919
+Node: C6X Options597937
+Node: CRIS Options599480
+Node: CR16 Options603219
+Node: Darwin Options604130
+Node: DEC Alpha Options611570
+Node: FR30 Options623186
+Node: FRV Options623750
+Node: GNU/Linux Options630514
+Node: H8/300 Options631895
+Node: HPPA Options633347
+Node: IA-64 Options642537
+Node: LM32 Options650584
+Node: M32C Options651107
+Node: M32R/D Options652380
+Node: M680x0 Options655925
+Node: MCore Options669960
+Node: MeP Options671462
+Node: MicroBlaze Options675422
+Node: MIPS Options678224
+Node: MMIX Options711681
+Node: MN10300 Options714158
+Node: Moxie Options716699
+Node: MSP430 Options717186
+Node: NDS32 Options720685
+Node: Nios II Options722579
+Node: Nvidia PTX Options732778
+Node: PDP-11 Options733169
+Node: picoChip Options734866
+Node: PowerPC Options737004
+Node: RL78 Options737225
+Node: RS/6000 and PowerPC Options738072
+Node: RX Options778393
+Node: S/390 and zSeries Options785741
+Node: Score Options794286
+Node: SH Options795135
+Node: Solaris 2 Options816006
+Node: SPARC Options817528
+Node: SPU Options830805
+Node: System V Options835744
+Node: TILE-Gx Options836570
+Node: TILEPro Options837588
+Node: V850 Options838092
+Node: VAX Options844779
+Node: Visium Options845317
+Node: VMS Options847625
+Node: VxWorks Options848441
+Node: x86 Options849593
+Node: x86 Windows Options893214
+Node: Xstormy16 Options896011
+Node: Xtensa Options896305
+Node: zSeries Options900630
+Node: Code Gen Options900826
+Node: Environment Variables931610
+Node: Precompiled Headers939613
+Node: C Implementation945616
+Node: Translation implementation947306
+Node: Environment implementation947897
+Node: Identifiers implementation948451
+Node: Characters implementation949537
+Node: Integers implementation953187
+Node: Floating point implementation955072
+Node: Arrays and pointers implementation958135
+Ref: Arrays and pointers implementation-Footnote-1959595
+Node: Hints implementation959721
+Node: Structures unions enumerations and bit-fields implementation961206
+Node: Qualifiers implementation963430
+Node: Declarators implementation965210
+Node: Statements implementation965551
+Node: Preprocessing directives implementation965877
+Node: Library functions implementation968198
+Node: Architecture implementation968847
+Node: Locale-specific behavior implementation970492
+Node: C++ Implementation970797
+Node: Conditionally-supported behavior972080
+Node: Exception handling972697
+Node: C Extensions973105
+Node: Statement Exprs978261
+Node: Local Labels982738
+Node: Labels as Values985711
+Ref: Labels as Values-Footnote-1988238
+Node: Nested Functions988423
+Node: Constructing Calls992381
+Node: Typeof997098
+Node: Conditionals1001027
+Node: __int1281001916
+Node: Long Long1002441
+Node: Complex1003917
+Node: Floating Types1006505
+Node: Half-Precision1007625
+Node: Decimal Float1009810
+Node: Hex Floats1011666
+Node: Fixed-Point1012703
+Node: Named Address Spaces1015963
+Ref: AVR Named Address Spaces1016644
+Node: Zero Length1021852
+Node: Empty Structures1024892
+Node: Variable Length1025298
+Node: Variadic Macros1028154
+Node: Escaped Newlines1030532
+Node: Subscripting1031393
+Node: Pointer Arith1032118
+Node: Pointers to Arrays1032692
+Node: Initializers1033437
+Node: Compound Literals1033938
+Node: Designated Inits1037284
+Node: Case Ranges1041022
+Node: Cast to Union1041703
+Node: Mixed Declarations1042793
+Node: Function Attributes1043303
+Node: Common Function Attributes1046233
+Node: ARC Function Attributes1088748
+Node: ARM Function Attributes1090439
+Node: AVR Function Attributes1093878
+Node: Blackfin Function Attributes1097353
+Node: CR16 Function Attributes1099851
+Node: Epiphany Function Attributes1100378
+Node: H8/300 Function Attributes1103130
+Node: IA-64 Function Attributes1104326
+Node: M32C Function Attributes1105366
+Node: M32R/D Function Attributes1107704
+Node: m68k Function Attributes1109178
+Node: MCORE Function Attributes1110122
+Node: MeP Function Attributes1110933
+Node: MicroBlaze Function Attributes1112234
+Node: Microsoft Windows Function Attributes1113300
+Node: MIPS Function Attributes1117869
+Node: MSP430 Function Attributes1122444
+Node: NDS32 Function Attributes1124782
+Node: Nios II Function Attributes1127206
+Node: PowerPC Function Attributes1128500
+Node: RL78 Function Attributes1135550
+Node: RX Function Attributes1136790
+Node: S/390 Function Attributes1139329
+Node: SH Function Attributes1140268
+Node: SPU Function Attributes1143689
+Node: Symbian OS Function Attributes1144497
+Node: Visium Function Attributes1144836
+Node: x86 Function Attributes1145370
+Node: Xstormy16 Function Attributes1154181
+Node: Variable Attributes1154688
+Node: Common Variable Attributes1155937
+Node: AVR Variable Attributes1166723
+Node: Blackfin Variable Attributes1169361
+Node: H8/300 Variable Attributes1170219
+Node: IA-64 Variable Attributes1171292
+Node: M32R/D Variable Attributes1172043
+Node: MeP Variable Attributes1172826
+Node: Microsoft Windows Variable Attributes1174919
+Node: PowerPC Variable Attributes1177373
+Node: SPU Variable Attributes1177934
+Node: x86 Variable Attributes1178301
+Node: Xstormy16 Variable Attributes1183029
+Node: Type Attributes1183599
+Node: Common Type Attributes1184830
+Node: ARM Type Attributes1198191
+Node: MeP Type Attributes1198976
+Node: PowerPC Type Attributes1199378
+Node: SPU Type Attributes1200367
+Node: x86 Type Attributes1200786
+Node: Label Attributes1201571
+Node: Attribute Syntax1203410
+Node: Function Prototypes1213937
+Node: C++ Comments1215717
+Node: Dollar Signs1216236
+Node: Character Escapes1216701
+Node: Alignment1216985
+Node: Inline1218357
+Node: Volatiles1223333
+Node: Using Assembly Language with C1226232
+Node: Basic Asm1227436
+Node: Extended Asm1231580
+Ref: Volatile1235384
+Ref: AssemblerTemplate1239469
+Ref: OutputOperands1243707
+Ref: InputOperands1250626
+Ref: Clobbers1254862
+Ref: GotoLabels1258168
+Ref: x86Operandmodifiers1260303
+Ref: x86floatingpointasmoperands1262474
+Node: Constraints1265803
+Node: Simple Constraints1266909
+Node: Multi-Alternative1274223
+Node: Modifiers1276230
+Node: Machine Constraints1279734
+Node: Asm Labels1336771
+Node: Explicit Reg Vars1338469
+Node: Global Reg Vars1340085
+Node: Local Reg Vars1344585
+Node: Size of an asm1347708
+Node: Alternate Keywords1348952
+Node: Incomplete Enums1350451
+Node: Function Names1351207
+Node: Return Address1352810
+Node: Vector Extensions1356317
+Node: Offsetof1363612
+Node: __sync Builtins1364445
+Node: __atomic Builtins1370021
+Node: Integer Overflow Builtins1382546
+Node: x86 specific memory model extensions for transactional memory1386671
+Node: Object Size Checking1387940
+Node: Pointer Bounds Checker builtins1393446
+Node: Cilk Plus Builtins1399452
+Node: Other Builtins1400357
+Node: Target Builtins1429984
+Node: AArch64 Built-in Functions1431476
+Node: Alpha Built-in Functions1431931
+Node: Altera Nios II Built-in Functions1434979
+Node: ARC Built-in Functions1438966
+Node: ARC SIMD Built-in Functions1444178
+Node: ARM iWMMXt Built-in Functions1453074
+Node: ARM C Language Extensions (ACLE)1460070
+Node: ARM Floating Point Status and Control Intrinsics1461347
+Node: AVR Built-in Functions1461823
+Node: Blackfin Built-in Functions1464930
+Node: FR-V Built-in Functions1465549
+Node: Argument Types1466417
+Node: Directly-mapped Integer Functions1468171
+Node: Directly-mapped Media Functions1469255
+Node: Raw read/write Functions1477461
+Node: Other Built-in Functions1478369
+Node: MIPS DSP Built-in Functions1479555
+Node: MIPS Paired-Single Support1492052
+Node: MIPS Loongson Built-in Functions1493551
+Node: Paired-Single Arithmetic1500066
+Node: Paired-Single Built-in Functions1501014
+Node: MIPS-3D Built-in Functions1503681
+Node: Other MIPS Built-in Functions1509059
+Node: MSP430 Built-in Functions1510064
+Node: NDS32 Built-in Functions1511465
+Node: picoChip Built-in Functions1512758
+Node: PowerPC Built-in Functions1514101
+Node: PowerPC AltiVec/VSX Built-in Functions1517809
+Node: PowerPC Hardware Transactional Memory Built-in Functions1657600
+Node: RX Built-in Functions1664573
+Node: S/390 System z Built-in Functions1668606
+Node: SH Built-in Functions1673835
+Node: SPARC VIS Built-in Functions1675563
+Node: SPU Built-in Functions1681166
+Node: TI C6X Built-in Functions1682983
+Node: TILE-Gx Built-in Functions1684008
+Node: TILEPro Built-in Functions1685127
+Node: x86 Built-in Functions1686227
+Node: x86 transactional memory intrinsics1745763
+Node: Target Format Checks1748983
+Node: Solaris Format Checks1749415
+Node: Darwin Format Checks1749841
+Node: Pragmas1750659
+Node: ARM Pragmas1751395
+Node: M32C Pragmas1751998
+Node: MeP Pragmas1753070
+Node: RS/6000 and PowerPC Pragmas1755138
+Node: Darwin Pragmas1755879
+Node: Solaris Pragmas1756946
+Node: Symbol-Renaming Pragmas1758110
+Node: Structure-Packing Pragmas1759727
+Node: Weak Pragmas1761371
+Node: Diagnostic Pragmas1762105
+Node: Visibility Pragmas1765214
+Node: Push/Pop Macro Pragmas1765899
+Node: Function Specific Option Pragmas1766872
+Node: Loop-Specific Pragmas1768720
+Node: Unnamed Fields1769813
+Node: Thread-Local1772010
+Node: C99 Thread-Local Edits1774115
+Node: C++98 Thread-Local Edits1776113
+Node: Binary constants1779558
+Node: C++ Extensions1780229
+Node: C++ Volatiles1781940
+Node: Restricted Pointers1784288
+Node: Vague Linkage1785879
+Node: C++ Interface1789502
+Ref: C++ Interface-Footnote-11793299
+Node: Template Instantiation1793437
+Node: Bound member functions1800022
+Node: C++ Attributes1801554
+Node: Function Multiversioning1805993
+Node: Namespace Association1807810
+Node: Type Traits1809190
+Node: Java Exceptions1815673
+Node: Deprecated Features1817063
+Node: Backwards Compatibility1820030
+Node: Objective-C1821377
+Node: GNU Objective-C runtime API1821984
+Node: Modern GNU Objective-C runtime API1822991
+Node: Traditional GNU Objective-C runtime API1825427
+Node: Executing code before main1826154
+Node: What you can and what you cannot do in +load1828898
+Node: Type encoding1831268
+Node: Legacy type encoding1836295
+Node: @encode1837385
+Node: Method signatures1837930
+Node: Garbage Collection1839922
+Node: Constant string objects1842612
+Node: compatibility_alias1845121
+Node: Exceptions1845846
+Node: Synchronization1848556
+Node: Fast enumeration1849740
+Node: Using fast enumeration1850052
+Node: c99-like fast enumeration syntax1851263
+Node: Fast enumeration details1851966
+Node: Fast enumeration protocol1854306
+Node: Messaging with the GNU Objective-C runtime1857458
+Node: Dynamically registering methods1858830
+Node: Forwarding hook1860521
+Node: Compatibility1863561
+Node: Gcov1870117
+Node: Gcov Intro1870652
+Node: Invoking Gcov1873370
+Node: Gcov and Optimization1887610
+Node: Gcov Data Files1890612
+Node: Cross-profiling1892007
+Node: Gcov-tool1893861
+Node: Gcov-tool Intro1894284
+Node: Invoking Gcov-tool1896254
+Node: Trouble1898833
+Node: Actual Bugs1900250
+Node: Interoperation1900697
+Node: Incompatibilities1907588
+Node: Fixed Headers1915740
+Node: Standard Libraries1917398
+Node: Disappointments1918770
+Node: C++ Misunderstandings1923129
+Node: Static Definitions1923940
+Node: Name lookup1924993
+Ref: Name lookup-Footnote-11929773
+Node: Temporaries1929962
+Node: Copy Assignment1931938
+Node: Non-bugs1933745
+Node: Warnings and Errors1944251
+Node: Bugs1946013
+Node: Bug Criteria1946480
+Node: Bug Reporting1948690
+Node: Service1948911
+Node: Contributing1949730
+Node: Funding1950470
+Node: GNU Project1952960
+Node: Copying1953606
+Node: GNU Free Documentation License1991115
+Node: Contributors2016233
+Node: Option Index2054998
+Node: Keyword Index2277410
 
 End Tag Table

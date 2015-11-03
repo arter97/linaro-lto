@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 "2015-09-14" "gcc-5.2.1" "GNU"
+.TH GCC 1 "2015-10-05" "gcc-5.2.1" "GNU"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -5104,23 +5104,24 @@ many times it is given.  This is mainly intended to be used with
 Enable AddressSanitizer, a fast memory error detector.
 Memory access instructions are instrumented to detect
 out-of-bounds and use-after-free bugs.
-See <\fBhttp://code.google.com/p/address\-sanitizer/\fR> for
+See <\fBhttps://github.com/google/sanitizers/wiki/AddressSanitizer\fR> for
 more details.  The run-time behavior can be influenced using the
-\&\fB\s-1ASAN_OPTIONS\s0\fR environment variable; see
-<\fBhttps://code.google.com/p/address\-sanitizer/wiki/Flags#Run\-time_flags\fR> for
-a list of supported options.
+\&\fB\s-1ASAN_OPTIONS\s0\fR environment variable.  When set to \f(CW\*(C`help=1\*(C'\fR,
+the available options are shown at startup of the instrumended program.  See
+<\fBhttps://github.com/google/sanitizers/wiki/AddressSanitizerFlags#run\-time\-flags\fR>
+for a list of supported options.
 .IP "\fB\-fsanitize=kernel\-address\fR" 4
 .IX Item "-fsanitize=kernel-address"
 Enable AddressSanitizer for Linux kernel.
-See <\fBhttp://code.google.com/p/address\-sanitizer/wiki/AddressSanitizerForKernel\fR> for more details.
+See <\fBhttps://github.com/google/kasan/wiki\fR> for more details.
 .IP "\fB\-fsanitize=thread\fR" 4
 .IX Item "-fsanitize=thread"
 Enable ThreadSanitizer, a fast data race detector.
 Memory access instructions are instrumented to detect
-data race bugs.  See <\fBhttp://code.google.com/p/thread\-sanitizer/\fR> for more
+data race bugs.  See <\fBhttps://github.com/google/sanitizers/wiki#threadsanitizer\fR> for more
 details. The run-time behavior can be influenced using the \fB\s-1TSAN_OPTIONS\s0\fR
 environment variable; see
-<\fBhttps://code.google.com/p/thread\-sanitizer/wiki/Flags\fR> for a list of
+<\fBhttps://github.com/google/sanitizers/wiki/ThreadSanitizerFlags\fR> for a list of
 supported options.
 .IP "\fB\-fsanitize=leak\fR" 4
 .IX Item "-fsanitize=leak"
@@ -5129,7 +5130,7 @@ This option only matters for linking of executables and if neither
 \&\fB\-fsanitize=address\fR nor \fB\-fsanitize=thread\fR is used.  In that
 case the executable is linked against a library that overrides \f(CW\*(C`malloc\*(C'\fR
 and other allocator functions.  See
-<\fBhttps://code.google.com/p/address\-sanitizer/wiki/LeakSanitizer\fR> for more
+<\fBhttps://github.com/google/sanitizers/wiki/AddressSanitizerLeakSanitizer\fR> for more
 details.  The run-time behavior can be influenced using the
 \&\fB\s-1LSAN_OPTIONS\s0\fR environment variable.
 .IP "\fB\-fsanitize=undefined\fR" 4
@@ -11420,7 +11421,10 @@ Generate big-endian code.  This is the default when \s-1GCC\s0 is configured for
 \&\fBaarch64_be\-*\-*\fR target.
 .IP "\fB\-mgeneral\-regs\-only\fR" 4
 .IX Item "-mgeneral-regs-only"
-Generate code which uses only the general registers.
+Generate code which uses only the general-purpose registers.  This is equivalent
+to feature modifier \fBnofp\fR of \fB\-march\fR or \fB\-mcpu\fR, except
+that \fB\-mgeneral\-regs\-only\fR takes precedence over any conflicting feature
+modifier regardless of sequence.
 .IP "\fB\-mlittle\-endian\fR" 4
 .IX Item "-mlittle-endian"
 Generate little-endian code.  This is the default when \s-1GCC\s0 is configured for an
@@ -11482,24 +11486,26 @@ corresponding flag to the linker.
 .IX Item "-march=name"
 Specify the name of the target architecture, optionally suffixed by one or
 more feature modifiers.  This option has the form
-\&\fB\-march=\fR\fIarch\fR{\fB+\fR[\fBno\fR]\fIfeature\fR}*, where the
-only permissible value for \fIarch\fR is \fBarmv8\-a\fR.
-The permissible values for \fIfeature\fR are documented in the sub-section
-below.  Additionally on native AArch64 GNU/Linux systems the value
+\&\fB\-march=\fR\fIarch\fR{\fB+\fR[\fBno\fR]\fIfeature\fR}*.
+.Sp
+The permissible values for \fIarch\fR are \fBarmv8\-a\fR or
+\&\fBarmv8.1\-a\fR.
+.Sp
+For the permissible values for \fIfeature\fR, see the sub-section on
+\&\fBaarch64\-feature\-modifiers,,\fR\fB\-march\fR \fBand\fR \fB\-mcpu\fR
+\&\fBFeature Modifiers\fR.  Where conflicting feature modifiers are
+specified, the right-most feature is used.
+.Sp
+Additionally on native AArch64 GNU/Linux systems the value
 \&\fBnative\fR is available.  This option causes the compiler to pick the
 architecture of the host system.  If the compiler is unable to recognize the
 architecture of the host system this option has no effect.
 .Sp
-Where conflicting feature modifiers are specified, the right-most feature is
-used.
-.Sp
-\&\s-1GCC\s0 uses this name to determine what kind of instructions it can emit when
-generating assembly code.
-.Sp
-Where \fB\-march\fR is specified without either of \fB\-mtune\fR
-or \fB\-mcpu\fR also being specified, the code is tuned to perform
-well across a range of target processors implementing the target
-architecture.
+\&\s-1GCC\s0 uses \fIname\fR to determine what kind of instructions it can emit
+when generating assembly code.  If \fB\-march\fR is specified
+without either of \fB\-mtune\fR or \fB\-mcpu\fR also being
+specified, the code is tuned to perform well across a range of target
+processors implementing the target architecture.
 .IP "\fB\-mtune=\fR\fIname\fR" 4
 .IX Item "-mtune=name"
 Specify the name of the target processor for which \s-1GCC\s0 should tune the
@@ -11511,12 +11517,11 @@ Additionally, this option can specify that \s-1GCC\s0 should tune the performanc
 of the code for a big.LITTLE system.  Permissible values for this
 option are: \fBcortex\-a57.cortex\-a53\fR, \fBcortex\-a72.cortex\-a53\fR.
 .Sp
-Additionally on native AArch64 GNU/Linux systems the value \fBnative\fR
-is available.
-This option causes the compiler to pick the architecture of and tune the
-performance of the code for the processor of the host system.
-If the compiler is unable to recognize the processor of the host system
-this option has no effect.
+Additionally on native AArch64 GNU/Linux systems the value
+\&\fBnative\fR is available.  This option causes the compiler to pick
+the architecture of and tune the performance of the code for the
+processor of the host system.  If the compiler is unable to recognize
+the processor of the host system this option has no effect.
 .Sp
 Where none of \fB\-mtune=\fR, \fB\-mcpu=\fR or \fB\-march=\fR
 are specified, the code is tuned to perform well across a range
@@ -11525,48 +11530,75 @@ of target processors.
 This option cannot be suffixed by feature modifiers.
 .IP "\fB\-mcpu=\fR\fIname\fR" 4
 .IX Item "-mcpu=name"
-Specify the name of the target processor, optionally suffixed by one or more
-feature modifiers.  This option has the form
-\&\fB\-mcpu=\fR\fIcpu\fR{\fB+\fR[\fBno\fR]\fIfeature\fR}*, where the
-permissible values for \fIcpu\fR are the same as those available for
-\&\fB\-mtune\fR.  Additionally on native AArch64 GNU/Linux systems the
-value \fBnative\fR is available.
-This option causes the compiler to tune the performance of the code for the
-processor of the host system.  If the compiler is unable to recognize the
-processor of the host system this option has no effect.
+Specify the name of the target processor, optionally suffixed by one
+or more feature modifiers.  This option has the form
+\&\fB\-mcpu=\fR\fIcpu\fR{\fB+\fR[\fBno\fR]\fIfeature\fR}*, where
+the permissible values for \fIcpu\fR are the same as those available
+for \fB\-mtune\fR.  The permissible values for \fIfeature\fR are
+documented in the sub-section on
+\&\fBaarch64\-feature\-modifiers,,\fR\fB\-march\fR \fBand\fR \fB\-mcpu\fR
+\&\fBFeature Modifiers\fR.  Where conflicting feature modifiers are
+specified, the right-most feature is used.
 .Sp
-The permissible values for \fIfeature\fR are documented in the sub-section
-below.
+Additionally on native AArch64 GNU/Linux systems the value
+\&\fBnative\fR is available.  This option causes the compiler to tune
+the performance of the code for the processor of the host system.  If
+the compiler is unable to recognize the processor of the host system
+this option has no effect.
 .Sp
-Where conflicting feature modifiers are specified, the right-most feature is
-used.
-.Sp
-\&\s-1GCC\s0 uses this name to determine what kind of instructions it can emit when
+\&\s-1GCC\s0 uses \fIname\fR to determine what kind of instructions it can emit when
 generating assembly code (as if by \fB\-march\fR) and to determine
 the target processor for which to tune for performance (as if
 by \fB\-mtune\fR).  Where this option is used in conjunction
 with \fB\-march\fR or \fB\-mtune\fR, those options take precedence
 over the appropriate part of this option.
+.IP "\fB\-moverride=\fR\fIstring\fR" 4
+.IX Item "-moverride=string"
+Override tuning decisions made by the back-end in response to a
+\&\fB\-mtune=\fR switch.  The syntax, semantics, and accepted values
+for \fIstring\fR in this option are not guaranteed to be consistent
+across releases.
+.Sp
+This option is only intended to be useful when developing \s-1GCC.\s0
 .PP
 \fB\-march\fR and \fB\-mcpu\fR Feature Modifiers
 .IX Subsection "-march and -mcpu Feature Modifiers"
 .PP
-Feature modifiers used with \fB\-march\fR and \fB\-mcpu\fR can be one
-the following:
+Feature modifiers used with \fB\-march\fR and \fB\-mcpu\fR can be any of
+the following and their inverses \fBno\fR\fIfeature\fR:
 .IP "\fBcrc\fR" 4
 .IX Item "crc"
 Enable \s-1CRC\s0 extension.
 .IP "\fBcrypto\fR" 4
 .IX Item "crypto"
-Enable Crypto extension.  This implies Advanced \s-1SIMD\s0 is enabled.
+Enable Crypto extension.  This also enables Advanced \s-1SIMD\s0 and floating-point
+instructions.
 .IP "\fBfp\fR" 4
 .IX Item "fp"
-Enable floating-point instructions.
+Enable floating-point instructions.  This is on by default for all possible
+values for options \fB\-march\fR and \fB\-mcpu\fR.
 .IP "\fBsimd\fR" 4
 .IX Item "simd"
-Enable Advanced \s-1SIMD\s0 instructions.  This implies floating-point instructions
-are enabled.  This is the default for all current possible values for options
-\&\fB\-march\fR and \fB\-mcpu=\fR.
+Enable Advanced \s-1SIMD\s0 instructions.  This also enables floating-point
+instructions.  This is on by default for all possible values for options
+\&\fB\-march\fR and \fB\-mcpu\fR.
+.IP "\fBlse\fR" 4
+.IX Item "lse"
+Enable Large System Extension instructions.
+.IP "\fBpan\fR" 4
+.IX Item "pan"
+Enable Privileged Access Never support.
+.IP "\fBlor\fR" 4
+.IX Item "lor"
+Enable Limited Ordering Regions support.
+.IP "\fBrdma\fR" 4
+.IX Item "rdma"
+Enable ARMv8.1 Advanced \s-1SIMD\s0 instructions.  This implies Advanced \s-1SIMD\s0
+is enabled.
+.PP
+That is, \fBcrypto\fR implies \fBsimd\fR implies \fBfp\fR.
+Conversely, \fBnofp\fR (or equivalently, \fB\-mgeneral\-regs\-only\fR)
+implies \fBnosimd\fR implies \fBnocrypto\fR.
 .PP
 \fIAdapteva Epiphany Options\fR
 .IX Subsection "Adapteva Epiphany Options"
@@ -12183,7 +12215,7 @@ of the \fB\-mcpu=\fR option.  Permissible names are: \fBarmv2\fR,
 \&\fBarmv2a\fR, \fBarmv3\fR, \fBarmv3m\fR, \fBarmv4\fR, \fBarmv4t\fR,
 \&\fBarmv5\fR, \fBarmv5t\fR, \fBarmv5e\fR, \fBarmv5te\fR,
 \&\fBarmv6\fR, \fBarmv6j\fR,
-\&\fBarmv6t2\fR, \fBarmv6z\fR, \fBarmv6zk\fR, \fBarmv6\-m\fR,
+\&\fBarmv6t2\fR, \fBarmv6z\fR, \fBarmv6kz\fR, \fBarmv6\-m\fR,
 \&\fBarmv7\fR, \fBarmv7\-a\fR, \fBarmv7\-r\fR, \fBarmv7\-m\fR, \fBarmv7e\-m\fR,
 \&\fBarmv7ve\fR, \fBarmv8\-a\fR, \fBarmv8\-a+crc\fR,
 \&\fBiwmmxt\fR, \fBiwmmxt2\fR, \fBep9312\fR.
@@ -12401,6 +12433,9 @@ states.  The default for most configurations is to generate code
 that executes in \s-1ARM\s0 state, but the default can be changed by
 configuring \s-1GCC\s0 with the \fB\-\-with\-mode=\fR\fIstate\fR
 configure option.
+.Sp
+You can also override the \s-1ARM\s0 and Thumb mode for each function
+by using the \f(CW\*(C`target("thumb")\*(C'\fR and \f(CW\*(C`target("arm")\*(C'\fR function attributes or pragmas.
 .IP "\fB\-mtpcs\-frame\fR" 4
 .IX Item "-mtpcs-frame"
 Generate a stack frame that is compliant with the Thumb Procedure Call
@@ -19735,8 +19770,8 @@ in a performance loss, especially for floating-point code.
 .IX Item "-mno-user-mode"
 .PD
 Do not generate code that can only run in supervisor mode.  This is relevant
-only for the \f(CW\*(C`casa\*(C'\fR instruction emitted for the \s-1LEON3\s0 processor.  The
-default is \fB\-mno\-user\-mode\fR.
+only for the \f(CW\*(C`casa\*(C'\fR instruction emitted for the \s-1LEON3\s0 processor.  This
+is the default.
 .IP "\fB\-mno\-faster\-structs\fR" 4
 .IX Item "-mno-faster-structs"
 .PD 0

@@ -1,4 +1,4 @@
-This is as.info, produced by makeinfo version 5.2 from as.texinfo.
+This is as.info, produced by makeinfo version 6.0 from as.texinfo.
 
 This file documents the GNU Assembler "as".
 
@@ -19913,9 +19913,10 @@ compatibility with other Z8000 assemblers.  These do not begin with '.'
      (where XX represents a two-digit hexadecimal number) to represent
      the character whose ASCII value is XX.  Use this feature to
      describe single quote and other characters that may not appear in
-     string literals as themselves.  For example, the C statement 'char *a = "he said \"it's 50% off\"";'
-     is represented in Z8000 assembly language (shown with the assembler
-     output in hex at the left) as
+     string literals as themselves.  For example, the C statement
+     'char *a = "he said \"it's 50% off\"";' is represented in Z8000
+     assembly language (shown with the assembler output in hex at the
+     left) as
 
           68652073    sval    'he said %22it%27s 50%25 off%22%00'
           61696420
@@ -23395,7 +23396,7 @@ AS Index
 * Blackfin options (none):               Blackfin Options.    (line   6)
 * Blackfin support:                      Blackfin-Dependent.  (line   6)
 * Blackfin syntax:                       Blackfin Syntax.     (line   6)
-* block:                                 Z8000 Directives.    (line  54)
+* block:                                 Z8000 Directives.    (line  55)
 * BMI, i386:                             i386-BMI.            (line   6)
 * BMI, x86-64:                           i386-BMI.            (line   6)
 * branch improvement, M680x0:            M68K-Branch.         (line   6)
@@ -23671,7 +23672,7 @@ AS Index
 * ESA/390-only directives:               ESA/390 Directives.  (line  12)
 * escape codes, character:               Strings.             (line  15)
 * 'eval' directive, TIC54X:              TIC54X-Directives.   (line  22)
-* even:                                  Z8000 Directives.    (line  57)
+* even:                                  Z8000 Directives.    (line  58)
 * 'even' directive, M680x0:              M68K-Directives.     (line  15)
 * 'even' directive, TIC54X:              TIC54X-Directives.   (line   6)
 * 'exitm' directive:                     Macro.               (line 140)
@@ -24629,7 +24630,7 @@ AS Index
 * RL78 modifiers:                        RL78-Modifiers.      (line   6)
 * RL78 options:                          RL78-Opts.           (line   6)
 * RL78 support:                          RL78-Dependent.      (line   6)
-* rsect:                                 Z8000 Directives.    (line  51)
+* rsect:                                 Z8000 Directives.    (line  52)
 * RX assembler directive .3byte:         RX-Directives.       (line   9)
 * RX assembler directive .fetchalign:    RX-Directives.       (line  13)
 * RX assembler directives:               RX-Directives.       (line   6)
@@ -25698,63 +25699,63 @@ Node: Z8000-Chars716515
 Node: Z8000-Regs716997
 Node: Z8000-Addressing717787
 Node: Z8000 Directives718897
-Node: Z8000 Opcodes720501
-Node: Vax-Dependent730443
-Node: VAX-Opts731026
-Node: VAX-float734747
-Node: VAX-directives735380
-Node: VAX-opcodes736240
-Node: VAX-branch736629
-Node: VAX-operands739133
-Node: VAX-no739896
-Node: VAX-Syntax740152
-Node: VAX-Chars740318
-Node: V850-Dependent740872
-Node: V850 Options741266
-Node: V850 Syntax744910
-Node: V850-Chars745150
-Node: V850-Regs745694
-Node: V850 Floating Point747204
-Node: V850 Directives747410
-Node: V850 Opcodes749476
-Node: XGATE-Dependent755355
-Node: XGATE-Opts755775
-Node: XGATE-Syntax756764
-Node: XGATE-Directives758845
-Node: XGATE-Float759084
-Node: XGATE-opcodes759581
-Node: XSTORMY16-Dependent759693
-Node: XStormy16 Syntax760039
-Node: XStormy16-Chars760229
-Node: XStormy16 Directives760842
-Node: XStormy16 Opcodes761496
-Node: Xtensa-Dependent762551
-Node: Xtensa Options763282
-Node: Xtensa Syntax766013
-Node: Xtensa Opcodes768157
-Node: Xtensa Registers769950
-Node: Xtensa Optimizations770583
-Node: Density Instructions771035
-Node: Xtensa Automatic Alignment772137
-Node: Xtensa Relaxation774584
-Node: Xtensa Branch Relaxation775492
-Node: Xtensa Call Relaxation776864
-Node: Xtensa Immediate Relaxation778650
-Node: Xtensa Directives781225
-Node: Schedule Directive782933
-Node: Longcalls Directive783273
-Node: Transform Directive783817
-Node: Literal Directive784559
-Ref: Literal Directive-Footnote-1788098
-Node: Literal Position Directive788240
-Node: Literal Prefix Directive789939
-Node: Absolute Literals Directive790837
-Node: Reporting Bugs792144
-Node: Bug Criteria792870
-Node: Bug Reporting793637
-Node: Acknowledgements800312
-Ref: Acknowledgements-Footnote-1805278
-Node: GNU Free Documentation License805304
-Node: AS Index830454
+Node: Z8000 Opcodes720506
+Node: Vax-Dependent730448
+Node: VAX-Opts731031
+Node: VAX-float734752
+Node: VAX-directives735385
+Node: VAX-opcodes736245
+Node: VAX-branch736634
+Node: VAX-operands739138
+Node: VAX-no739901
+Node: VAX-Syntax740157
+Node: VAX-Chars740323
+Node: V850-Dependent740877
+Node: V850 Options741271
+Node: V850 Syntax744915
+Node: V850-Chars745155
+Node: V850-Regs745699
+Node: V850 Floating Point747209
+Node: V850 Directives747415
+Node: V850 Opcodes749481
+Node: XGATE-Dependent755360
+Node: XGATE-Opts755780
+Node: XGATE-Syntax756769
+Node: XGATE-Directives758850
+Node: XGATE-Float759089
+Node: XGATE-opcodes759586
+Node: XSTORMY16-Dependent759698
+Node: XStormy16 Syntax760044
+Node: XStormy16-Chars760234
+Node: XStormy16 Directives760847
+Node: XStormy16 Opcodes761501
+Node: Xtensa-Dependent762556
+Node: Xtensa Options763287
+Node: Xtensa Syntax766018
+Node: Xtensa Opcodes768162
+Node: Xtensa Registers769955
+Node: Xtensa Optimizations770588
+Node: Density Instructions771040
+Node: Xtensa Automatic Alignment772142
+Node: Xtensa Relaxation774589
+Node: Xtensa Branch Relaxation775497
+Node: Xtensa Call Relaxation776869
+Node: Xtensa Immediate Relaxation778655
+Node: Xtensa Directives781230
+Node: Schedule Directive782938
+Node: Longcalls Directive783278
+Node: Transform Directive783822
+Node: Literal Directive784564
+Ref: Literal Directive-Footnote-1788103
+Node: Literal Position Directive788245
+Node: Literal Prefix Directive789944
+Node: Absolute Literals Directive790842
+Node: Reporting Bugs792149
+Node: Bug Criteria792875
+Node: Bug Reporting793642
+Node: Acknowledgements800317
+Ref: Acknowledgements-Footnote-1805283
+Node: GNU Free Documentation License805309
+Node: AS Index830459
 
 End Tag Table

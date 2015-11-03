@@ -1424,7 +1424,7 @@
 #endif
 
 
-/* Define if your linker supports -pie option. */
+/* Define if your linker supports PIE option. */
 #ifndef USED_FOR_TARGET
 #define HAVE_LD_PIE 1
 #endif
@@ -1578,6 +1578,12 @@
 /* Define to 1 if you have the `setrlimit' function. */
 #ifndef USED_FOR_TARGET
 #define HAVE_SETRLIMIT 1
+#endif
+
+
+/* Define if the system-provided CRTs are present on Solaris. */
+#ifndef USED_FOR_TARGET
+/* #undef HAVE_SOLARIS_CRTS */
 #endif
 
 

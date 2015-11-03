@@ -17,7 +17,7 @@ old_library='libbfd.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/mnt/jenkins/workspace/linaro-android_toolchain-5.2-2015.09/build/objdir/libbfd-binutils-2.25.51/zlib -lz -ldl'
+dependency_libs=' -lz -ldl'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
